@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.model;
 
+import com.cmpe275.termproject.view.Survey;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -17,13 +18,16 @@ public class QuestionEntity {
 
     @Id
     @GeneratedValue
+    @JsonView({Survey.summary.class})
     @Column(name = "question_id")
     private Integer question_id;
 
     @Column(name = "question_type")
+    @JsonView({Survey.summary.class})
     private String question_type;
 
     @Column(name = "question_text")
+    @JsonView({Survey.summary.class})
     private String question_text;
 
     @ManyToOne
@@ -42,6 +46,7 @@ public class QuestionEntity {
 
             fetch = FetchType.LAZY,
             mappedBy = "question_id",orphanRemoval = true)
+    @JsonView({Survey.summary.class})
     private Set<OptionsEntity> options = new HashSet<>();
 
     public Integer getQuestion_id() {

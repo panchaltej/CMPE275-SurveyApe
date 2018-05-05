@@ -32,7 +32,7 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "user_id",orphanRemoval = true)
+            mappedBy = "userid",orphanRemoval = true)
     private Set<SurveyEntity> surveys = new HashSet<>();
 
 

@@ -1,7 +1,9 @@
 package com.cmpe275.termproject.model;
 
+import com.cmpe275.termproject.view.Survey;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -23,9 +25,11 @@ public class OptionsEntity {
     @Id
     @GeneratedValue
     @Column(name = "option_id")
+    @JsonView({Survey.summary.class})
     private Integer option_id;
 
     @Column(name = "option_description")
+    @JsonView({Survey.summary.class})
     private String option_description;
 
     @ManyToOne
