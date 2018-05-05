@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 
 // import {removemenu} from '../actions/index';
- import {connect} from 'react-redux';
+ //import {connect} from 'react-redux';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
 // import Display from './display';
 // import Display2 from './display2';
  import Createsurvey from './createsurvey';
+ import Allsavedsurveys from './allsavedsurveys'
 
 class menu extends Component{
 
@@ -64,11 +65,14 @@ class menu extends Component{
             <p><button class="btn btn-secondary"
             onClick={() => {
                 this.props.history.push("/createsurvey");
-            }}>View details &raquo;</button></p>
+            }}>GO &raquo;</button></p>
           </div>
           <div class="col-md-4">
-            <h2>Created Surveys</h2>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <h2>Saved Surveys</h2>
+            <p><button class="btn btn-secondary"
+            onClick={() => {
+                this.props.history.push("/allsavedsurveys");
+            }}> GO &raquo;</button></p>
           </div>
           <div class="col-md-4">
             <h2>Open Surveys</h2>
@@ -89,6 +93,12 @@ class menu extends Component{
     <Route exact path="/createsurvey" render={() => (
                 <div>
                     <Createsurvey/>
+                </div>
+            )}/>
+
+     <Route exact path="/allsavedsurveys" render={() => (
+                <div>
+                    <Allsavedsurveys/>
                 </div>
             )}/>
     </div>

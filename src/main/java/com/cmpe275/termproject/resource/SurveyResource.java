@@ -324,6 +324,11 @@ public class SurveyResource {
         System.out.println("user_id:"+user_id);
         UserEntity userEntity = userRepository.findOne(user_id);
 
+        if(userEntity== null)
+        {
+            return new ResponseEntity("No Such User!!",HttpStatus.OK);
+        }
+
         //System.out.println("userEntity.getSurveys():"+userEntity.getSurveys());
 
         for (SurveyEntity s:userEntity.getSurveys())

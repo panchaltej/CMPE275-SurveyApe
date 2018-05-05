@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 // import Display from './display';
 // import Display2 from './display2';
 
-class menu extends Component{
+class savedsurveys extends Component{
 
     render()
     {
@@ -15,7 +15,7 @@ class menu extends Component{
            <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <h2></h2> 
+            <h2>JAYJAY</h2> 
             <p><button class="btn btn-secondary"
             onClick={() => {
                 this.props.history.push("/createsurvey");
@@ -41,4 +41,4 @@ class menu extends Component{
 }
 
 
-export default (menu);
+export default (savedsurveys);
