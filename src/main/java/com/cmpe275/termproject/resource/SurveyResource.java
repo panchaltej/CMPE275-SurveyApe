@@ -18,6 +18,7 @@ import java.util.UUID;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping(value = "/survey")
 public class SurveyResource {
 
@@ -321,7 +322,7 @@ public class SurveyResource {
 
         //JSONObject jsonObject = new JSONObject(payload);
         //int user_id = jsonObject.getInt("user_id");
-        System.out.println("user_id:"+user_id);
+        //System.out.println("user_id:"+user_id);
         UserEntity userEntity = userRepository.findOne(user_id);
 
         if(userEntity== null)
@@ -331,10 +332,10 @@ public class SurveyResource {
 
         //System.out.println("userEntity.getSurveys():"+userEntity.getSurveys());
 
-        for (SurveyEntity s:userEntity.getSurveys())
-        {
-            System.out.println(s.getSurvey_id()+ "::"+s.getSurvey_name());
-        }
+//        for (SurveyEntity s:userEntity.getSurveys())
+//        {
+//            System.out.println(s.getSurvey_id()+ "::"+s.getSurvey_name());
+//        }
         //njndvhubvuhb
         //return new ResponseEntity(userEntity.getSurveys() , HttpStatus.OK);
         //System.out.println(surveyRepository.findByIspublishedAndUserid(true,userEntity));

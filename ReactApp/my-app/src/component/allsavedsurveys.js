@@ -3,10 +3,19 @@ import React, {Component} from 'react';
 // import {removemenu} from '../actions/index';
 // import {connect} from 'react-redux';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
-// import Display from './display';
-// import Display2 from './display2';
+ import * as API from '../api/surveys' 
 
 class savedsurveys extends Component{
+
+    componentDidMount()
+    {
+      //var payload ={}
+      API.getFlights().then
+      ((output) => {
+        console.log(output);
+        
+      })  
+    }
 
     render()
     {
