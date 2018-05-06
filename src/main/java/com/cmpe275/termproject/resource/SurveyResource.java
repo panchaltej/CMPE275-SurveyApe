@@ -1,8 +1,10 @@
 package com.cmpe275.termproject.resource;
 
+import com.cmpe275.termproject.helperClasses.SavedResponse;
 import com.cmpe275.termproject.model.*;
 import com.cmpe275.termproject.repository.*;
 import com.cmpe275.termproject.view.Survey;
+import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +43,23 @@ public class SurveyResource {
 
     @Autowired
     OpenUniqueSurveyRepository openUniqueSurveyRepository;
+
+    @Transactional
+    @JsonView({SurveyResponse.summary.class})
+    @GetMapping(value = "/{surveyId}")
+    public ResponseEntity<?> sendSavedResponse(@RequestParam("userId") Integer userId,
+                                               @PathVariable("surveyId") Integer surveyId) throws JSONException {
+        SavedResponse savedResponse = new SavedResponse();
+
+        savedResponse.setSurveyId(surveyId);
+        savedResponse.setUserId(userId);
+
+        SurveyEntity s = surveyRepository.findOne(surveyId);
+        List<QuestionEntity> questions = questionRepository.findAllBySurveyId(s);
+        savedResponse.setQuestions(questions);
+
+        return new ResponseEntity(savedResponse, HttpStatus.OK);
+    }
 
     @Transactional
     @PostMapping(value = "/addsurveyees",consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -144,7 +163,7 @@ public class SurveyResource {
                 // Adding the question details
                 questionEntity.setQuestion_text(question_object.getString("question_name"));
                 questionEntity.setQuestion_type(question_object.getString("question_type"));
-                questionEntity.setSurvey_id(surveyEntity);
+                questionEntity.setSurveyId(surveyEntity);
                 questionRepository.save(questionEntity);
 
                 JSONArray options_array = question_object.getJSONArray("options");
@@ -217,7 +236,7 @@ public class SurveyResource {
                 // Adding the question details
                 questionEntity.setQuestion_text(question_object.getString("question_name"));
                 questionEntity.setQuestion_type(question_object.getString("question_type"));
-                questionEntity.setSurvey_id(surveyEntity);
+                questionEntity.setSurveyId(surveyEntity);
                 questionRepository.save(questionEntity);
 
                 JSONArray options_array = question_object.getJSONArray("options");

@@ -1,7 +1,9 @@
 package com.cmpe275.termproject.model;
 
+import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -17,58 +19,68 @@ public class AnswerEntity {
     private Integer answer_id;
 
     @Column(name = "user_id")
-    private Integer userid;
+    private Integer userId;
 
     @Column(name = "survey_id")
-    private Integer surveyid;
+    private Integer surveyId;
 
     @Column(name = "question_id")
-    private Integer questionid;
+    private Integer questionId;
 
     @Column(name = "option_id")
-    private Integer optionid;
+    @JsonView({SurveyResponse.summary.class})
+    private Integer optionId;
 
     @Column(name = "answer_description")
-    private String answerdescription;
+    @JsonView({SurveyResponse.summary.class})
+    private String answerDescription;
 
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public Integer getSurveyid() {
-        return surveyid;
+    public Integer getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurveyid(Integer surveyid) {
-        this.surveyid = surveyid;
+    public void setSurveyId(Integer surveyId) {
+        this.surveyId = surveyId;
     }
 
-    public Integer getQuestionid() {
-        return questionid;
+    public Integer getQuestionId() {
+        return questionId;
     }
 
-    public void setQuestionid(Integer questionid) {
-        this.questionid = questionid;
+    public void setQuestionId(Integer questionId) {
+        this.questionId = questionId;
     }
 
-    public Integer getOptionid() {
-        return optionid;
+    public Integer getOptionId() {
+        return optionId;
     }
 
-    public void setOptionid(Integer optionid) {
-        this.optionid = optionid;
+    public void setOptionId(Integer optionId) {
+        this.optionId = optionId;
     }
 
     public String getAnswerdescription() {
-        return answerdescription;
+        return answerDescription;
     }
 
     public void setAnswerdescription(String answerdescription) {
-        this.answerdescription = answerdescription;
+        this.answerDescription = answerdescription;
+    }
+
+    public Integer getAnswer_id() {
+        return answer_id;
+    }
+
+    public void setAnswer_id(Integer answer_id) {
+        this.answer_id = answer_id;
     }
 }

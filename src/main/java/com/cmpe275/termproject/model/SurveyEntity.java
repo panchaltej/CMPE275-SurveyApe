@@ -39,7 +39,7 @@ public class SurveyEntity {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "survey_id",orphanRemoval = true)
+            mappedBy = "surveyId",orphanRemoval = true)
     @JsonView({Survey.summary.class})
     private Set<QuestionEntity> questions = new HashSet<>();
 

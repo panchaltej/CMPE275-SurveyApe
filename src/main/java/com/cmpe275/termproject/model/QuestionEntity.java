@@ -1,6 +1,7 @@
 package com.cmpe275.termproject.model;
 
 import com.cmpe275.termproject.view.Survey;
+import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -18,21 +19,33 @@ public class QuestionEntity {
 
     @Id
     @GeneratedValue
-    @JsonView({Survey.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
     @Column(name = "question_id")
     private Integer question_id;
 
     @Column(name = "question_type")
-    @JsonView({Survey.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
     private String question_type;
 
     @Column(name = "question_text")
-    @JsonView({Survey.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
     private String question_text;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id",nullable = false)
-    private SurveyEntity survey_id;
+    @JoinColumn(name = "surveyId",nullable = false)
+    private SurveyEntity surveyId;
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "question_id",orphanRemoval = true)
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    private Set<OptionsEntity> options = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "questionId",orphanRemoval = true)
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    private Set<AnswerEntity> answers = new HashSet<>();
 
     public Set<OptionsEntity> getOptions() {
         return options;
@@ -41,13 +54,6 @@ public class QuestionEntity {
     public void setOptions(Set<OptionsEntity> options) {
         this.options = options;
     }
-
-    @OneToMany(cascade = CascadeType.ALL,
-
-            fetch = FetchType.LAZY,
-            mappedBy = "question_id",orphanRemoval = true)
-    @JsonView({Survey.summary.class})
-    private Set<OptionsEntity> options = new HashSet<>();
 
     public Integer getQuestion_id() {
         return question_id;
@@ -73,15 +79,19 @@ public class QuestionEntity {
         this.question_text = question_text;
     }
 
-    public SurveyEntity getSurvey_id() {
-        return survey_id;
+    public SurveyEntity getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurvey_id(SurveyEntity survey_id) {
-        this.survey_id = survey_id;
+    public void setSurveyId(SurveyEntity surveyId) {
+        this.surveyId = surveyId;
     }
 
+    public Set<AnswerEntity> getAnswers() {
+        return answers;
+    }
 
-
-
+    public void setAnswers(Set<AnswerEntity> answers) {
+        this.answers = answers;
+    }
 }

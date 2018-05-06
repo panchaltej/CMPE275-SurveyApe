@@ -1,6 +1,7 @@
 package com.cmpe275.termproject.model;
 
 import com.cmpe275.termproject.view.Survey;
+import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -25,11 +26,11 @@ public class OptionsEntity {
     @Id
     @GeneratedValue
     @Column(name = "option_id")
-    @JsonView({Survey.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
     private Integer option_id;
 
     @Column(name = "option_description")
-    @JsonView({Survey.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
     private String option_description;
 
     @ManyToOne

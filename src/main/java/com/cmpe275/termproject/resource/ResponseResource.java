@@ -1,7 +1,10 @@
 package com.cmpe275.termproject.resource;
 
+import com.cmpe275.termproject.helperClasses.SavedResponse;
 import com.cmpe275.termproject.model.*;
 import com.cmpe275.termproject.repository.*;
+import com.cmpe275.termproject.view.Survey;
+import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +71,7 @@ public class ResponseResource {
             Integer user_id = jsonObject.getInt("user_id");
             JSONArray questions = jsonObject.getJSONArray("questions");
 
-            answerRepository.deleteByUseridAndSurveyid(user_id, survey_id);
+            answerRepository.deleteByUserIdAndSurveyId(user_id, survey_id);
 
             for (int i = 0; i < questions.length(); i++) {
                 JSONObject question = questions.getJSONObject(i);
@@ -82,10 +85,10 @@ public class ResponseResource {
                     String answer_description = answer.getString("option_description");
 
                     AnswerEntity answerEntity = new AnswerEntity();
-                    answerEntity.setUserid(user_id);
-                    answerEntity.setSurveyid(survey_id);
-                    answerEntity.setQuestionid(question_id);
-                    answerEntity.setOptionid(answer_id);
+                    answerEntity.setUserId(user_id);
+                    answerEntity.setSurveyId(survey_id);
+                    answerEntity.setQuestionId(question_id);
+                    answerEntity.setOptionId(answer_id);
                     answerEntity.setAnswerdescription(answer_description);
 
                     answerRepository.save(answerEntity);
