@@ -19,7 +19,7 @@ public class UserEntity {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
-    private Integer user_id;
+    private Integer id;
 
     @Column(name = "email")
     private String email;
@@ -27,21 +27,74 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "isvarified")
-    private boolean isvarified;
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "isVerified")
+    private String isVerified = "N";
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "userid",orphanRemoval = true)
     private Set<SurveyEntity> surveys = new HashSet<>();
 
+    @Column(name = "verification_number")
+    private String verificationCode;
 
-    public Integer getUser_id() {
-        return user_id;
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "inviteeUserId",orphanRemoval = true)
+    private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(String isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public String getEmail_id() {
@@ -59,30 +112,6 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public boolean isIsvarified() {
-        return isvarified;
-    }
-
-    public void setIsvarified(boolean isvarified) {
-        this.isvarified = isvarified;
-    }
-
-    public String getVerification_number() {
-        return verification_number;
-    }
-
-    public void setVerification_number(String verification_number) {
-        this.verification_number = verification_number;
-    }
-
-    @Column(name = "verification_number")
-    private String verification_number;
-
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "inviteeUserId",orphanRemoval = true)
-    private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
 
     public Set<SurveyEntity> getSurveys() {
         return surveys;
