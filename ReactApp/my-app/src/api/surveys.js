@@ -4,8 +4,28 @@ const headers = {
     'Accept': 'application/json'
 };
 
+export const createSurvey = (payload) =>
+    fetch(`${api}/survey`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include'
+    }).then(res => res.status)
+
+        .then(res=>{
+            console.log(res);
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error");
+            return error;
+        });
+
 //insertHotelData
-export const getFlights = (payload) =>
+export const getSavedSurveys = (payload) =>
     fetch(`${api}/survey/allsavedsurveys?user_id=1`, {
         method: 'GET',
         headers: {

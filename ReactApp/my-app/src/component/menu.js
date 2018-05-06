@@ -7,7 +7,7 @@ import React, {Component} from 'react';
 // import Display2 from './display2';
  import Createsurvey from './createsurvey';
  import Allsavedsurveys from './allsavedsurveys'
-
+let initialState=true;
 class menu extends Component{
 
     render()
@@ -64,6 +64,7 @@ class menu extends Component{
             <h2>Create Survey</h2> 
             <p><button class="btn btn-secondary"
             onClick={() => {
+              localStorage.setItem("initial",'true');
                 this.props.history.push("/createsurvey");
             }}>GO &raquo;</button></p>
           </div>
@@ -71,6 +72,7 @@ class menu extends Component{
             <h2>Saved Surveys</h2>
             <p><button class="btn btn-secondary"
             onClick={() => {
+              localStorage.setItem("initial",'false');
                 this.props.history.push("/allsavedsurveys");
             }}> GO &raquo;</button></p>
           </div>
@@ -92,7 +94,7 @@ class menu extends Component{
     )}/>
     <Route exact path="/createsurvey" render={() => (
                 <div>
-                    <Createsurvey/>
+                    <Createsurvey initial={initialState}/>
                 </div>
             )}/>
 
