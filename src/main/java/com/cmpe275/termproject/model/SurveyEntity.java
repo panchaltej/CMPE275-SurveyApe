@@ -32,6 +32,7 @@ public class SurveyEntity {
         return userid;
     }
 
+
     public void setUser_id(UserEntity user_id) {
         this.userid = user_id;
     }
@@ -113,9 +114,8 @@ public class SurveyEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL,
-
             fetch = FetchType.LAZY,
-            mappedBy = "survey_id",orphanRemoval = true)
+            mappedBy = "surveyId",orphanRemoval = true)
     @JsonIgnore
     private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
 

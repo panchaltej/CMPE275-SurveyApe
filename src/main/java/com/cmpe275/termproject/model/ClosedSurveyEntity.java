@@ -12,33 +12,33 @@ public class ClosedSurveyEntity {
     private Integer closed_survey_id;
 
     @ManyToOne
-    @JoinColumn(name = "survey_id",nullable = false)
-    private SurveyEntity survey_id;
+    @JoinColumn(name = "surveyId",nullable = false)
+    private SurveyEntity surveyId;
 
     @ManyToOne
-    @JoinColumn(name = "invitee_user_id",nullable = false)
-    private UserEntity invitee_user_id;
+    @JoinColumn(name = "inviteeUserId",nullable = false)
+    private UserEntity inviteeUserId;
 
     @Column(name = "invitee_link")
     private String invitee_link;
 
-    @Column(name = "islinkused")
-    private String islinkused;
+    @Column(name = "islinkused", columnDefinition = "int default 0")
+    private Integer islinkused;
 
-    public SurveyEntity getSurvey_id() {
-        return survey_id;
+    public SurveyEntity getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurvey_id(SurveyEntity survey_id) {
-        this.survey_id = survey_id;
+    public void setSurveyId(SurveyEntity surveyId) {
+        this.surveyId = surveyId;
     }
 
-    public UserEntity getInvitee_user_id() {
-        return invitee_user_id;
+    public UserEntity getInviteeUserId() {
+        return inviteeUserId;
     }
 
-    public void setInvitee_user_id(UserEntity invitee_user_id) {
-        this.invitee_user_id = invitee_user_id;
+    public void setInviteeUserId(UserEntity inviteeUserId) {
+        this.inviteeUserId = inviteeUserId;
     }
 
     public String getInvitee_link() {
@@ -49,16 +49,11 @@ public class ClosedSurveyEntity {
         this.invitee_link = invitee_link;
     }
 
-    public String getIslinkused() {
+    public Integer getIslinkused() {
         return islinkused;
     }
 
-    public void setIslinkused(String islinkused) {
+    public void setIslinkused(Integer islinkused) {
         this.islinkused = islinkused;
     }
-
-
-
-
-
 }
