@@ -264,8 +264,10 @@ public class SurveyResource {
                 OpenSurveyEntity openSurveyEntity = new OpenSurveyEntity();
                 openSurveyEntity.setSurvey_id(surveyEntity);
                 UUID uuid = UUID.randomUUID();
+                openSurveyEntity.setUuid(String.valueOf(uuid));
                 openSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
-                openSurveyEntity.setIslinkused("");
+//                openSurveyEntity.setIslinkused(0);
+                openSurveyEntity.setEmailId(jsonObject.getString("emailId"));
                 openSurveyRepository.save(openSurveyEntity);
 
             }
@@ -280,6 +282,7 @@ public class SurveyResource {
                     List<UserEntity> userEntity = userRepository.findByEmail(user);
                     closedSurveyEntity.setInviteeUserId(userEntity.get(0));
                     UUID uuid = UUID.randomUUID();
+                    closedSurveyEntity.setUudi(String.valueOf(uuid));
                     closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
                     closedSurveyRepository.save(closedSurveyEntity);
 

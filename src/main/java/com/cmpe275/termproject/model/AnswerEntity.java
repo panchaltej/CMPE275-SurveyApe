@@ -21,6 +21,9 @@ public class AnswerEntity {
     @Column(name = "user_id")
     private Integer userId;
 
+    @Column(name = "email_id")
+    private String emailId;
+
     @Column(name = "survey_id")
     private Integer surveyId;
 
@@ -43,6 +46,10 @@ public class AnswerEntity {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    public String getEmailId() { return emailId; }
+
+    public void setEmailId(String emailId) { this.emailId = emailId; }
 
     public Integer getSurveyId() {
         return surveyId;

@@ -40,11 +40,33 @@ public class ResponseResource {
     @Autowired
     AnswerRepository answerRepository;
 
+    @Autowired OpenSurveyRepository openSurveyRepository;
+
     @Transactional
     @PostMapping(value = "/save",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveResponse(@RequestBody Map<String, Object> payload) throws JSONException {
         JSONObject jsonObject = new JSONObject(payload);
-        saveResponse(jsonObject);
+        String uuid = jsonObject.getString("uuid");
+        Integer survey_id = jsonObject.getInt("survey_id");
+        String emailId ="";
+
+        SurveyEntity se = surveyRepository.findOne(survey_id);
+        String type = se.getSurvey_type();
+
+        if(type == "C") {
+            ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
+            if (closedSurveyEntity != null) {
+                emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
+            }
+        }
+        else if(type == "G"){
+            OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
+            if (openSurveyEntity != null){
+                emailId = openSurveyEntity.getEmailId();
+            }
+        }
+
+        saveResponse(jsonObject, emailId);
 
         return new ResponseEntity("SUCCESS" , HttpStatus.OK);
     }
@@ -55,23 +77,38 @@ public class ResponseResource {
 
         JSONObject jsonObject = new JSONObject(payload);
         Integer survey_id = jsonObject.getInt("survey_id");
-        Integer user_id = jsonObject.getInt("user_id");
+        String emailId ="";
+        String uuid = jsonObject.getString("uuid");
 
-        ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findBySurveyIdAndInviteeUserId(survey_id, user_id);
-        if(closedSurveyEntity != null) closedSurveyEntity.setIslinkused(1);
+        SurveyEntity se = surveyRepository.findOne(survey_id);
+        String type = se.getSurvey_type();
 
-        saveResponse(jsonObject);
+        if(type == "C") {
+            ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
+            if (closedSurveyEntity != null) {
+                emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
+                closedSurveyEntity.setIslinkused(1);
+            }
+        }
+        else if(type == "G"){
+            OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
+            if (openSurveyEntity != null){
+                emailId = openSurveyEntity.getEmailId();
+                openSurveyEntity.setIslinkused(1);
+            }
+        }
+        saveResponse(jsonObject, emailId);
 
         return new ResponseEntity("SUCCESS" , HttpStatus.OK);
     }
 
-    public void saveResponse(JSONObject jsonObject){
+    public void saveResponse(JSONObject jsonObject, String emailId){
         try {
             Integer survey_id = jsonObject.getInt("survey_id");
-            Integer user_id = jsonObject.getInt("user_id");
+//            Integer user_id = jsonObject.getInt("user_id");
             JSONArray questions = jsonObject.getJSONArray("questions");
 
-            answerRepository.deleteByUserIdAndSurveyId(user_id, survey_id);
+            answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
 
             for (int i = 0; i < questions.length(); i++) {
                 JSONObject question = questions.getJSONObject(i);
@@ -85,7 +122,8 @@ public class ResponseResource {
                     String answer_description = answer.getString("option_description");
 
                     AnswerEntity answerEntity = new AnswerEntity();
-                    answerEntity.setUserId(user_id);
+//                    answerEntity.setUserId(user_id);
+                    answerEntity.setEmailId(emailId);
                     answerEntity.setSurveyId(survey_id);
                     answerEntity.setQuestionId(question_id);
                     answerEntity.setOptionId(answer_id);

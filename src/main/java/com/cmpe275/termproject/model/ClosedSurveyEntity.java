@@ -25,6 +25,9 @@ public class ClosedSurveyEntity {
     @Column(name = "islinkused", columnDefinition = "int default 0")
     private Integer islinkused;
 
+    @Column(name = "uuid")
+    private String uuid;
+
     public SurveyEntity getSurveyId() {
         return surveyId;
     }
@@ -55,5 +58,13 @@ public class ClosedSurveyEntity {
 
     public void setIslinkused(Integer islinkused) {
         this.islinkused = islinkused;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUudi(String uuid) {
+        this.uuid = uuid;
     }
 }
