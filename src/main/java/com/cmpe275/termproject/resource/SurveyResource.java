@@ -51,10 +51,10 @@ public class SurveyResource {
 
 
             ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
-            closedSurveyEntity.setSurvey_id(surveyEntity);
+            closedSurveyEntity.setSurveyId(surveyEntity);
 
             List<UserEntity> userEntity = userRepository.findByEmail(s);
-            closedSurveyEntity.setInvitee_user_id(userEntity.get(0));
+            closedSurveyEntity.setInviteeUserId(userEntity.get(0));
             UUID uuid = UUID.randomUUID();
             closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurvey_id() + "/" + String.valueOf(uuid));
             closedSurveyRepository.save(closedSurveyEntity);
@@ -193,10 +193,10 @@ public class SurveyResource {
 
                 for (String user : invitess) {
                     ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
-                    closedSurveyEntity.setSurvey_id(surveyEntity);
+                    closedSurveyEntity.setSurveyId(surveyEntity);
 
                     List<UserEntity> userEntity = userRepository.findByEmail(user);
-                    closedSurveyEntity.setInvitee_user_id(userEntity.get(0));
+                    closedSurveyEntity.setInviteeUserId(userEntity.get(0));
                     UUID uuid = UUID.randomUUID();
                     closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
                     closedSurveyRepository.save(closedSurveyEntity);

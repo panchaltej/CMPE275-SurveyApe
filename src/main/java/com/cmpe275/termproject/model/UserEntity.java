@@ -81,7 +81,7 @@ public class UserEntity {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "invitee_user_id",orphanRemoval = true)
+            mappedBy = "inviteeUserId",orphanRemoval = true)
     private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
 
     public Set<SurveyEntity> getSurveys() {
