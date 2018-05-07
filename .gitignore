@@ -5,3 +5,7 @@ target/*
 .settings/*
 *.class
 *.iml
+
+ReactApp/my-app/package-lock\.json
+
+ReactApp/\.idea/workspace\.xml
