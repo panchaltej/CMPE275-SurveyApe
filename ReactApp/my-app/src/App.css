@@ -121,7 +121,9 @@ body {
   border-radius: 6px;
 }
 .startUpClass{
+  /*
   background-image: url("surveyMain.jpg");
+  */
   height: 700px;
 }
 .welcomeTxt{

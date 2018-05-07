@@ -61,6 +61,13 @@ class App extends Component {
                             <div>verification successfull</div>
                         </BrowserRouter>
                     )}/>
+                    <Route exact path="/failedlogin" render={() => (<BrowserRouter>
+                            <div>
+                                <h6 className="welcomeTxt">login failed</h6>
+                                <a href={"http://localhost:3000"}>Click here to navigate back</a>
+                            </div>
+                        </BrowserRouter>
+                    )}/>
                     <Route exact path="/failedVerification" render={() => (<BrowserRouter>
                             <div>
                                 <h6 className="welcomeTxt">verification failed</h6>
