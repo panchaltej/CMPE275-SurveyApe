@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.resource;
 
+import com.cmpe275.termproject.helperClasses.BadRequest;
 import com.cmpe275.termproject.helperClasses.SavedResponse;
 import com.cmpe275.termproject.model.*;
 import com.cmpe275.termproject.repository.*;
@@ -49,26 +50,30 @@ public class ResponseResource {
         String uuid = jsonObject.getString("uuid");
         Integer survey_id = jsonObject.getInt("survey_id");
         String emailId ="";
-
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        String type = se.getSurvey_type();
+        if(new Date().after(se.getEndTime())) {
+            String type = se.getSurvey_type();
 
-        if(type == "C") {
-            ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
-            if (closedSurveyEntity != null) {
-                emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
+            if (type == "C") {
+                ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
+                if (closedSurveyEntity != null) {
+                    emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
+                }
+            } else if (type == "O") {
+                OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
+                if (openSurveyEntity != null) {
+                    emailId = openSurveyEntity.getEmailId();
+                }
             }
-        }
-        else if(type == "G"){
-            OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
-            if (openSurveyEntity != null){
-                emailId = openSurveyEntity.getEmailId();
-            }
-        }
 
-        saveResponse(jsonObject, emailId);
+            saveResponse(jsonObject, emailId);
 
-        return new ResponseEntity("SUCCESS" , HttpStatus.OK);
+            return new ResponseEntity("SUCCESS", HttpStatus.OK);
+        }
+        else{
+            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional
@@ -81,25 +86,30 @@ public class ResponseResource {
         String uuid = jsonObject.getString("uuid");
 
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        String type = se.getSurvey_type();
+        if(new Date().after(se.getEndTime())) {
+            String type = se.getSurvey_type();
 
-        if(type == "C") {
-            ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
-            if (closedSurveyEntity != null) {
-                emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
-                closedSurveyEntity.setIslinkused(1);
+            if (type == "C") {
+                ClosedSurveyEntity closedSurveyEntity = closedSurveyRepository.findByUuid(uuid);
+                if (closedSurveyEntity != null) {
+                    emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
+                    closedSurveyEntity.setIslinkused(1);
+                }
+            } else if (type == "O") {
+                OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
+                if (openSurveyEntity != null) {
+                    emailId = openSurveyEntity.getEmailId();
+                    openSurveyEntity.setIslinkused(1);
+                }
             }
-        }
-        else if(type == "G"){
-            OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
-            if (openSurveyEntity != null){
-                emailId = openSurveyEntity.getEmailId();
-                openSurveyEntity.setIslinkused(1);
-            }
-        }
-        saveResponse(jsonObject, emailId);
+            saveResponse(jsonObject, emailId);
 
-        return new ResponseEntity("SUCCESS" , HttpStatus.OK);
+            return new ResponseEntity("SUCCESS", HttpStatus.OK);
+        }
+        else{
+            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+        }
     }
 
     public void saveResponse(JSONObject jsonObject, String emailId){

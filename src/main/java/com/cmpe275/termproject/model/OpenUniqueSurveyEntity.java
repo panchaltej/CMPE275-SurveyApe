@@ -12,6 +12,22 @@ public class OpenUniqueSurveyEntity {
     @Column(name = "open_unique_survey_id")
     private Integer open_unique_survey_id;
 
+    @Column(name = "invitation_link")
+    private String invitation_link;
+
+    @Column(name = "islinkused")
+    private String islinkused;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "survey_id", nullable = false)
+    private SurveyEntity survey_id;
+
+    @Column(name = "uuid")
+    private String uuid;
+
+    @Column(name = "email_id")
+    private String emailId;
+
     public Integer getOpen_unique_survey_id() {
         return open_unique_survey_id;
     }
@@ -44,13 +60,19 @@ public class OpenUniqueSurveyEntity {
         this.survey_id = survey_id;
     }
 
-    @Column(name = "invitation_link")
-    private String invitation_link;
+    public String getUuid() {
+        return uuid;
+    }
 
-    @Column(name = "islinkused")
-    private String islinkused;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "survey_id", nullable = false)
-    private SurveyEntity survey_id;
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
 }
