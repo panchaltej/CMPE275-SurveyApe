@@ -23,55 +23,58 @@ class savedsurveys extends Component{
     {
       console.log("this.props.getallsavedsurveys:"+this.props.getallsavedsurveys)
       return this.props.getallsavedsurveys.map((surveys,index) =>{
-      //  let temp=[];
-      //  for(let i=0;i<this.props.getallsavedsurveys.length();i++){
-      //     temp.push(<div key={i}>
-      //       <h2>jay</h2>
-  
-      //     <h2> {this.props.getallsavedsurveys[i].survey_name}</h2>
-          
-      //     </div>);
-      //  } 
+      return(
+      
+      // <div key={surveys.survey_id}>
 
-        
-      // return temp; 
-      return(<div key={surveys.survey_id}>
-
-        {surveys.survey_name}
-        <button className="btn btn-secondary"
-            onClick={() => {
+      //   {surveys.survey_name}
+      //   <button className="btn btn-secondary"
+      //       onClick={() => {
+      //         this.props.selectedsurvey(surveys)
+      //           this.props.history.push("/createsurvey");
+      //       }}>View</button>
+      // </div>   
+      
+      <div class="media text-muted pt-3">
+          <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded"/>
+          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+            <div class="d-flex justify-content-between align-items-center w-100">
+              <strong class="text-gray-dark">Survey Name</strong>
+              <a href="#" onClick={() => {
               this.props.selectedsurvey(surveys)
                 this.props.history.push("/createsurvey");
-            }}>View</button>
-      </div>   )
+            }}> Go to the survey</a>
+            </div>
+            <span class="d-block" align="left">{surveys.survey_name}</span>
+          </div>
+        </div>
+    )
       })
+
+      
     }
     render()
     {
         return(
-            <div>
-           <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <h2>JAYJAY</h2> 
-            <p><button className="btn btn-secondary"
-            onClick={() => {
-                this.props.history.push("/createsurvey");
-            }}>View details &raquo;</button></p>
-          </div>
-          <div className="col-md-6">
-            <h2>Open Surveys</h2>
-            <p><a className="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-          </div>
-          <div>
-          {this.dispaly_all_surveys()}
-          </div>
-        </div>
 
-        <hr/>
+                <div>
+                <main role="main" class="container">
+                <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
+                <img class="mr-3" src="https://getbootstrap.com/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48"/>
+                <div class="lh-100">
+                <h6 class="mb-0 text-white lh-100">All surveys</h6>
+                <small>Survey APE!</small>
+                </div>
+                </div>
 
-      </div>
-    </div>
+                <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0" align="left">All Surveys</h6>
+
+                {this.dispaly_all_surveys()}
+
+                </div>
+                </main>
+                </div>
  )
     }
 }
