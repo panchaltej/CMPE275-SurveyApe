@@ -59,7 +59,7 @@ public class ResponseResource {
                 emailId = closedSurveyEntity.getInviteeUserId().getEmail_id();
             }
         }
-        else if(type == "G"){
+        else if(type == "O"){
             OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
             if (openSurveyEntity != null){
                 emailId = openSurveyEntity.getEmailId();
@@ -90,7 +90,7 @@ public class ResponseResource {
                 closedSurveyEntity.setIslinkused(1);
             }
         }
-        else if(type == "G"){
+        else if(type == "O"){
             OpenSurveyEntity openSurveyEntity = openSurveyRepository.findByUuid(uuid);
             if (openSurveyEntity != null){
                 emailId = openSurveyEntity.getEmailId();
