@@ -7,7 +7,10 @@ import {BrowserRouter} from 'react-router-dom';
 // import Display from './display';
 // import Display2 from './display2';
  import Createsurvey from './createsurvey';
- import Allsavedsurveys from './allsavedsurveys'
+ import Allsavedsurveys from './allsavedsurveys';
+ import Landingpage from './landingpage'
+ import Openuniquesurvey from './allopenuniquesurveys'
+
 let initialState=true;
 class menu extends Component{
 
@@ -105,6 +108,18 @@ class menu extends Component{
      <Route exact path="/allsavedsurveys" render={() => (
                 <div>
                     <Allsavedsurveys/>
+                </div>
+            )}/>
+
+      <Route exact path="/landingpage" render={() => (
+                <div>
+                    <Landingpage/>
+                </div>
+            )}/>
+
+      <Route exact path="/allopenuniquesurveys" render={() => (
+                <div>
+                    <Openuniquesurvey/>
                 </div>
             )}/>
     </div>
