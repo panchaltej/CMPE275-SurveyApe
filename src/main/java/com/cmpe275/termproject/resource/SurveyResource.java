@@ -61,6 +61,14 @@ public class SurveyResource {
 
             SurveyEntity s = surveyRepository.findOne(surveyId);
             List<QuestionEntity> questions = questionRepository.findAllBySurveyId(s);
+            for(QuestionEntity q: questions){
+                Set<AnswerEntity> answers = q.getAnswers();
+                for(AnswerEntity ans: answers){
+                    if(ans.getUserId() != userId){
+                        answers.remove(ans);
+                    }
+                }
+            }
             savedResponse.setQuestions(questions);
 
             return new ResponseEntity(savedResponse, HttpStatus.OK);

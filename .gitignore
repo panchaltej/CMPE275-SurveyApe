@@ -4,7 +4,8 @@ target/*
 .idea/*
 .settings/*
 *.class
-*.iml
+.metadata/*
+Servers/*
 
 <<<<<<< HEAD
 ReactApp/my-app/package-lock\.json
