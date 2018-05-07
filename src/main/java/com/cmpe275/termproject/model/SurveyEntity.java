@@ -67,7 +67,7 @@ public class SurveyEntity {
 
     @Column(name = "end_time")
     @JsonView({Survey.summary.class})
-    private Date end_time;
+    private Date endTime;
 
     @Column(name = "survey_type")
     @JsonView({Survey.summary.class})
@@ -97,12 +97,12 @@ public class SurveyEntity {
         this.ispublished = is_published;
     }
 
-    public Date getEnd_time() {
-        return end_time;
+    public Date getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public Set<ClosedSurveyEntity> getClosed_surveys() {

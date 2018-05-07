@@ -31,4 +31,11 @@ public class BadRequest {
         this.errorCode = errorCode;
         this.message = message;
     }
+
+    public static BadRequest createBadRequest(int code, String msg){
+        BadRequest badRequest =new BadRequest();
+        badRequest.setErrorCode(code);
+        badRequest.setMessage(msg);
+        return badRequest;
+    }
 }
