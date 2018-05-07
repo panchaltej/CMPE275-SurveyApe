@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.resource;
 
+import com.cmpe275.termproject.helperClasses.BadRequest;
 import com.cmpe275.termproject.helperClasses.SavedResponse;
 import com.cmpe275.termproject.model.*;
 import com.cmpe275.termproject.repository.*;
@@ -15,6 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import java.util.*;
@@ -50,16 +53,22 @@ public class SurveyResource {
     @GetMapping(value = "/{surveyId}")
     public ResponseEntity<?> sendSavedResponse(@RequestParam("userId") Integer userId,
                                                @PathVariable("surveyId") Integer surveyId) throws JSONException {
-        SavedResponse savedResponse = new SavedResponse();
+        if(new Date().after(surveyRepository.findOne(surveyId).getEndTime())){
+            SavedResponse savedResponse = new SavedResponse();
 
-        savedResponse.setSurveyId(surveyId);
-        savedResponse.setUserId(userId);
+            savedResponse.setSurveyId(surveyId);
+            savedResponse.setUserId(userId);
 
-        SurveyEntity s = surveyRepository.findOne(surveyId);
-        List<QuestionEntity> questions = questionRepository.findAllBySurveyId(s);
-        savedResponse.setQuestions(questions);
+            SurveyEntity s = surveyRepository.findOne(surveyId);
+            List<QuestionEntity> questions = questionRepository.findAllBySurveyId(s);
+            savedResponse.setQuestions(questions);
 
-        return new ResponseEntity(savedResponse, HttpStatus.OK);
+            return new ResponseEntity(savedResponse, HttpStatus.OK);
+        }
+        else{
+            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional
@@ -141,6 +150,17 @@ public class SurveyResource {
             surveyEntity.setIs_published(jsonObject.getBoolean("is_published"));
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
+
+            try {
+                String endTime = jsonObject.getString("end_time");
+                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+                Date endDateTime = formatter.parse(endTime);
+                surveyEntity.setEndTime(endDateTime);
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
 
             // removing older question and options
             for(QuestionEntity q : surveyEntity.getQuestions())
@@ -245,6 +265,17 @@ public class SurveyResource {
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
 
+            try {
+                String endTime = jsonObject.getString("end_time");
+                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+                Date endDateTime = formatter.parse(endTime);
+                surveyEntity.setEndTime(endDateTime);
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
+
             // save the survey
             surveyRepository.save(surveyEntity);
 
@@ -281,7 +312,7 @@ public class SurveyResource {
 
             //Save the Survey
             SurveyEntity se = surveyRepository.save(surveyEntity);
-
+            
 //
 //<<<<<<< HEAD
 //=======
@@ -374,6 +405,7 @@ public class SurveyResource {
                     }
 
             }
+
         }
 
 
@@ -383,7 +415,7 @@ public class SurveyResource {
 
     // Unpublish mate change karvanu 6e
     // currently, survey ni entry delete thai jay 6e
-    // but end time update karbvanu 6
+    // but end time update karbvanu 6 - DONE!!!
 
     // also check if any response received
 
@@ -398,15 +430,22 @@ public class SurveyResource {
             SurveyEntity surveyEntity = surveyRepository.findOne(jsonObject.getInt("survey_id"));
 
 
-            // removing older question and options
-            for(QuestionEntity q : surveyEntity.getQuestions())
-            {
-                q.getOptions().clear();
-                questionRepository.save(q);
-            }
+//            // removing older question and options
+//            for(QuestionEntity q : surveyEntity.getQuestions())
+//            {
+//                q.getOptions().clear();
+//                questionRepository.save(q);
+//            }
+//
+//            surveyEntity.getQuestions().clear();
 
-            surveyEntity.getQuestions().clear();
-            surveyRepository.delete(surveyEntity);
+//            surveyRepository.delete(surveyEntity);
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.YEAR, 1969);
+            cal.set(Calendar.MONTH, Calendar.DECEMBER);
+            cal.set(Calendar.DAY_OF_MONTH, 31);
+            surveyEntity.setEndTime(cal.getTime());
+            surveyRepository.save(surveyEntity);
 
         return new ResponseEntity("OK" , HttpStatus.OK);
     }
@@ -436,7 +475,7 @@ public class SurveyResource {
         //return new ResponseEntity(userEntity.getSurveys() , HttpStatus.OK);
         //System.out.println(surveyRepository.findByIspublishedAndUserid(true,userEntity));
 
-        return new ResponseEntity(surveyRepository.findByUserid(userEntity),HttpStatus.OK);
+        return new ResponseEntity(surveyRepository.findByUseridAndEndTimeGreaterThan(userEntity, new Date()),HttpStatus.OK);
     }
 
     @Transactional
