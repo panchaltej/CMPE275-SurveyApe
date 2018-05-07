@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 // import {removemenu} from '../actions/index';
  //import {connect} from 'react-redux';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 // import Display from './display';
 // import Display2 from './display2';
  import Createsurvey from './createsurvey';
@@ -14,9 +15,11 @@ class menu extends Component{
     {
         return(
             <div>
-            <Route exact path="/" render={() => (
+
+            <Route exact path="/dashboard" render={() => (
+
             <div>
-                
+
             <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +64,7 @@ class menu extends Component{
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-            <h2>Create Survey</h2> 
+            <h2>Create Survey</h2>
             <p><button class="btn btn-secondary"
             onClick={() => {
               localStorage.setItem("initial",'true');
@@ -91,6 +94,7 @@ class menu extends Component{
     
 
     </div>
+
     )}/>
     <Route exact path="/createsurvey" render={() => (
                 <div>
