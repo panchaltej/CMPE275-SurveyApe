@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {openuniqueemailid} from '../action/getallsavedsurveys'
+import * as API from '../api/surveys' 
 
 class lendingpage extends Component{
     state={
@@ -72,9 +73,14 @@ class lendingpage extends Component{
                                                                });}
                                                            }
                                                     />
-                                   <button type="button" class="btn btn-lg btn-block btn-primary"  onClick={() =>{ 
+                                   <button type="button" class="btn btn-lg btn-block btn-primary" data-dismiss="modal"  onClick={() =>{ 
                                        this.props.openuniqueemailid(this.state)
-                                       this.props.history.push("/allopenuniquesurveys");
+                                       API.getOpenUniqueSurvey().then
+                                          ((output) => {
+                                              console.log(output);
+                                              this.props.history.push("/allopenuniquesurveys");
+                                               }) ;
+                                       
                                    }}>Submit</button>
 
                                 </div>

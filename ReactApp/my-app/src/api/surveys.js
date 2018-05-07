@@ -64,3 +64,23 @@ export const addInvitees = (payload) =>
             console.log("This is error");
             return error;
         });
+
+export const getOpenUniqueSurvey = (payload) =>
+        fetch(`${api}/survey/allopenuniquesurveys`, {
+            method: 'GET',
+            headers: {
+                ...headers,
+               // 'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials:'include'
+        }).then(res => res.json())
+    
+            .then(res=>{
+                console.log(res);
+                return res;
+            })
+            .catch(error => {
+                console.log("This is error");
+                return error;
+            });

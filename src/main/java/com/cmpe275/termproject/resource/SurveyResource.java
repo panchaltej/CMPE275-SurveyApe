@@ -151,16 +151,16 @@ public class SurveyResource {
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
 
-            try {
-                String endTime = jsonObject.getString("end_time");
-                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-                Date endDateTime = formatter.parse(endTime);
-                surveyEntity.setEndTime(endDateTime);
-            }
-            catch (Exception e){
-                System.out.println(e);
-            }
+//            try {
+//                String endTime = jsonObject.getString("end_time");
+//                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+//                Date endDateTime = formatter.parse(endTime);
+//                surveyEntity.setEndTime(endDateTime);
+//            }
+//            catch (Exception e){
+//                System.out.println(e);
+//            }
 
             // removing older question and options
             for(QuestionEntity q : surveyEntity.getQuestions())
@@ -270,16 +270,16 @@ public class SurveyResource {
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
 
-            try {
-                String endTime = jsonObject.getString("end_time");
-                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-                Date endDateTime = formatter.parse(endTime);
-                surveyEntity.setEndTime(endDateTime);
-            }
-            catch (Exception e){
-                System.out.println(e);
-            }
+//            try {
+//                String endTime = jsonObject.getString("end_time");
+//                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+//                Date endDateTime = formatter.parse(endTime);
+//                surveyEntity.setEndTime(endDateTime);
+//            }
+//            catch (Exception e){
+//                System.out.println(e);
+//            }
 
             // save the survey
             surveyRepository.save(surveyEntity);
@@ -403,6 +403,7 @@ public class SurveyResource {
                     OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
                     openUniqueSurveyEntity.setSurvey_id(surveyEntity);
                     UUID uuid = UUID.randomUUID();
+                    openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
                     openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
                     openUniqueSurveyEntity.setIslinkused("");
                     openUniqueSurveyRepository.save(openUniqueSurveyEntity);
@@ -480,7 +481,8 @@ public class SurveyResource {
         //return new ResponseEntity(userEntity.getSurveys() , HttpStatus.OK);
         //System.out.println(surveyRepository.findByIspublishedAndUserid(true,userEntity));
 
-        return new ResponseEntity(surveyRepository.findByUseridAndEndTimeGreaterThan(userEntity, new Date()),HttpStatus.OK);
+        //return new ResponseEntity(surveyRepository.findByUseridAndEndTimeGreaterThan(userEntity, new Date()),HttpStatus.OK);
+        return new ResponseEntity(surveyRepository.findByUserid(userEntity),HttpStatus.OK);
     }
 
     @Transactional
