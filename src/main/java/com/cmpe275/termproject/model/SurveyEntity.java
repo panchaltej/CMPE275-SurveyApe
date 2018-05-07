@@ -50,7 +50,7 @@ public class SurveyEntity {
 
 
     public String getSurvey_type() {
-        return survey_type;
+        return surveytype;
     }
 
     public Set<QuestionEntity> getQuestions() {
@@ -62,7 +62,7 @@ public class SurveyEntity {
     }
 
     public void setSurvey_type(String survey_type) {
-        this.survey_type = survey_type;
+        this.surveytype = survey_type;
     }
 
     @Column(name = "end_time")
@@ -71,7 +71,7 @@ public class SurveyEntity {
 
     @Column(name = "survey_type")
     @JsonView({Survey.summary.class})
-    private String survey_type;
+    private String surveytype;
 
     public Integer getSurvey_id() {
         return survey_id;
@@ -116,7 +116,7 @@ public class SurveyEntity {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "surveyId",orphanRemoval = true)
-    @JsonIgnore
+    @JsonView({Survey.summary.class})
     private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY,

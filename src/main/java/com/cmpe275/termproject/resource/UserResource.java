@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 /*@CrossOrigin(origins = "http://localhost:3000")*/
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/")
 public class UserResource {

@@ -8,11 +8,11 @@ class HP extends Component{
         totalQuestions:0,
         user_id:0,
         survey_name:'',
-        survey_type:'G',
+        surveytype:'G',
         is_published:false,
-        closed_invitees:'',
+        closed_invitees:[],
         question:[],
-        survey_types:[
+        surveytypes:[
             {value: 'G',label:'General'},
             {value: 'O',label:'Open'},
             {value: 'C',label:'Closed'}
@@ -102,16 +102,18 @@ class HP extends Component{
         return answers;
     }
 
+
+
     componentWillMount(){
-      console.log("selectedsavedsurveys:"+this.props.selectedsavedsurveys.questions  )
+      console.log("selectedsavedsurveys in componentWillMount:",this.props.selectedsavedsurveys  );
       //alert(this.props.initial);
       console.log(localStorage.getItem("initial")==='false');
         if(typeof this.props.selectedsavedsurveys.questions != 'undefined' && this.props.selectedsavedsurveys.survey_id!==0 && localStorage.getItem("initial")==='false'){
             //Make API call
             //alert("sgtadsg");
-            console.log("check:"+this.props.selectedsavedsurvey);
+            console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
-            this.setState({user_id:temp.user_id,closed_invitees:temp.closed_invitees,is_published:temp.ispublished,survey_type:temp.survey_type,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+            this.setState({user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
         }
         else{
             //alert("Initializing your survey...");//only for debugging
@@ -123,59 +125,101 @@ class HP extends Component{
     
 
     save(){
+        let closed_invitees='';
+        for(let i=0;i<this.state.closed_invitees.length;i++){
+            closed_invitees+=this.state.closed_invitees[i]+",";
+        }
         let surveyData={
           //Change User Id based on LOGIN
           user_id:1,
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
-            survey_type:this.state.survey_type,
+            surveytype:this.state.surveytype,
             is_published:this.state.is_published,
-            closed_invitees:this.state.closed_invitees,
+            closed_invitees:closed_invitees.substring(0, closed_invitees.length-1),
             questions:this.state.question
         };
 
         API.createSurvey(surveyData).then
             ((output) => {
         console.log(output);
-        
-        
-      }) 
+      }) ;
         
         console.log(surveyData);
     }
 
     publish(){
       console.log(this.state.survey_id);
-      let surveyData={
-        //Change User Id based on LOGIN
-        user_id:1,
-          survey_id:this.state.survey_id,
-          survey_name:this.state.survey_name,
-          survey_type:this.state.survey_type,
-          is_published:true,
-          closed_invitees:this.state.closed_invitees,
-          questions:this.state.question
-      };
+        let closed_invitees='';
+        for(let i=0;i<this.state.closed_invitees.length;i++){
+            closed_invitees+=this.state.closed_invitees[i]+",";
+        }
+        console.log("closed_invitees to be sent",closed_invitees.length);
+
+        let surveyData={
+            //Change User Id based on LOGIN
+            user_id:1,
+            survey_id:this.state.survey_id,
+            survey_name:this.state.survey_name,
+            surveytype:this.state.surveytype,
+            is_published:true,
+            closed_invitees:closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):'',
+            questions:this.state.question
+        };
 
       API.createSurvey(surveyData).then
           ((output) => {
       console.log(output);
-
       
-      
-   }) 
+   }) ;
         this.setState({is_published:true});
     }
     unPublish(){
         this.setState({is_published:false});
     }
 
+    addInvitee(){
+        let invitees=this.state.closed_invitees;
+        invitees.push("");
+        this.setState({closed_invitees:invitees});
+    }
+
+    showInvitees(){
+        let temp=[];
+        let length=0;
+        // if(typeof this.props.selectedsavedsurveys.closed_invitees !== 'undefined'){
+        //     length=this.props.selectedsavedsurveys.closed_invitees.split(",").length;
+        // }
+        //alert(this.state.closed_invitees);
+        for(let i=0;i<this.state.closed_invitees.length;i++){
+            temp.push(<div key={i}><input disabled={false} onChange={(e)=> {
+                let invitee=this.state.closed_invitees;
+                invitee[i]=e.target.value;
+                this.setState({closed_invitees:invitee});
+            }} value={this.state.closed_invitees[i]} placeholder={"Invitee email:"+(i+1)}/></div>);
+        }
+        return temp;
+    }
+
     createSurveyButton(){
-        if(this.state.survey_name==='' || this.state.survey_type===''){
+        if(this.state.survey_name==='' || this.state.surveytype===''){
             alert("Cannot be blank");
             return;
         }
         this.props.route('/createSurvey')
+    }
+
+    addInvitees(){
+
+        let closed_invitees='';
+        for(let i=0;i<this.state.closed_invitees.length;i++){
+            closed_invitees+=this.state.closed_invitees[i]+",";
+        }
+        let invitee_data={"survey_id":this.state.survey_id,"invitees":closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):''};
+        API.addInvitees(invitee_data).then
+        ((output) => {
+            console.log(output);
+        }) ;
     }
 
     render(){
@@ -184,8 +228,8 @@ class HP extends Component{
 
                 <div className="container-fluid">
                     <h1>{this.state.is_published?"This survey is now live!":""}</h1>
-                    <h2>Enter survey type:</h2><select disabled={this.state.is_published} onChange={(e)=>this.setState({survey_type:e.target.value})} value={this.state.survey_type}>
-                    {this.state.survey_types.map((e, index) => {
+                    <h2>Enter survey type:</h2><select disabled={this.state.is_published} onChange={(e)=>this.setState({surveytype:e.target.value})} value={this.state.surveytype}>
+                    {this.state.surveytypes.map((e, index) => {
                         return <option key={index} value={e.value}>{e.label}</option>;
                     })}
                 </select><br/>
@@ -205,7 +249,8 @@ class HP extends Component{
                         <div className="col-md-3">
                             {this.state.is_published?<button className="btn btn-warning" onClick={()=>this.unPublish()}>Take this survey down</button>:<button onClick={()=>this.save()} className="btn btn-info">Save</button>}<br/><br/>
                             {this.state.totalQuestions>0 && !this.state.is_published?<button className="btn btn-success" onClick={()=>this.publish()}>Go Live!</button>:''}<br/><br/>
-                            {this.state.survey_type==='C'?<div>Enter invitees separated by comma<input onChange={(e)=>this.setState({closed_invitees:e.target.value})} value={this.state.closed_invitees} placeholder="Email IDs"/></div>:''}
+                            {this.state.surveytype==='C'?<div>Add Invitees<button onClick={()=>this.addInvitee()}>Add email</button><br/>{this.showInvitees()}</div>:''}
+                            {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
                         </div>
                     </div>
                 </div>
