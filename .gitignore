@@ -6,6 +6,18 @@ target/*
 *.class
 *.iml
 
+<<<<<<< HEAD
 ReactApp/my-app/package-lock\.json
 
 ReactApp/\.idea/workspace\.xml
+=======
+ReactApp/\.idea/workspace\.xml
+
+ReactApp/my-app/\.idea/misc\.xml
+
+ReactApp/my-app/\.idea/modules\.xml
+
+ReactApp/my-app/\.idea/workspace\.xml
+
+ReactApp/my-app/package-lock\.json
+>>>>>>> master

@@ -35,10 +35,10 @@ class savedsurveys extends Component{
 
         
       // return temp; 
-      return(<div>
+      return(<div key={surveys.survey_id}>
 
         {surveys.survey_name}
-        <button class="btn btn-secondary"
+        <button className="btn btn-secondary"
             onClick={() => {
               this.props.selectedsurvey(surveys)
                 this.props.history.push("/createsurvey");
@@ -50,18 +50,18 @@ class savedsurveys extends Component{
     {
         return(
             <div>
-           <div class="container">
-        <div class="row">
-          <div class="col-md-6">
+           <div className="container">
+        <div className="row">
+          <div className="col-md-6">
             <h2>JAYJAY</h2> 
-            <p><button class="btn btn-secondary"
+            <p><button className="btn btn-secondary"
             onClick={() => {
                 this.props.history.push("/createsurvey");
             }}>View details &raquo;</button></p>
           </div>
-          <div class="col-md-6">
+          <div className="col-md-6">
             <h2>Open Surveys</h2>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><a className="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
           </div>
           <div>
           {this.dispaly_all_surveys()}

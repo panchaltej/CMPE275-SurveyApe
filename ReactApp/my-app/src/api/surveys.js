@@ -44,3 +44,23 @@ export const getSavedSurveys = (payload) =>
             console.log("This is error");
             return error;
         });
+
+export const addInvitees = (payload) =>
+    fetch(`${api}/survey/addsurveyees`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include'
+    }).then(res => res.status)
+
+        .then(res=>{
+            console.log(res);
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error");
+            return error;
+        });
