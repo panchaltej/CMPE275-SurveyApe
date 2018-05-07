@@ -116,7 +116,7 @@ public class SurveyEntity {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "surveyId",orphanRemoval = true)
-    @JsonIgnore
+    @JsonView({Survey.summary.class})
     private Set<ClosedSurveyEntity> closed_surveys = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY,

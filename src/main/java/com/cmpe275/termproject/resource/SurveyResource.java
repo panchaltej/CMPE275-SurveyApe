@@ -200,10 +200,12 @@ public class SurveyResource {
                 openSurveyRepository.save(openSurveyEntity);
 
             }
-            if (jsonObject.getString("survey_type").equals("C")) {
+            if (jsonObject.getString("survey_type").equals("C") && jsonObject.getString("closed_invitees")!="") {
                 // Generating invitees array
-                String[] invitess = jsonObject.getString("closed_invitees").split(",");
 
+                String[] invitess = jsonObject.getString("closed_invitees").split(",");
+                //System.out.println(jsonObject.getString("closed_invitees")+":abcdefghijkl");
+                //System.out.println(invitess.length+"abcdefghijkl");
                 for (String user : invitess) {
                     ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
                     closedSurveyEntity.setSurveyId(surveyEntity);
