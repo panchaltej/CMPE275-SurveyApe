@@ -5,5 +5,5 @@ import com.cmpe275.termproject.model.OptionsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClosedSurveyRepository extends JpaRepository<ClosedSurveyEntity, Integer> {
-    ClosedSurveyEntity findBySurveyIdAndInviteeUserId(Integer surveyid, Integer userid);
+    ClosedSurveyEntity findByUuid(String uuid);
 }

@@ -39,7 +39,7 @@ public class SurveyEntity {
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
-            mappedBy = "survey_id",orphanRemoval = true)
+            mappedBy = "surveyId",orphanRemoval = true)
     @JsonView({Survey.summary.class})
     private Set<QuestionEntity> questions = new HashSet<>();
 
@@ -121,7 +121,7 @@ public class SurveyEntity {
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade =  CascadeType.ALL,
-            mappedBy = "survey_id")
+            mappedBy = "surveyId")
     @JsonIgnore
     private OpenSurveyEntity open_survey_link;
 
