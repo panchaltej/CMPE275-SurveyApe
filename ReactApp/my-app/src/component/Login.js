@@ -60,7 +60,7 @@ class Login extends Component {
                         method: 'post',
                         url: 'http://localhost:8080/login',
                         data: bodyFormData,
-                        config: {headers: {'Content-Type': 'multipart/form-data'}}
+                        config: {headers: {'Content-Type': 'application/json'}}
                     })
                         .then(function (response) {
                             //handle success

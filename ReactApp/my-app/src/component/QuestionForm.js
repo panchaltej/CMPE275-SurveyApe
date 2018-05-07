@@ -342,6 +342,34 @@ class QuestionForm extends Component {
     }
     componentWillMount() {
         debugger;
+
+        //var surveyId=this.props.survey_id;
+        //  var str = "localhost:3000/survey/1";
+        //var res = str.split("/")[2];
+        axios({
+            method: 'get',
+            //url: 'http://localhost:8080/survey/surveyId',
+            url: 'http://localhost:8080/survey/1',
+            config: { headers: {'Content-Type': 'application/json' }}
+        })
+            .then(function (response) {
+                //handle success
+                if(response.status==200)
+
+                {
+                    jsonData=response.data;
+                }
+                else
+                    //this.props.history.push("/failedVerification");
+                console.log(response);
+            }.bind(this))
+            .catch(function (response) {
+                //handle error
+                debugger;
+               alert("failed to fetch questions");
+                console.log(response);
+            }.bind(this));
+
         for(var i=0;i<=jsonData.questions.length-1;i++)
         {
             if (jsonData.questions[i].question_type=="R")
