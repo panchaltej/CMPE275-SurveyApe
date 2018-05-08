@@ -169,6 +169,7 @@ public class SurveyResource {
 //            catch (Exception e){
 //                System.out.println(e);
 //            }
+            surveyEntity.setStartTime(new Date());
 
             // removing older question and options
             for(QuestionEntity q : surveyEntity.getQuestions())
@@ -288,6 +289,7 @@ public class SurveyResource {
 //            catch (Exception e){
 //                System.out.println(e);
 //            }
+            surveyEntity.setStartTime(new Date());
 
             // save the survey
             surveyRepository.save(surveyEntity);

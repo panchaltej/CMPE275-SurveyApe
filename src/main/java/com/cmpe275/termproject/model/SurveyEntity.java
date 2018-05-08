@@ -18,7 +18,7 @@ public class SurveyEntity {
     @GeneratedValue
     @Column(name = "survey_id")
     @JsonView({Survey.summary.class})
-    private Integer survey_id;
+    private Integer surveyId;
 
     @Column(name = "survey_name")
     @JsonView({Survey.summary.class})
@@ -69,16 +69,20 @@ public class SurveyEntity {
     @JsonView({Survey.summary.class})
     private Date endTime;
 
+    @Column(name = "start_time")
+    @JsonView({Survey.summary.class})
+    private Date startTime;
+
     @Column(name = "survey_type")
     @JsonView({Survey.summary.class})
     private String surveytype;
 
-    public Integer getSurvey_id() {
-        return survey_id;
+    public Integer getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurvey_id(Integer survey_id) {
-        this.survey_id = survey_id;
+    public void setSurveyId(Integer surveyId) {
+        this.surveyId = surveyId;
     }
 
     public String getSurvey_name() {
@@ -103,6 +107,14 @@ public class SurveyEntity {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     public Set<ClosedSurveyEntity> getClosed_surveys() {

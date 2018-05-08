@@ -16,5 +16,6 @@ public interface SurveyRepository  extends JpaRepository<SurveyEntity, Integer> 
     List<SurveyEntity> findBySurveytype (String surveytype);
 
     List<SurveyEntity> findByUseridAndEndTimeGreaterThan (UserEntity user_id, Date date);
+    SurveyEntity findBySurveyId(Integer surveyId);
 
 }
