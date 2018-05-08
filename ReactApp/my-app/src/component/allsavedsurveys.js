@@ -5,6 +5,7 @@ import React, {Component} from 'react';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
  import * as API from '../api/surveys' 
  import {allsavedsurveys,selectedsurvey} from '../action/getallsavedsurveys'
+ import Createsurvey from './createsurvey';
 
 class savedsurveys extends Component{
 
@@ -40,7 +41,7 @@ class savedsurveys extends Component{
           <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Survey Name</strong>
-              <a href="#" onClick={() => {
+              <a  onClick={() => {
               this.props.selectedsurvey(surveys)
                 this.props.history.push("/createsurvey");
             }}> Go to the survey</a>
@@ -56,6 +57,9 @@ class savedsurveys extends Component{
     render()
     {
         return(
+          <div>
+
+            <Route exact path="/allsavedsurveys" render={() => (
 
                 <div>
                 <main role="main" class="container">
@@ -75,6 +79,14 @@ class savedsurveys extends Component{
                 </div>
                 </main>
                 </div>
+                 )}/>
+
+                 <Route exact path="/createsurvey" render={() => (
+                <div>
+                    <Createsurvey/>
+                </div>
+            )}/>
+                  </div>
  )
     }
 }

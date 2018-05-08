@@ -26,7 +26,7 @@ export const createSurvey = (payload) =>
 
 //insertHotelData
 export const getSavedSurveys = (payload) =>
-    fetch(`${api}/survey/allsavedsurveys?user_id=1`, {
+    fetch(`${api}/survey/allsavedsurveys?user_id=3`, {
         method: 'GET',
         headers: {
             ...headers,

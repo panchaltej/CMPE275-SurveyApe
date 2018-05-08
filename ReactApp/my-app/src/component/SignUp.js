@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom';
 import {BrowserRouter} from 'react-router-dom';
 import Login from "./Login";
 import VerificationPage from "./VerificationPage"
+import Menu from "./menu"
 import axios from 'axios';
 
 var marginTopStyle = {
@@ -26,7 +27,7 @@ class SignUp extends Component {
     }
     handleLogin = () => {
         {
-            this.props.history.push("/");
+            this.props.history.push("/signin");
         }
     }
 
@@ -144,9 +145,15 @@ class SignUp extends Component {
                    <VerificationPage/>
                 </BrowserRouter>
                     )}/>
-                <Route exact path="/" render={() => (<BrowserRouter>
+                <Route exact path="/signin" render={() => (<BrowserRouter>
                         <Login/>
                     </BrowserRouter>
+                )}/>
+                <Route exact path="/dashboard" render={() => (
+                    <div>
+                        <Menu/>
+                    </div>
+
                 )}/>
             </div>
         );

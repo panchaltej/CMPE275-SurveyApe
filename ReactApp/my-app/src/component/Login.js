@@ -93,7 +93,7 @@ class Login extends Component {
     render() {
         return (
             <div >
-                <Route exact path="/" render={() => (
+                <Route exact path="/signin" render={() => (
                     <div className="startUpClass">
 
                         <div id="loginbox" style={marginTopStyle} className="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">

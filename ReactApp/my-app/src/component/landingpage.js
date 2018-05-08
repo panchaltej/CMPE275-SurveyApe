@@ -13,9 +13,15 @@ class lendingpage extends Component{
         return(
             <div>
           <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
-      <h5 class="my-0 mr-md-auto font-weight-normal">Survey APE!</h5>
-      <a class="btn btn-outline-primary" href="#">Sign in</a>
-      <a class="btn btn-outline-primary" href="#">Sign up</a>
+      <h5 class="my-0 mr-md-auto font-weight-normal">Welcome to the Survey APE!</h5>
+      <a class="btn btn-outline-primary"  onClick={() =>{ 
+                                      this.props.history.push("/signin");
+                                       
+                                   }}>Sign in</a>
+      <a class="btn btn-outline-primary"  onClick={() =>{ 
+                                      this.props.history.push("/signup");
+                                       
+                                   }}>Sign up</a>
     </div>
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h3 class="display-4">Choose the Survey Option</h3>

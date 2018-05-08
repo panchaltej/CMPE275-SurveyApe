@@ -1,6 +1,8 @@
 import  React,{Component} from 'react';
 import * as API from '../api/surveys' 
 import {connect} from 'react-redux';
+import Allsavedsurveys from './allsavedsurveys';
+import { Route, Link,Switch,withRouter } from 'react-router-dom';
 
 class HP extends Component{
     state={
@@ -131,7 +133,7 @@ class HP extends Component{
         }
         let surveyData={
           //Change User Id based on LOGIN
-          user_id:1,
+          user_id:3,
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -158,7 +160,7 @@ class HP extends Component{
 
         let surveyData={
             //Change User Id based on LOGIN
-            user_id:1,
+            user_id:3,
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -225,6 +227,10 @@ class HP extends Component{
     render(){
         return(
             <div>
+                
+
+<Route exact path="/createsurvey" render={() => (
+    <div>
 
                 <div className="container-fluid">
                     <h1>{this.state.is_published?"This survey is now live!":""}</h1>
@@ -255,6 +261,13 @@ class HP extends Component{
                     </div>
                 </div>
             </div>
+        )}/>
+         <Route exact path="/allsavedsurveys" render={() => (
+                <div>
+                    <Allsavedsurveys/>
+                </div>
+            )}/>
+        </div>
 
         );
     }
@@ -268,4 +281,4 @@ function mapStateToProps(state){
 }
 
 
-export default connect(mapStateToProps, null)(HP);
+export default withRouter(connect(mapStateToProps, null)(HP));
