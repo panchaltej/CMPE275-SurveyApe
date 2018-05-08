@@ -115,10 +115,10 @@ class VerificationPage extends Component {
                         </div>
                     </div>
                 )}/>
-                <Route exact path="/successlogin" render={() => (<BrowserRouter>
+                {/* <Route exact path="/successlogin" render={() => (<BrowserRouter>
                         <QuestionForm/>
                     </BrowserRouter>
-                )}/>
+                )}/> */}
                 <Route exact path="/dashboard" render={() => (<BrowserRouter>
                         <menu/>
                     </BrowserRouter>

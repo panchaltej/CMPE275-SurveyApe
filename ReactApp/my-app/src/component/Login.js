@@ -133,10 +133,10 @@ class Login extends Component {
                     </div>
                 )}/>
 
-                <Route exact path="/successlogin" render={() => (<BrowserRouter>
+                {/* <Route exact path="/successlogin" render={() => (<BrowserRouter>
                     <QuestionForm/>
                 </BrowserRouter>
-                    )}/>
+                    )}/> */}
                 <Route exact path="/verificationpage" render={() => (<BrowserRouter>
                         <VerificationPage/>
                     </BrowserRouter>

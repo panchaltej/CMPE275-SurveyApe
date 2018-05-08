@@ -10,6 +10,8 @@ import Menu from "./component/menu"
 import Createsurvey from './component/createsurvey';
 import Allsavedsurveys from './component/allsavedsurveys';
 import Openuniquesurvey from './component/allopenuniquesurveys'
+import Questionform from './component/QuestionForm'
+
 import { Route, withRouter } from 'react-router-dom';
 import Landingpage from './component/landingpage'
 
@@ -107,6 +109,11 @@ class App extends Component {
                     <Openuniquesurvey/>
                 </div>
             )}/>
+       <Route exact path="/survey/:surveyId/:uuid" render={() => (  
+           <div>
+           <Questionform/>
+       </div>
+   )}/>   
                 </div>
             </div>
         );

@@ -5,196 +5,12 @@ import { Route, withRouter } from 'react-router-dom';
 
 import axios from 'axios';
 import {BrowserRouter} from 'react-router-dom';
+import _ from 'lodash';
+import * as API from '../api/surveys' 
 
-var jsonData=
-    {
-        "survey_id": 4,
-        "user_id": 1,
-        "questions": [{
-            "question_id": "1",
-            "question_type": "R",
-            "question_text":"Which is the best team in ipl-4?",
-            "options": [{
-                "option_id": "1",
-                "option_description": "Mumbai Indians"
-            },
-                {
-                    "option_id": "2",
-                    "option_description": "CSK"
-                }
-            ],
-            "answers": [
-                {
-                    "optionId": "1",
-                    "optionDescription": "Mumbai Indians"
-                }
-            ]
-        },
-
-            {
-                "question_id": "2",
-                "question_text":"Who is the best batsman in ipl-4?",
-                "question_type": "CB",
-                "answers": [{
-                    "optionId": "1",
-                    "optionDescription": "Dhoni - 45"
-                },
-
-                    {
-                        "optionId": "3",
-                        "optionDescription": "Sachin Tendulkar"
-                    },
-                    {
-                        "optionId": "4",
-                        "optionDescription": "Virat"
-                    }
-                ],
-                "options": [{
-                    "option_id": "1",
-                    "option_description": "Dhoni - 45"
-                },
-                    {
-                        "option_id": "2",
-                        "option_description": "Rohit"
-                    },
-                    {
-                        "option_id": "3",
-                        "option_description": "Sachin Tendulkar"
-                    },
-                    {
-                        "option_id": "4",
-                        "option_description": "Virat"
-                    }
-                ]
-            },
-
-            {
-            "question_text":"When is your Birthday?",
-             "question_type":"DT",
-                "question_id": "3",
-                "answers": [{
-                    "optionId": "1",
-                    "optionDescription": "2014-02-09"
-                }],
-                "options": [{
-                    "option_id": "1",
-                    "option_description": "Mumbai Indians"
-                }]
-         },
-         {
-             "question_text":"Any Other Comments?",
-             "question_type":"TB",
-             "question_id": "4",
-             "answers": [{
-                 "optionId": "1",
-                 "optionDescription": "where is Deccan Chargers"
-             }],
-             "options": [{
-                 "option_id": "1",
-                 "option_description": "Mumbai Indians"
-             }]
-         },
-            {
-                "question_text":"Which Team wins ipl?",
-                "question_type":"DR",
-                "question_id": "5",
-                "answers": [{
-                    "optionId": "1",
-                    "optionDescription": "RCB"
-                }],
-                "options": [{
-                    "option_id": "1",
-                    "option_description": "MI"
-                },
-                    {
-                        "option_id": "2",
-                        "option_description": "RCB"
-                    },
-                    {
-                        "option_id": "3",
-                        "option_description": "SRH"
-                    },
-                    {
-                        "option_id": "4",
-                        "option_description": "CSK"
-                    }]
-            },
-            {
-                "question_text":"Rate your overall experience?",
-                "question_type":"ST",
-                "question_id": "6",
-                "answers": [{
-                    "optionId": "1",
-                    "optionDescription": "2"
-                }],
-                "options": [{
-                    "option_id": "1",
-                    "option_description": "2"
-                }]
-            }
-
-        ]
-    }
+var jsonData = {};
 var resultData=jsonData;
 
-
-// {	"survey_id":4,
-//     "user_id":1,
-//     "survey_name":"IPL",
-//     "is_published":"true",
-//     "survey_type":"C",
-//     "closed_invitees":"janhudesai@gmail.com,jay.desai@sjsu.edu,kiratib@sjsu.edu",
-//     "questions":[
-//     {
-//         "question_text":"Which is the best team in ipl-4?",
-//         "question_id":1,
-//         "question_type":"R",
-//         "options":[
-//             {
-//                 "option_description":"Mumbai Indians",
-//                 "option_id":1
-//
-//             },
-//             {
-//                 "option_description":"CSK"
-//             }
-//         ]
-//     },
-//     {
-//         "question_text":"Who is the best player-4?",
-//         "question_type":"CB",
-//         "options":[
-//             {
-//                 "option_description":"Dhoni - 45"
-//
-//             },
-//             {
-//                 "option_description":"Rohit"
-//             },
-//             {
-//                 "option_description":"Sachin Tendulkar"
-//             },
-//             {
-//                 "option_description":"Virat"
-//             }
-//         ]
-//     },
-//         {
-//             "question_text":"When is your Birthday?",
-//             "question_type":"DT",
-//             "options":[
-//
-//             ]
-//         },
-//         {
-//             "question_text":"Any Other Comments?",
-//             "question_type":"TB",
-//             "options":[
-//
-//             ]
-//         }
-// ]
-// }
  var id=[];
 
 var wrapperStyle = {
@@ -259,13 +75,22 @@ var buttonStyle={
 var renderValue=[];
 class QuestionForm extends Component {
 
+    
+    state=
+    {
+        "surveyId":0,
+        "userId":0,
+        "questions":[]
+    }
+
+
     handleSave() {
         var answers = [];
 
-        for (var i = 0; i <= jsonData.questions.length - 1; i++) {
+        for (var i = 0; i <= this.state.questions.length - 1; i++) {
             // debugger;
-            var id = jsonData.questions[i].question_id;
-            if (jsonData.questions[i].question_type == "R") {
+            var id = this.state.questions[i].question_id;
+            if (this.state.questions[i].question_type == "R") {
 
                 var radioVal = document.getElementsByName(id);
 
@@ -274,7 +99,7 @@ class QuestionForm extends Component {
                 for (var j = 0; j < radioVal.length; j++) {
                     if (radioVal[j].checked) {
                         radio_value = radioVal[j].value;
-                        opt_id = jsonData.questions[i].options[j].option_id;
+                        opt_id = this.state.questions[i].options[j].option_id;
                     }
                 }
                 resultData.questions[i].answers = [];
@@ -288,7 +113,7 @@ class QuestionForm extends Component {
             // for(var temp=1;temp<resultData.questions[i].answers.length;temp++)
             // delete resultData.questions[i].answers[temp]
 
-            if (jsonData.questions[i].question_type == "CB") {
+            if (this.state.questions[i].question_type == "CB") {
                 debugger;
                 var checkVal = document.getElementsByName(id);
                 var checkedBoxes = "";
@@ -300,7 +125,7 @@ class QuestionForm extends Component {
                         checkedBoxes = checkedBoxes + checkVal[k].value;
                         checkedBoxes = checkedBoxes + ',';
                         checkedArray.push(checkVal[k].value);
-                        checkedIdArray.push(jsonData.questions[i].options[k].option_id)
+                        checkedIdArray.push(this.state.questions[i].options[k].option_id)
                     }
                 }
                 resultData.questions[i].answers = []
@@ -311,20 +136,20 @@ class QuestionForm extends Component {
                     resultData.questions[i].answers.push(obj);
                 }
             }
-            if (jsonData.questions[i].question_type == "DT") {
+            if (this.state.questions[i].question_type == "DT") {
                 resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
 
             }
-            if (jsonData.questions[i].question_type == "TB") {
+            if (this.state.questions[i].question_type == "TB") {
                 resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
-            if (jsonData.questions[i].question_type == "DR") {
+            if (this.state.questions[i].question_type == "DR") {
                 resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
-            if (jsonData.questions[i].question_type == "ST") {
+            if (this.state.questions[i].question_type == "ST") {
 
                 var elements = document.getElementsByName(id);
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
@@ -341,161 +166,32 @@ class QuestionForm extends Component {
         debugger
     }
     componentWillMount() {
-        debugger;
+        let surveyId = this.props.match.params.surveyId;
+        let uuid = this.props.match.params.uuid;
 
         //var surveyId=this.props.survey_id;
         //  var str = "localhost:3000/survey/1";
         //var res = str.split("/")[2];
-        axios({
-            method: 'get',
-            //url: 'http://localhost:8080/survey/surveyId',
-            url: 'http://localhost:8080/survey/1',
-            config: { headers: {'Content-Type': 'application/json' }}
-        })
-            .then(function (response) {
-                //handle success
-                if(response.status==200)
-
-                {
-                    jsonData=response.data;
-                }
-                else
-                    //this.props.history.push("/failedVerification");
-                console.log(response);
-            }.bind(this))
-            .catch(function (response) {
-                //handle error
-                debugger;
-               alert("failed to fetch questions");
-                console.log(response);
-            }.bind(this));
-
-        for(var i=0;i<=jsonData.questions.length-1;i++)
-        {
-            if (jsonData.questions[i].question_type=="R")
-            {
-
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-                for(var j=0;j<=jsonData.questions[i].options.length-1;j++)
-                {
-                    renderValue.push(<div className="optionsClass"><input className="form-check-input" id={jsonData.questions[i].question_id}  style={leftFloat} type="radio" name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
-                }
-            }
-            if (jsonData.questions[i].question_type=="CB")
-            {
-
-                renderValue.push(<h5 className="form-control questions" style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-                for(var j=0;j<=jsonData.questions[i].options.length-1;j++)
-                {
-                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat} id={jsonData.questions[i].question_id} type="checkbox"  name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
-                }
-            }
-            if (jsonData.questions[i].question_type=="DT")
-            {
-
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-
-                renderValue.push(<div className="optionsClass"><input type="date" className="form-check-input inputStyle"  style={leftFloat} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
-            }
-            if (jsonData.questions[i].question_type=="TB")
-            {
-
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-
-                renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
-            }
-            if (jsonData.questions[i].question_type=="DR")
-            {
-
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-                var dropdownVal=[]
-
-                for(var j=0;j<=jsonData.questions[i].options.length-1;j++)
-                {
-                    dropdownVal.push(<option>{jsonData.questions[i].options[j].option_description}</option>)
-                }
-                renderValue.push(<select className="form-control optionsClass inputStyle" id={jsonData.questions[i].question_id}>{dropdownVal}</select>);
-
-            }
-
-            if (jsonData.questions[i].question_type=="ST")
-            {
-
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
-                var starComp=[]
-                var tempVar;
-                for(var j=1;j<=5;j++)
-                {
-                    tempVar="star-"+j;
-                    starComp.push(<input type="radio" name={jsonData.questions[i].question_id} className={tempVar} id={tempVar}  value={j}/>)
-                    starComp.push(  <label className={tempVar} htmlFor={tempVar}>{j}</label>)
-                }
-                renderValue.push(<div className="stars">{starComp}<span></span></div>);
-
-            }
-        }
-    }
-    componentDidMount(){
-        for (var i = 0; i <= jsonData.questions.length - 1; i++) {
-
-            var id = jsonData.questions[i].question_id;
-            if (jsonData.questions[i].question_type == "R" && jsonData.questions[i].answers.length>0) {
-
-                var radioVal = document.getElementsByName(id);
-                for (var j = 0; j < radioVal.length; j++) {
-                    if(radioVal[j].value==jsonData.questions[i].answers[0].optionDescription) {
-                        radioVal[j].checked=true;
-                    }
-                }
-            }
-
-
-
-
-            if (jsonData.questions[i].question_type == "CB") {
-                //debugger;
-                var checkVal = document.getElementsByName(id);
-                var checkedBoxes = "";
-                var checkedArray = []
-                var checkedIdArray = []
-                for (var k = 0; k < checkVal.length; k++) {
-                    for (var m = 0; m < jsonData.questions[i].answers.length; m++) {
-                    if(jsonData.questions[i].answers[m].optionDescription==checkVal[k].value)
-                    {
-                        checkVal[k].checked=true;
-                    }
-                    }
-
-                }
-                // resultData.questions[i].answers = []
-                // for (var k = 0; k < checkedArray.length; k++) {
-                //     var obj = {};
-                //     obj["option_id"] = checkedIdArray[k];
-                //     obj["option_description"] = checkedArray[k]
-                //     resultData.questions[i].answers.push(obj);
-                // }
-            }
-            if (jsonData.questions[i].question_type == "DT") {
-                 document.getElementById(id).value = resultData.questions[i].answers[0].optionDescription;
-                //alert(document.getElementById(id).value)
-
-            }
-            if (jsonData.questions[i].question_type == "TB") {
-                 document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
-                //alert(document.getElementById(id).value)
-            }
-            if (jsonData.questions[i].question_type == "DR") {
-                document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
-                //alert(document.getElementById(id).value)
-            }
-            if (jsonData.questions[i].question_type == "ST") {
-                var id = jsonData.questions[i].question_id;
-                var elements=document.getElementsByName(id);
-                elements[parseInt(resultData.questions[i].answers[0].optionDescription)-1].checked=true;
-                //alert(document.getElementById(id).value)
-            }
-        }
-    }
+        debugger;
+        var self = this;
+        var payload ={
+            surveyId : this.props.match.params.surveyId,
+            uuid :this.props.match.params.uuid
+}
+                API.rendersurveys(payload).then
+                ((output) => {
+                    console.log(output.surveyId)
+                   debugger;
+                   console.log(this)
+                    this.setState({
+                            "surveyId": output.surveyId,
+                            "userId": output.userId,
+                            "questions": output.questions
+                       }, console.log("State:"+this.state.surveyId));
+                    }) ;
+        debugger;
+}
+  
 
     verificationCheck = () => {
         {
@@ -530,15 +226,141 @@ class QuestionForm extends Component {
     }
 
     render() {
+        for(var i=0;i<=this.state.questions.length-1;i++)
+        {
+            if (this.state.questions[i].question_type=="R")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
+                {
+                    renderValue.push(<div className="optionsClass"><input className="form-check-input" id={this.state.questions[i].question_id}  style={leftFloat} type="radio" name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+                }
+            }
+            if (this.state.questions[i].question_type=="CB")
+            {
+
+                renderValue.push(<h5 className="form-control questions" style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
+                {
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat} id={this.state.questions[i].question_id} type="checkbox"  name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+                }
+            }
+            if (this.state.questions[i].question_type=="DT")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+
+                renderValue.push(<div className="optionsClass"><input type="date" className="form-check-input inputStyle"  style={leftFloat} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
+            }
+            if (this.state.questions[i].question_type=="TB")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+
+                renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
+            }
+            if (this.state.questions[i].question_type=="DR")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                var dropdownVal=[]
+
+                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
+                {
+                    dropdownVal.push(<option>{this.state.questions[i].options[j].option_description}</option>)
+                }
+                renderValue.push(<select className="form-control optionsClass inputStyle" id={this.state.questions[i].question_id}>{dropdownVal}</select>);
+
+            }
+
+            if (this.state.questions[i].question_type=="ST")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                var starComp=[]
+                var tempVar;
+                for(var j=1;j<=5;j++)
+                {
+                    tempVar="star-"+j;
+                    starComp.push(<input type="radio" name={this.state.questions[i].question_id} className={tempVar} id={tempVar}  value={j}/>)
+                    starComp.push(  <label className={tempVar} htmlFor={tempVar}>{j}</label>)
+                }
+                renderValue.push(<div className="stars">{starComp}<span></span></div>);
+
+            }
+        }
+
+        for (var i = 0; i <= this.state.questions.length - 1; i++) {
+
+            var id = this.state.questions[i].question_id;
+            if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
+
+                var radioVal = document.getElementsByName(id);
+                for (var j = 0; j < radioVal.length; j++) {
+                    if(radioVal[j].value==this.state.questions[i].answers[0].optionDescription) {
+                        radioVal[j].checked=true;
+                    }
+                }
+            }
+
+
+
+
+            if (this.state.questions[i].question_type == "CB") {
+                //debugger;
+                var checkVal = document.getElementsByName(id);
+                var checkedBoxes = "";
+                var checkedArray = []
+                var checkedIdArray = []
+                for (var k = 0; k < checkVal.length; k++) {
+                    for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                    if(this.state.questions[i].answers[m].optionDescription==checkVal[k].value)
+                    {
+                        checkVal[k].checked=true;
+                    }
+                    }
+
+                }
+                // resultData.questions[i].answers = []
+                // for (var k = 0; k < checkedArray.length; k++) {
+                //     var obj = {};
+                //     obj["option_id"] = checkedIdArray[k];
+                //     obj["option_description"] = checkedArray[k]
+                //     resultData.questions[i].answers.push(obj);
+                // }
+            }
+            if (this.state.questions[i].question_type == "DT") {
+                 document.getElementById(id).value = resultData.questions[i].answers[0].optionDescription;
+                //alert(document.getElementById(id).value)
+
+            }
+            if (this.state.questions[i].question_type == "TB") {
+                 document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "DR") {
+                document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "ST") {
+                var id = this.state.questions[i].question_id;
+                var elements=document.getElementsByName(id);
+                elements[parseInt(resultData.questions[i].answers[0].optionDescription)-1].checked=true;
+                //alert(document.getElementById(id).value)
+            }
+        }
         return (
             <div >
 
 
-                <Route exact path="/successlogin" render={() => (
+                <Route exact path="/survey/:surveyId/:uuid" render={() => (
                     <div id="wrapper">
                         <div id="dialog" style={questionStyle}>
 
-
+                            <h1>XXXXX</h1>
+                            <h2>{this.state.surveyId}</h2>
+                            <h2></h2>
                             <div>
                                 <h3>
                                     SurveyApe-Fill out your survey here

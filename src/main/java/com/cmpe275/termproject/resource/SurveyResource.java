@@ -50,13 +50,23 @@ public class SurveyResource {
 
     @Transactional
     @JsonView({SurveyResponse.summary.class})
-    @GetMapping(value = "/{surveyId}")
-    public ResponseEntity<?> sendSavedResponse(@RequestParam("userId") Integer userId,
-                                               @PathVariable("surveyId") Integer surveyId) throws JSONException {
-        if(new Date().after(surveyRepository.findOne(surveyId).getEndTime())){
+    @GetMapping(value = "/{surveyId}/{uuid}")
+    public ResponseEntity<?> sendSavedResponse(@PathVariable("surveyId") Integer surveyId,
+                                               @PathVariable("uuid") String uuid) throws JSONException {
+        // Update the end time logic
+        //if(new Date().after(surveyRepository.findOne(surveyId).getEndTime())){
             SavedResponse savedResponse = new SavedResponse();
 
             savedResponse.setSurveyId(surveyId);
+
+            System.out.println("uuid:"+uuid);
+            System.out.println("surveyId:"+surveyId);
+            System.out.println("openUniqueSurveyRepository.findOneByUuid(uuid);"+openUniqueSurveyRepository.findOneByUuid(uuid));
+
+            OpenUniqueSurveyEntity openUniqueSurveyEntity = openUniqueSurveyRepository.findOneByUuid(uuid);
+
+            UserEntity userEntity = userRepository.findOneByEmail(openUniqueSurveyEntity.getEmailId());
+            int userId = userEntity.getId();
             savedResponse.setUserId(userId);
 
             SurveyEntity s = surveyRepository.findOne(surveyId);
@@ -72,11 +82,11 @@ public class SurveyResource {
             savedResponse.setQuestions(questions);
 
             return new ResponseEntity(savedResponse, HttpStatus.OK);
-        }
-        else{
-            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
-            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
-        }
+//        }
+//        else{
+//            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+//            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @Transactional

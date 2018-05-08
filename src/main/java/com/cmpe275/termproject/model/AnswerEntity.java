@@ -24,7 +24,7 @@ public class AnswerEntity {
     @Column(name = "email_id")
     private String emailId;
 
-    @Column(name = "survey_id")
+    @Column(name = "surveyId")
     private Integer surveyId;
 
     @Column(name = "question_id")

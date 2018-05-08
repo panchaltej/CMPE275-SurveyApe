@@ -10,13 +10,13 @@ import java.util.*;
 
 @Entity
 @Table(name = "surveys")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="survey_id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="surveyId")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SurveyEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "survey_id")
+    @Column(name = "surveyId")
     @JsonView({Survey.summary.class})
     private Integer surveyId;
 

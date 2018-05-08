@@ -19,7 +19,7 @@ public class OpenUniqueSurveyEntity {
     private String islinkused;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "survey_id", nullable = false)
+    @JoinColumn(name = "surveyId", nullable = false)
     private SurveyEntity surveyId;
 
     @Column(name = "uuid")
