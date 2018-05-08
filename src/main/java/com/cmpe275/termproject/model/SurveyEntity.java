@@ -139,7 +139,7 @@ public class SurveyEntity {
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade =  CascadeType.ALL,
-            mappedBy = "survey_id")
+            mappedBy = "surveyId")
     @JsonIgnore
     private OpenUniqueSurveyEntity open_Unique_Survey_link;
 }

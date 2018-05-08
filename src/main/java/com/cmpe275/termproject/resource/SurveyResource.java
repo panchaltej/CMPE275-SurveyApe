@@ -119,7 +119,7 @@ public class SurveyResource {
             }
 
             UUID uuid = UUID.randomUUID();
-            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurvey_id() + "/" + String.valueOf(uuid));
+            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
             closedSurveyRepository.save(closedSurveyEntity);
         }
 
@@ -225,7 +225,7 @@ public class SurveyResource {
                 openSurveyEntity.setSurvey_id(surveyEntity);
                 UUID uuid = UUID.randomUUID();
                 openSurveyEntity.setUuid(String.valueOf(uuid));
-                openSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurvey_id() + "/" + String.valueOf(uuid));
+                openSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                 openSurveyEntity.setIslinkused(0);
                 openSurveyRepository.save(openSurveyEntity);
 
@@ -247,7 +247,7 @@ public class SurveyResource {
                     closedSurveyEntity.setInviteeUserId(userEntity.get(0));
                     UUID uuid = UUID.randomUUID();
                     closedSurveyEntity.setUudi(String.valueOf(uuid));
-                    closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurvey_id() + "/" + String.valueOf(uuid));
+                    closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                     closedSurveyRepository.save(closedSurveyEntity);
 
                 }
@@ -257,9 +257,9 @@ public class SurveyResource {
             if (jsonObject.getString("surveytype").equals("O")) {
 
                 OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
-                openUniqueSurveyEntity.setSurvey_id(surveyEntity);
+                openUniqueSurveyEntity.setSurveyId(surveyEntity);
                 UUID uuid = UUID.randomUUID();
-                openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurvey_id() + "/" + String.valueOf(uuid));
+                openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                 openUniqueSurveyEntity.setIslinkused("");
                 openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 
@@ -384,7 +384,7 @@ public class SurveyResource {
                     openSurveyEntity.setSurvey_id(surveyEntity);
                     UUID uuid = UUID.randomUUID();
                     openSurveyEntity.setUuid(String.valueOf(uuid));
-                    openSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
+                    openSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                     openSurveyEntity.setIslinkused(0);
                     openSurveyRepository.save(openSurveyEntity);
 
@@ -401,7 +401,7 @@ public class SurveyResource {
                         closedSurveyEntity.setInviteeUserId(userEntity.get(0));
                         UUID uuid = UUID.randomUUID();
                         closedSurveyEntity.setUudi(String.valueOf(uuid));
-                        closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
+                        closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                         closedSurveyRepository.save(closedSurveyEntity);
 
                     }
@@ -411,10 +411,10 @@ public class SurveyResource {
                 if (jsonObject.getString("surveytype").equals("O")) {
 
                     OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
-                    openUniqueSurveyEntity.setSurvey_id(surveyEntity);
+                    openUniqueSurveyEntity.setSurveyId(surveyEntity);
                     UUID uuid = UUID.randomUUID();
                     openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
-                    openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
+                    openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                     openUniqueSurveyEntity.setIslinkused("");
                     openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 
