@@ -142,10 +142,12 @@ handleSave() {
 
             }
             if (this.state.questions[i].question_type == "TB") {
+                if(this.state.questions[i].answers.length>0)
                 this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
+                if(this.state.questions[i].answers.length>0)
                 this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
@@ -155,6 +157,7 @@ handleSave() {
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
                 {
                     if(elements[temp_star].checked){
+                        if(this.state.questions[i].answers.length>0)
                         this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
                 }
@@ -283,11 +286,13 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
                 //alert(document.getElementById(id).value)
             }
@@ -298,6 +303,7 @@ handleSave() {
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
                 var elements=document.getElementsByName(id);
+                if(this.state.questions[i].answers.length>0)
                 elements[parseInt(this.state.questions[i].answers[0].answerDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
@@ -417,12 +423,15 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
+
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
@@ -432,6 +441,7 @@ handleSave() {
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
                 var elements=document.getElementsByName(toString(id));
+                if(this.state.questions[i].answers.length>0)
                 elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
