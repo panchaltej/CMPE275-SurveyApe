@@ -37,6 +37,8 @@ public class OptionsEntity {
     @JoinColumn(name = "question_id",nullable = false)
     private QuestionEntity question_id;
 
+    private long count = 0;
+
     public Integer getOption_id() {
         return option_id;
     }
@@ -49,7 +51,13 @@ public class OptionsEntity {
         return option_description;
     }
 
-    public void setOption_description(String option_description) {
-        this.option_description = option_description;
+    public void setOption_description(String option_description) { this.option_description = option_description; }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 }

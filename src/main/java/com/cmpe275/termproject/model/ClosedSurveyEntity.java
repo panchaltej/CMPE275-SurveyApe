@@ -28,6 +28,9 @@ public class ClosedSurveyEntity {
     @Column(name = "uuid")
     private String uuid;
 
+    @Column(name = "emailId")
+    private String emailId;
+
     public SurveyEntity getSurveyId() {
         return surveyId;
     }
@@ -66,5 +69,13 @@ public class ClosedSurveyEntity {
 
     public void setUudi(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

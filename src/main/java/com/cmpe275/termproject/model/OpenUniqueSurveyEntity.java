@@ -19,8 +19,8 @@ public class OpenUniqueSurveyEntity {
     private String islinkused;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "survey_id", nullable = false)
-    private SurveyEntity survey_id;
+    @JoinColumn(name = "surveyId", nullable = false)
+    private SurveyEntity surveyId;
 
     @Column(name = "uuid")
     private String uuid;
@@ -52,12 +52,12 @@ public class OpenUniqueSurveyEntity {
         this.islinkused = islinkused;
     }
 
-    public SurveyEntity getSurvey_id() {
-        return survey_id;
+    public SurveyEntity getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurvey_id(SurveyEntity survey_id) {
-        this.survey_id = survey_id;
+    public void setSurveyId(SurveyEntity surveyId) {
+        this.surveyId = surveyId;
     }
 
     public String getUuid() {

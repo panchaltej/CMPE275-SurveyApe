@@ -24,11 +24,15 @@ public class AnswerEntity {
     @Column(name = "email_id")
     private String emailId;
 
-    @Column(name = "survey_id")
+    @Column(name = "surveyId")
     private Integer surveyId;
 
-    @Column(name = "question_id")
-    private Integer questionId;
+//    @Column(name = "question_id")
+//    private Integer questionId;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id",nullable = false)
+    private QuestionEntity questionId;
 
     @Column(name = "option_id")
     @JsonView({SurveyResponse.summary.class})
@@ -59,12 +63,20 @@ public class AnswerEntity {
         this.surveyId = surveyId;
     }
 
-    public Integer getQuestionId() {
+    public QuestionEntity getQuestionId() {
         return questionId;
     }
 
-    public void setQuestionId(Integer questionId) {
+    public void setQuestionId(QuestionEntity questionId) {
         this.questionId = questionId;
+    }
+
+    public String getAnswerDescription() {
+        return answerDescription;
+    }
+
+    public void setAnswerDescription(String answerDescription) {
+        this.answerDescription = answerDescription;
     }
 
     public Integer getOptionId() {

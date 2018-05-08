@@ -67,25 +67,8 @@ export const addInvitees = (payload) =>
             return error;
         });
 
-// export const uploadFile = (payload) =>
-//     fetch(`${api}/survey/addsurveyees`, {
-//         method: 'POST',
-//         headers: {
-//             ...headers,
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(payload),
-//         credentials:'include'
-//     }).then(res => res.status)
-//
-//         .then(res=>{
-//             console.log(res);
-//             return res;
-//         })
-//         .catch(error => {
-//             console.log("This is error");
-//             return error;
-//         });
+
+
 export const uploadFile = (payload) =>
     axios.post(api + '/survey/uploadImages', payload,{withCredentials:true})
         .then(res => {
@@ -97,3 +80,83 @@ export const uploadFile = (payload) =>
             console.log("This is error in fileupload API",error);
             return error;
         });
+
+export const getOpenUniqueSurvey = (payload) =>
+        fetch(`${api}/survey/allopenuniquesurveys`, {
+            method: 'GET',
+            headers: {
+                ...headers,
+               // 'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials:'include'
+        }).then(res => res.json())
+    
+            .then(res=>{
+                console.log(res);
+                return res;
+            })
+            .catch(error => {
+                console.log("This is error");
+                return error;
+            });
+
+export const registerEmailForOpenUnique = (payload) =>
+            fetch(`${api}/survey/openUniqueSurvey/emailRegister`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload),
+                credentials:'include'
+            }).then(res => res.json())
+        
+                .then(res=>{
+                    console.log(res);
+                    return res;
+                })
+                .catch(error => {
+                    console.log("This is error");
+                    return error;
+                });
+export const rendersurveys = (payload) =>
+                fetch(`${api}/survey/`+payload.surveyId+`/`+payload.uuid, {
+                    method: 'GET',
+                    headers: {
+                        ...headers,
+                        //'Content-Type': 'application/json'
+                    },
+                    //body: JSON.stringify(payload),
+                    credentials:'include'
+                }).then(res => res.json())
+            
+                    .then(res=>{
+                        //console.log(res);
+                        return res;
+                    })
+                    .catch(error => {
+                        console.log("This is error");
+                        return error;
+                    });
+            
+export const saveanswers = (payload) =>
+                    fetch(`${api}/survey/response/save`, {
+                        method: 'POST',
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        credentials:'include'
+                    }).then(res => res.json())
+                
+                        .then(res=>{
+                            //console.log(res);
+                            return res;
+                        })
+                        .catch(error => {
+                            console.log("This is error");
+                            return error;
+                        });
+

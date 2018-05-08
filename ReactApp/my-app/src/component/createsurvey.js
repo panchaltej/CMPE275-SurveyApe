@@ -1,6 +1,8 @@
 import  React,{Component} from 'react';
 import * as API from '../api/surveys' 
 import {connect} from 'react-redux';
+import Allsavedsurveys from './allsavedsurveys';
+import { Route, Link,Switch,withRouter } from 'react-router-dom';
 
 class HP extends Component{
     state={
@@ -146,7 +148,9 @@ class HP extends Component{
             //alert("sgtadsg");
             console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
+
             this.setState({end_time:temp.endTime,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+
         }
         else{
             //alert("Initializing your survey...");//only for debugging
@@ -164,8 +168,10 @@ class HP extends Component{
         }
         let surveyData={
           //Change User Id based on LOGIN
+
           user_id:1,
             end_time:this.state.end_time,
+
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -291,6 +297,10 @@ class HP extends Component{
     render(){
         return(
             <div>
+                
+
+<Route exact path="/createsurvey" render={() => (
+    <div>
 
                 <div className="container-fluid">
                     <h1>{this.state.is_published?"This survey is now live!":""}</h1>
@@ -304,10 +314,41 @@ class HP extends Component{
 
                     <div className="row">
                         <div className="col-md-3" align="center">
-                            <div><h1>Select Question type to add</h1></div>
-                            {this.state.options.map((item, index) => (
+                        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+                            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Choose the Question type</a>
+                                
+                                    </nav>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                                        <div class="sidebar-sticky">
+                                            <ul class="nav flex-column">
+                                                {this.state.options.map((item, index) => (
+                                                    
+                                                    <li class="nav-item">
+                                                    <button  class="btn btn-primary-outline" disabled={this.state.is_published} onClick={()=>this.addQuestion(item.value)}>
+                                                  
+                                                    {item.label} 
+                                                    
+                                                    
+                                                    </button>
+                                                    <br/>
+                                                    <br/>
+                                                    
+                                                    </li>
+                                                    
+                                                ))}
+                                                </ul>
+                                                {/* {this.state.options.map((item, index) => (
                                 <div key={index}><button disabled={this.state.is_published} onClick={()=>this.addQuestion(item.value)} className="btn btn-primary">{item.label}</button><br/><br/></div>
-                            ))}
+                            ))} */}
+                                                </div>
+                                                </nav>
+                                                </div>
+                                                </div>
+
+                                                
+
                         </div>
                         <div className="col-md-6">
                             {this.showQuestion()}
@@ -322,6 +363,13 @@ class HP extends Component{
                     </div>
                 </div>
             </div>
+        )}/>
+         <Route exact path="/allsavedsurveys" render={() => (
+                <div>
+                    <Allsavedsurveys/>
+                </div>
+            )}/>
+        </div>
 
         );
     }
@@ -335,4 +383,4 @@ function mapStateToProps(state){
 }
 
 
-export default connect(mapStateToProps, null)(HP);
+export default withRouter(connect(mapStateToProps, null)(HP));

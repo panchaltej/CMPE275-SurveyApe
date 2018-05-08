@@ -3,10 +3,14 @@ import React, {Component} from 'react';
 // import {removemenu} from '../actions/index';
  //import {connect} from 'react-redux';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 // import Display from './display';
 // import Display2 from './display2';
  import Createsurvey from './createsurvey';
- import Allsavedsurveys from './allsavedsurveys'
+ import Allsavedsurveys from './allsavedsurveys';
+ import Landingpage from './landingpage'
+ import Openuniquesurvey from './allopenuniquesurveys'
+
 let initialState=true;
 class menu extends Component{
 
@@ -14,13 +18,17 @@ class menu extends Component{
     {
         return(
             <div>
-            <Route exact path="/" render={() => (
+
+            <Route exact path="/dashboard" render={() => (
+
             <div>
+
                 
             <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <a className="navbar-brand" href="#">Navbar</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
+
       </button>
 
       <div className="collapse navbar-collapse" id="navbarsExampleDefault">
@@ -58,11 +66,13 @@ class menu extends Component{
         </div>
       </div>
 
+
       <div className="container">
         <div className="row">
           <div className="col-md-4">
             <h2>Create Survey</h2> 
             <p><button className="btn btn-secondary"
+
             onClick={() => {
               localStorage.setItem("initial",'true');
                 this.props.history.push("/createsurvey");
@@ -91,6 +101,7 @@ class menu extends Component{
     
 
     </div>
+
     )}/>
     <Route exact path="/createsurvey" render={() => (
                 <div>
@@ -101,6 +112,18 @@ class menu extends Component{
      <Route exact path="/allsavedsurveys" render={() => (
                 <div>
                     <Allsavedsurveys/>
+                </div>
+            )}/>
+
+      <Route exact path="/landingpage" render={() => (
+                <div>
+                    <Landingpage/>
+                </div>
+            )}/>
+
+      <Route exact path="/allopenuniquesurveys" render={() => (
+                <div>
+                    <Openuniquesurvey/>
                 </div>
             )}/>
     </div>

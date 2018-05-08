@@ -10,15 +10,15 @@ import java.util.*;
 
 @Entity
 @Table(name = "surveys")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="survey_id")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="surveyId")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class SurveyEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "survey_id")
+    @Column(name = "surveyId")
     @JsonView({Survey.summary.class})
-    private Integer survey_id;
+    private Integer surveyId;
 
     @Column(name = "survey_name")
     @JsonView({Survey.summary.class})
@@ -50,7 +50,7 @@ public class SurveyEntity {
 
 
     public String getSurvey_type() {
-        return survey_type;
+        return surveytype;
     }
 
     public Set<QuestionEntity> getQuestions() {
@@ -62,23 +62,27 @@ public class SurveyEntity {
     }
 
     public void setSurvey_type(String survey_type) {
-        this.survey_type = survey_type;
+        this.surveytype = survey_type;
     }
 
     @Column(name = "end_time")
     @JsonView({Survey.summary.class})
     private Date endTime;
 
+    @Column(name = "start_time")
+    @JsonView({Survey.summary.class})
+    private Date startTime;
+
     @Column(name = "survey_type")
     @JsonView({Survey.summary.class})
-    private String survey_type;
+    private String surveytype;
 
-    public Integer getSurvey_id() {
-        return survey_id;
+    public Integer getSurveyId() {
+        return surveyId;
     }
 
-    public void setSurvey_id(Integer survey_id) {
-        this.survey_id = survey_id;
+    public void setSurveyId(Integer surveyId) {
+        this.surveyId = surveyId;
     }
 
     public String getSurvey_name() {
@@ -105,6 +109,14 @@ public class SurveyEntity {
         this.endTime = endTime;
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
     public Set<ClosedSurveyEntity> getClosed_surveys() {
         return closed_surveys;
     }
@@ -127,7 +139,7 @@ public class SurveyEntity {
 
     @OneToOne(fetch = FetchType.LAZY,
             cascade =  CascadeType.ALL,
-            mappedBy = "survey_id")
+            mappedBy = "surveyId")
     @JsonIgnore
     private OpenUniqueSurveyEntity open_Unique_Survey_link;
 }
