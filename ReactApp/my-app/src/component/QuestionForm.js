@@ -142,8 +142,18 @@ handleSave() {
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                if(this.state.questions[i].answers.length>0)
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                debugger;
+                if(this.state.questions[i].options.length>0)
+                {
+                     debugger;
+                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    this.state.questions[i].answers.push(obj);
+                }
+
+
+               // this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
@@ -157,8 +167,12 @@ handleSave() {
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
                 {
                     if(elements[temp_star].checked){
-                        if(this.state.questions[i].answers.length>0)
-                        this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
+                        if(this.state.questions[i].options.length>0) {
+                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            obj["optionDescription"] =elements[temp_star].value;
+                            this.state.questions[i].answers.push(obj);
+                        }
+                       // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
                 }
 
