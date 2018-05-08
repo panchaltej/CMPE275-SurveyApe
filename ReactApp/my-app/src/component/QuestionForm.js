@@ -259,7 +259,7 @@ var buttonStyle={
 var renderValue=[];
 class QuestionForm extends Component {
 
-    handleSave() {
+handleSave() {
         var answers = [];
 
         for (var i = 0; i <= jsonData.questions.length - 1; i++) {
@@ -339,6 +339,7 @@ class QuestionForm extends Component {
             }
         }
         debugger
+        alert("save executed");
     }
     componentWillMount() {
         debugger;
@@ -378,7 +379,7 @@ class QuestionForm extends Component {
                 renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
                 for(var j=0;j<=jsonData.questions[i].options.length-1;j++)
                 {
-                    renderValue.push(<div className="optionsClass"><input className="form-check-input" id={jsonData.questions[i].question_id}  style={leftFloat} type="radio" name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
+                    renderValue.push(<div className="optionsClass"><input className="form-check-input" id={jsonData.questions[i].question_id} onChange={ () =>{this.handleSave()}}  style={leftFloat} type="radio" name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
                 }
             }
             if (jsonData.questions[i].question_type=="CB")
@@ -387,7 +388,7 @@ class QuestionForm extends Component {
                 renderValue.push(<h5 className="form-control questions" style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
                 for(var j=0;j<=jsonData.questions[i].options.length-1;j++)
                 {
-                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat} id={jsonData.questions[i].question_id} type="checkbox"  name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat} onChange={ () =>{this.handleSave()}} id={jsonData.questions[i].question_id} type="checkbox"  name={jsonData.questions[i].question_id} value={jsonData.questions[i].options[j].option_description}/>{jsonData.questions[i].options[j].option_description}<br/></div>)
                 }
             }
             if (jsonData.questions[i].question_type=="DT")
@@ -395,14 +396,14 @@ class QuestionForm extends Component {
 
                 renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
 
-                renderValue.push(<div className="optionsClass"><input type="date" className="form-check-input inputStyle"  style={leftFloat} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
+                renderValue.push(<div className="optionsClass"><input type="date" className="form-check-input inputStyle"  style={leftFloat} onChange={ () =>{this.handleSave()}} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
             }
             if (jsonData.questions[i].question_type=="TB")
             {
 
                 renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{jsonData.questions[i].question_text}</h5>)
 
-                renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
+                renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} onChange={ () =>{this.handleSave()}} id={jsonData.questions[i].question_id} name="gender"/><br/></div>)
             }
             if (jsonData.questions[i].question_type=="DR")
             {
@@ -414,7 +415,7 @@ class QuestionForm extends Component {
                 {
                     dropdownVal.push(<option>{jsonData.questions[i].options[j].option_description}</option>)
                 }
-                renderValue.push(<select className="form-control optionsClass inputStyle" id={jsonData.questions[i].question_id}>{dropdownVal}</select>);
+                renderValue.push(<select className="form-control optionsClass inputStyle" id={jsonData.questions[i].question_id} onChange={ () =>{this.handleSave()}}>{dropdownVal}</select>);
 
             }
 
@@ -427,7 +428,7 @@ class QuestionForm extends Component {
                 for(var j=1;j<=5;j++)
                 {
                     tempVar="star-"+j;
-                    starComp.push(<input type="radio" name={jsonData.questions[i].question_id} className={tempVar} id={tempVar}  value={j}/>)
+                    starComp.push(<input type="radio" name={jsonData.questions[i].question_id} className={tempVar} id={tempVar}  value={j} onChange={ () =>{this.handleSave()}}/>)
                     starComp.push(  <label className={tempVar} htmlFor={tempVar}>{j}</label>)
                 }
                 renderValue.push(<div className="stars">{starComp}<span></span></div>);
