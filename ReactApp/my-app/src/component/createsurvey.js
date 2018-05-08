@@ -244,10 +244,41 @@ class HP extends Component{
 
                     <div className="row">
                         <div className="col-md-3" align="center">
-                            <div><h1>Select Question type to add</h1></div>
-                            {this.state.options.map((item, index) => (
+                        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+                            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Choose the Question type</a>
+                                
+                                    </nav>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                                        <div class="sidebar-sticky">
+                                            <ul class="nav flex-column">
+                                                {this.state.options.map((item, index) => (
+                                                    
+                                                    <li class="nav-item">
+                                                    <button  class="btn btn-primary-outline" disabled={this.state.is_published} onClick={()=>this.addQuestion(item.value)}>
+                                                  
+                                                    {item.label} 
+                                                    
+                                                    
+                                                    </button>
+                                                    <br/>
+                                                    <br/>
+                                                    
+                                                    </li>
+                                                    
+                                                ))}
+                                                </ul>
+                                                {/* {this.state.options.map((item, index) => (
                                 <div key={index}><button disabled={this.state.is_published} onClick={()=>this.addQuestion(item.value)} className="btn btn-primary">{item.label}</button><br/><br/></div>
-                            ))}
+                            ))} */}
+                                                </div>
+                                                </nav>
+                                                </div>
+                                                </div>
+
+                                                
+
                         </div>
                         <div className="col-md-6">
                             {this.showQuestion()}
