@@ -32,6 +32,7 @@ public class SpringBootMysqldbApplication {
 //		MatrixToImageWriter.writeToFile(matrix, filePath.substring(filePath
 //				.lastIndexOf('.') + 1), new File(filePath));
 //		System.out.println("QR Code image created successfully!");
+
 		SpringApplication.run(SpringBootMysqldbApplication.class, args);
 		} catch (Exception e) {
 			System.err.println(e);
