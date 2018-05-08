@@ -22,3 +22,5 @@ ReactApp/my-app/\.idea/workspace\.xml
 
 ReactApp/my-app/package-lock\.json
 >>>>>>> master
+/.metadata/
+src/main/resources/application.yml

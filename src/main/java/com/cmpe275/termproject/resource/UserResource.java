@@ -25,7 +25,10 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,7 +37,11 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import java.util.*;
+import javax.mail.Multipart;
 /*@CrossOrigin(origins = "http://localhost:3000")*/
 @CrossOrigin(origins = "*")
 @RestController
@@ -133,9 +140,29 @@ public class UserResource {
                 message.setSubject("Please verify your email address");
                 message.setText( "Hi "+firstName+ ","+  System.lineSeparator() +"Thank you for registering with SurveyApe"+ System.lineSeparator() +"Enter the following four digit code to verify your account : "+ verificationCode );
 
+
+              System.out.println("Done");
+//
+//                MimeBodyPart messageBodyPart = new MimeBodyPart();
+//
+//                Multipart multipart = new MimeMultipart();
+//
+//                messageBodyPart = new MimeBodyPart();
+//                String file = "src/main/resources/google.png";
+//                String fileName = "attachmentName";
+//                DataSource source = new FileDataSource(file);
+//                messageBodyPart.setDataHandler(new DataHandler(source));
+//                messageBodyPart.setFileName("fileName.jpg");
+//                messageBodyPart.setHeader("Content-ID", "<image>");
+//                multipart.addBodyPart(messageBodyPart);
+//
+//                message.setContent(multipart);
                 Transport.send(message);
 
-                System.out.println("Done");
+
+                System.out.println("Sent message successfully....");
+
+
 
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
