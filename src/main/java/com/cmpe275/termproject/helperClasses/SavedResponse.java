@@ -8,17 +8,29 @@ import java.util.List;
 
 public class SavedResponse {
     @JsonView({SurveyResponse.summary.class})
-    private Integer userId;
+//    private Integer userId;
+    private String userId;
     @JsonView({SurveyResponse.summary.class})
     private Integer surveyId;
     @JsonView({SurveyResponse.summary.class})
+    private Integer emailId;
+    @JsonView({SurveyResponse.summary.class})
     private List<QuestionEntity> questions;
 
-    public Integer getUserId() {
+//    public Integer getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(Integer userId) {
+//        this.userId = userId;
+//    }
+
+
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -102,11 +102,11 @@ handleSave() {
                         opt_id = this.state.questions[i].options[j].option_id;
                     }
                 }
-                resultData.questions[i].answers = [];
+                this.state.questions[i].answers = [];
                 var obj = {};
                 obj["optionId"] = opt_id;
                 obj["optionDescription"] = radio_value;
-                resultData.questions[i].answers.push(obj);
+                this.state.questions[i].answers.push(obj);
             }
             // resultData.questions[i].answers[0].optionId=opt_id;
             // resultData.questions[i].answers[0].option_description=radio_value;
@@ -128,25 +128,25 @@ handleSave() {
                         checkedIdArray.push(this.state.questions[i].options[k].option_id)
                     }
                 }
-                resultData.questions[i].answers = []
+                this.state.questions[i].answers = []
                 for (var k = 0; k < checkedArray.length; k++) {
                     var obj = {};
                     obj["optionId"] = checkedIdArray[k];
                     obj["optionDescription"] = checkedArray[k]
-                    resultData.questions[i].answers.push(obj);
+                    this.state.questions[i].answers.push(obj);
                 }
             }
             if (this.state.questions[i].question_type == "DT") {
-                resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                resultData.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
@@ -155,7 +155,7 @@ handleSave() {
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
                 {
                     if(elements[temp_star].checked){
-                        resultData.questions[i].answers[0].optionDescription = elements[temp_star].value;
+                        this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
                 }
 
@@ -165,6 +165,20 @@ handleSave() {
         }
         debugger
         alert("save executed");
+
+        // Payload for saveanswers
+        let surveyId = this.props.match.params.surveyId;
+        let uuid = this.props.match.params.uuid;
+
+        debugger;
+
+        API.saveanswers(this.state).then
+                ((output) => {
+                    console.log(output)
+                  
+                    }) ;
+
+
     }
     componentWillMount() {
         let surveyId = this.props.match.params.surveyId;
@@ -181,13 +195,14 @@ handleSave() {
 }
                 API.rendersurveys(payload).then
                 ((output) => {
-                    console.log(output.surveyId)
+                    console.log(output)
                    debugger;
                    console.log(this)
                     this.setState({
                             "surveyId": output.surveyId,
                             "userId": output.userId,
-                            "questions": output.questions
+                            "questions": output.questions,
+                            "uuid":uuid
                        }, console.log("State:"+this.state.surveyId));
                     }) ;
         debugger;
@@ -245,7 +260,7 @@ handleSave() {
                 renderValue.push(<h5 className="form-control questions" style={leftFloat} >{this.state.questions[i].question_text}</h5>)
                 for(var j=0;j<=this.state.questions[i].options.length-1;j++)
                 {
-                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} type="checkbox"  name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id="5" type="checkbox"  name="5" value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
                             
                 }
             }
@@ -315,8 +330,9 @@ handleSave() {
 
 
             if (this.state.questions[i].question_type == "CB") {
-                //debugger;
-                var checkVal = document.getElementsByName(id);
+                debugger;
+                var id12="5";
+                var checkVal = document.getElementsByName(id12);
                 var checkedBoxes = "";
                 var checkedArray = []
                 var checkedIdArray = []
@@ -338,22 +354,22 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
-                 document.getElementById(id).value = resultData.questions[i].answers[0].optionDescription;
+                 document.getElementById(id).value = this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                 document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
+                 document.getElementById(id).value=this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                document.getElementById(id).value=resultData.questions[i].answers[0].optionDescription;
+                document.getElementById(id).value=this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
                 var elements=document.getElementsByName(id);
-                elements[parseInt(resultData.questions[i].answers[0].optionDescription)-1].checked=true;
+                elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
         }
@@ -365,9 +381,6 @@ handleSave() {
                     <div id="wrapper">
                         <div id="dialog" style={questionStyle}>
 
-                            <h1>XXXXX</h1>
-                            <h2>{this.state.surveyId}</h2>
-                            <h2></h2>
                             <div>
                                 <h3>
                                     SurveyApe-Fill out your survey here

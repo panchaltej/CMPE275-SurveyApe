@@ -124,3 +124,22 @@ export const rendersurveys = (payload) =>
                         return error;
                     });
             
+export const saveanswers = (payload) =>
+                    fetch(`${api}/survey/response/save`, {
+                        method: 'POST',
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        credentials:'include'
+                    }).then(res => res.json())
+                
+                        .then(res=>{
+                            //console.log(res);
+                            return res;
+                        })
+                        .catch(error => {
+                            console.log("This is error");
+                            return error;
+                        });
