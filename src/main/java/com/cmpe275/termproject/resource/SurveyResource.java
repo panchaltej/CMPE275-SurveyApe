@@ -232,7 +232,7 @@ public class SurveyResource {
             }
 
 
-            if (jsonObject.getString("survey_type").equals("C") && jsonObject.getString("closed_invitees")!="") {
+            if (jsonObject.getString("surveytype").equals("C") && jsonObject.getString("closed_invitees")!="") {
 
                 // Generating invitees array
 

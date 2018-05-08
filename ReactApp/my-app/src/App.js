@@ -7,7 +7,11 @@ import SignUp from "./component/SignUp";
 import VerificationPage from "./component/VerificationPage"
 import QuestionForm from "./component/QuestionForm"
 import Menu from "./component/menu"
+import Createsurvey from './component/createsurvey';
+import Allsavedsurveys from './component/allsavedsurveys';
+import Openuniquesurvey from './component/allopenuniquesurveys'
 import { Route, withRouter } from 'react-router-dom';
+import Landingpage from './component/landingpage'
 
 var signUpUrlStyle = {
     borderTop:"1px solid#888",
@@ -15,6 +19,7 @@ var signUpUrlStyle = {
     fontSize:"85%"
 };
 
+let initialState=true;
 class App extends Component {
     handleSignUp = () => {
         {
@@ -27,7 +32,7 @@ class App extends Component {
             <div className="App">
                 <div className="container-fluid">
 
-                    <Route exact path="/" render={() => (<BrowserRouter>
+                    <Route exact path="/signin" render={() => (<BrowserRouter>
                             <div className="startUpClass">
 
                                 <Login/>
@@ -79,6 +84,29 @@ class App extends Component {
                             <QuestionForm/>
                         </BrowserRouter>
                     )}/>
+                    <Route exact path="/" render={() => (
+                        <div>
+                            <Landingpage/>
+                        </div>
+                    )}/>
+
+                    <Route exact path="/createsurvey" render={() => (
+                <div>
+                    <Createsurvey/>
+                </div>
+            )}/>
+
+     <Route exact path="/allsavedsurveys" render={() => (
+                <div>
+                    <Allsavedsurveys/>
+                </div>
+            )}/>
+
+      <Route exact path="/allopenuniquesurveys" render={() => (
+                <div>
+                    <Openuniquesurvey/>
+                </div>
+            )}/>
                 </div>
             </div>
         );
