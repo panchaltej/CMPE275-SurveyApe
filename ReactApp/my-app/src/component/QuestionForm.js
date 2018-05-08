@@ -241,6 +241,69 @@ handleSave() {
 
     }
 
+    componentDidUpdate(){
+        for (var i = 0; i <= this.state.questions.length - 1; i++) {
+
+            var id = this.state.questions[i].question_id;
+            if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
+
+                var radioVal = document.getElementsByName(id);
+                for (var j = 0; j < radioVal.length; j++) {
+                    if(radioVal[j].value==this.state.questions[i].answers[0].answerDescription) {
+                        radioVal[j].checked=true;
+                    }
+                }
+            }
+
+
+
+
+            if (this.state.questions[i].question_type == "CB") {
+                debugger;
+                var id12=this.state.questions[i].question_id;
+                var checkVal = document.getElementsByName(id12);
+                var checkedBoxes = "";
+                var checkedArray = []
+                var checkedIdArray = []
+                for (var k = 0; k < checkVal.length; k++) {
+                    for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                    if(this.state.questions[i].answers[m].answerDescription==checkVal[k].value)
+                    {
+                        checkVal[k].checked=true;
+                    }
+                    }
+
+                }
+                // resultData.questions[i].answers = []
+                // for (var k = 0; k < checkedArray.length; k++) {
+                //     var obj = {};
+                //     obj["option_id"] = checkedIdArray[k];
+                //     obj["option_description"] = checkedArray[k]
+                //     resultData.questions[i].answers.push(obj);
+                // }
+            }
+            if (this.state.questions[i].question_type == "DT") {
+                 document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                //alert(document.getElementById(id).value)
+
+            }
+            if (this.state.questions[i].question_type == "TB") {
+                 document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "DR") {
+                document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "ST") {
+                var id = this.state.questions[i].question_id;
+                var elements=document.getElementsByName(id);
+                elements[parseInt(this.state.questions[i].answers[0].answerDescription)-1].checked=true;
+                //alert(document.getElementById(id).value)
+            }
+        }
+    }
+
     render() {
         for(var i=0;i<=this.state.questions.length-1;i++)
         {
@@ -260,7 +323,7 @@ handleSave() {
                 renderValue.push(<h5 className="form-control questions" style={leftFloat} >{this.state.questions[i].question_text}</h5>)
                 for(var j=0;j<=this.state.questions[i].options.length-1;j++)
                 {
-                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id="5" type="checkbox"  name="5" value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} type="checkbox"  name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
                             
                 }
             }
@@ -318,7 +381,7 @@ handleSave() {
             var id = this.state.questions[i].question_id;
             if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
 
-                var radioVal = document.getElementsByName(id);
+                var radioVal = document.getElementsByName(toString(id));
                 for (var j = 0; j < radioVal.length; j++) {
                     if(radioVal[j].value==this.state.questions[i].answers[0].optionDescription) {
                         radioVal[j].checked=true;
@@ -331,8 +394,8 @@ handleSave() {
 
             if (this.state.questions[i].question_type == "CB") {
                 debugger;
-                var id12="5";
-                var checkVal = document.getElementsByName(id12);
+                var id12=this.state.questions[i].question_id;
+                var checkVal = document.getElementsByName(toString(id12));
                 var checkedBoxes = "";
                 var checkedArray = []
                 var checkedIdArray = []
@@ -354,25 +417,26 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
-                 document.getElementById(id).value = this.state.questions[i].answers[0].optionDescription;
+                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                 document.getElementById(id).value=this.state.questions[i].answers[0].optionDescription;
+                 document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                document.getElementById(id).value=this.state.questions[i].answers[0].optionDescription;
+                document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
-                var elements=document.getElementsByName(id);
+                var elements=document.getElementsByName(toString(id));
                 elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
         }
+        
         return (
             <div >
 
