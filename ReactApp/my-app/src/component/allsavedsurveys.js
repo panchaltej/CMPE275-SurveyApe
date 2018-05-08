@@ -6,7 +6,7 @@ import React, {Component} from 'react';
  import * as API from '../api/surveys' 
  import {allsavedsurveys,selectedsurvey} from '../action/getallsavedsurveys'
  import Createsurvey from './createsurvey';
-
+import Menu from "./menu"
 class savedsurveys extends Component{
 
     componentDidMount()
@@ -86,6 +86,11 @@ class savedsurveys extends Component{
                     <Createsurvey/>
                 </div>
             )}/>
+              <Route exact path="/dashboard" render={() => (
+                  <div>
+                      <Menu/>
+                  </div>
+              )}/>
                   </div>
  )
     }

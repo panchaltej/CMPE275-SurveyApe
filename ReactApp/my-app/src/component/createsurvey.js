@@ -115,7 +115,7 @@ class HP extends Component{
             //alert("sgtadsg");
             console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
-            this.setState({user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+            this.setState({user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
         }
         else{
             //alert("Initializing your survey...");//only for debugging
@@ -133,7 +133,7 @@ class HP extends Component{
         }
         let surveyData={
           //Change User Id based on LOGIN
-          user_id:3,
+          user_id:1 ,
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -160,7 +160,7 @@ class HP extends Component{
 
         let surveyData={
             //Change User Id based on LOGIN
-            user_id:3,
+            user_id:1,
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,

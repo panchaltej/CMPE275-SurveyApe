@@ -6,7 +6,7 @@ import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import {BrowserRouter} from 'react-router-dom';
 import  QuestionForm from "./QuestionForm";
-import  menu from "./menu";
+import  Menu from "./menu";
 import SignUp from "./SignUp";
 var wrapperStyle = {
     fontFamily: "Lato",
@@ -115,12 +115,12 @@ class VerificationPage extends Component {
                         </div>
                     </div>
                 )}/>
-                <Route exact path="/successlogin" render={() => (<BrowserRouter>
+                {/* <Route exact path="/successlogin" render={() => (<BrowserRouter>
                         <QuestionForm/>
                     </BrowserRouter>
-                )}/>
+                )}/> */}
                 <Route exact path="/dashboard" render={() => (<BrowserRouter>
-                        <menu/>
+                        <Menu/>
                     </BrowserRouter>
                 )}/>
                 <Route exact path="/failedVerification" render={() => (<BrowserRouter>

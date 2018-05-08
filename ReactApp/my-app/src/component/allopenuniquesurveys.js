@@ -91,6 +91,11 @@ class openunique extends Component{
                                        console.log("current_survey:"+this.state.current_survey);
                                        // API CALL
                                       //this.props.history.push("/allopenuniquesurveys");
+                                      API.registerEmailForOpenUnique(this.state).then
+                                      ((output) => {
+                                          console.log(output);
+                                           }) ; 
+                                      
                                        
                                    }}>Submit</button>
 

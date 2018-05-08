@@ -6,6 +6,7 @@ import VerificationPage from "./VerificationPage";
 import  QuestionForm from "./QuestionForm";
 import SignUp from "./SignUp";
 import Menu from "./menu"
+import CreateSurvey from "./createsurvey"
 import axios from 'axios';
 var marginTopStyle = {
     marginTop: "50px",
@@ -133,10 +134,10 @@ class Login extends Component {
                     </div>
                 )}/>
 
-                <Route exact path="/successlogin" render={() => (<BrowserRouter>
+                {/* <Route exact path="/successlogin" render={() => (<BrowserRouter>
                     <QuestionForm/>
                 </BrowserRouter>
-                    )}/>
+                    )}/> */}
                 <Route exact path="/verificationpage" render={() => (<BrowserRouter>
                         <VerificationPage/>
                     </BrowserRouter>
@@ -152,12 +153,19 @@ class Login extends Component {
                         <SignUp/>
                     </BrowserRouter>
                 )}/>
+
                 <Route exact path="/dashboard" render={() => (
                     <div>
                         <Menu/>
                     </div>
 
                 )}/>
+
+                <Route exact path="/createsurvey" render={() => (<BrowserRouter>
+                        <CreateSurvey/>
+                    </BrowserRouter>
+                )}/>
+
             </div>
         );
     }

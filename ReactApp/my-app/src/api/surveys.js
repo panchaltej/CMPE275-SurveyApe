@@ -26,7 +26,7 @@ export const createSurvey = (payload) =>
 
 //insertHotelData
 export const getSavedSurveys = (payload) =>
-    fetch(`${api}/survey/allsavedsurveys?user_id=3`, {
+    fetch(`${api}/survey/allsavedsurveys?user_id=1`, {
         method: 'GET',
         headers: {
             ...headers,
@@ -84,3 +84,62 @@ export const getOpenUniqueSurvey = (payload) =>
                 console.log("This is error");
                 return error;
             });
+
+export const registerEmailForOpenUnique = (payload) =>
+            fetch(`${api}/survey/openUniqueSurvey/emailRegister`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload),
+                credentials:'include'
+            }).then(res => res.json())
+        
+                .then(res=>{
+                    console.log(res);
+                    return res;
+                })
+                .catch(error => {
+                    console.log("This is error");
+                    return error;
+                });
+export const rendersurveys = (payload) =>
+                fetch(`${api}/survey/`+payload.surveyId+`/`+payload.uuid, {
+                    method: 'GET',
+                    headers: {
+                        ...headers,
+                        //'Content-Type': 'application/json'
+                    },
+                    //body: JSON.stringify(payload),
+                    credentials:'include'
+                }).then(res => res.json())
+            
+                    .then(res=>{
+                        //console.log(res);
+                        return res;
+                    })
+                    .catch(error => {
+                        console.log("This is error");
+                        return error;
+                    });
+            
+export const saveanswers = (payload) =>
+                    fetch(`${api}/survey/response/save`, {
+                        method: 'POST',
+                        headers: {
+                            ...headers,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload),
+                        credentials:'include'
+                    }).then(res => res.json())
+                
+                        .then(res=>{
+                            //console.log(res);
+                            return res;
+                        })
+                        .catch(error => {
+                            console.log("This is error");
+                            return error;
+                        });
