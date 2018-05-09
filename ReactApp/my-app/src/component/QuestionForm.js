@@ -80,7 +80,8 @@ class QuestionForm extends Component {
     {
         "surveyId":0,
         "userId":0,
-        "questions":[]
+        "questions":[],
+        "isLinkUsed":0
     }
 
     handleSubmit() {
@@ -383,7 +384,8 @@ handleSave() {
                             "surveyId": output.surveyId,
                             "userId": output.userId,
                             "questions": output.questions,
-                            "uuid":uuid
+                            "uuid":uuid,
+                            "isLinkUsed":output.isLinkUsed
                        }, console.log("State:"+this.state.surveyId));
                     }) ;
         debugger;
@@ -477,6 +479,7 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
+                if(this.state.questions[i].answers[0] != undefined)
                 document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
                 //alert(document.getElementById(id).value)
             }
@@ -489,6 +492,16 @@ handleSave() {
             }
         }
         }
+    }
+
+    renderButton(){
+        if(this.state.isLinkUsed == 0 || this.state.isLinkUsed == undefined)
+        return(
+            <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>)
+        else
+        alert(this.state.isLinkUsed)
+        return(
+            <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} disabled type="button" className="btn btn-success">  Submit</button>)
     }
 
     render() {
@@ -632,6 +645,7 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
+                if(this.state.questions[i].answers[0] != undefined)
                 document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
             }
@@ -663,7 +677,7 @@ handleSave() {
                                 {renderValue}
 
                                 <div className="col-md-offset-3 col-md-9" >
-                                    <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>
+                                    {this.renderButton()}
                                 </div>
                             </div>
                         </div>
