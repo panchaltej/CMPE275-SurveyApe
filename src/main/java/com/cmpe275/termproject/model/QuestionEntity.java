@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.model;
 
+import com.cmpe275.termproject.view.Stats;
 import com.cmpe275.termproject.view.Survey;
 import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -19,16 +20,16 @@ public class QuestionEntity {
 
     @Id
     @GeneratedValue
-    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class, Stats.summary.class})
     @Column(name = "question_id")
     private Integer question_id;
 
     @Column(name = "question_type")
-    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class, Stats.summary.class})
     private String question_type;
 
     @Column(name = "question_text")
-    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class, Stats.summary.class})
     private String question_text;
 
     @ManyToOne
@@ -38,13 +39,13 @@ public class QuestionEntity {
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "question_id",orphanRemoval = true)
-    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class, Stats.summary.class})
     private Set<OptionsEntity> options = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "questionId",orphanRemoval = true)
-    @JsonView({Survey.summary.class, SurveyResponse.summary.class})
+    @JsonView({Survey.summary.class, SurveyResponse.summary.class, Stats.summary.class})
     private Set<AnswerEntity> answers = new HashSet<>();
 
     public Set<OptionsEntity> getOptions() {

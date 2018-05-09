@@ -68,7 +68,7 @@ public class OpenUniqueSurveyResource {
         openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
         openUniqueSurveyEntity.setEmailId(jsonObject.getString("usreid"));
         openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
-        openUniqueSurveyEntity.setIslinkused("");
+        openUniqueSurveyEntity.setIslinkused(0);
 
         openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 

@@ -1,6 +1,7 @@
 package com.cmpe275.termproject.helperClasses;
 
 import com.cmpe275.termproject.model.QuestionEntity;
+import com.cmpe275.termproject.view.Stats;
 import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -8,18 +9,19 @@ import java.util.Date;
 import java.util.List;
 
 public class SurveyStats {
+    @JsonView({Stats.summary.class})
     private String surveyName;
-
+    @JsonView({Stats.summary.class})
     private Date startTime;
-
+    @JsonView({Stats.summary.class})
     private Date endTime;
-
+    @JsonView({Stats.summary.class})
     private float numOfParticipants;
-
+    @JsonView({Stats.summary.class})
     private float numOfRegisteredUsers;
-
+    @JsonView({Stats.summary.class})
     private float participationRate;
-
+    @JsonView({Stats.summary.class})
     private List<QuestionEntity> questions;
 
     public String getSurveyName() {
