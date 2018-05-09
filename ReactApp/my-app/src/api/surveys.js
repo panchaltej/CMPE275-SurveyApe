@@ -207,6 +207,7 @@ export const unpublish  = (payload) =>
                             });
 
 
+
 export const getgeneralSurvey = (payload) =>
                             fetch(`${api}/survey/allgeneralsurveys`, {
                                 method: 'GET',
@@ -226,3 +227,15 @@ export const getgeneralSurvey = (payload) =>
                                     console.log("This is error");
                                     return error;
                               });
+
+export const getfile  = () =>
+    axios.get(api + '/survey/getfile')
+        .then(res => {
+            //console.log('response from server getfile', res.data);
+
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error in API",error);
+            return error;
+

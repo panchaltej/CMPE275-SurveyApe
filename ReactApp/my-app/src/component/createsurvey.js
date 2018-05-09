@@ -156,7 +156,16 @@ class HP extends Component{
             let temp=this.props.selectedsavedsurveys;
             let date=new Date(temp.endTime);
             date.setHours(date.getHours()-7);
+
             this.setState({end_time:date.toISOString().substring(0,16),user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+
+            alert(date.toISOString().substring(0,16));
+            let abc=date.toISOString().substring(0,16);
+            if(abc==="1969-12-31T17:00"){
+                abc="";
+            }
+            this.setState({end_time:abc,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+
 
         }
         else{
@@ -317,6 +326,14 @@ class HP extends Component{
             console.log(output);
         }) ;
     }
+    extendTime(){
+        let data={
+            is_published:this.state.is_published,
+            survey_id:this.state.survey_id,
+            end_time:this.state.end_time
+        };
+        console.log("data",data);
+    }
 
     render(){
         var style = {width: '280px'}
@@ -384,8 +401,9 @@ class HP extends Component{
                             {this.state.surveytype==='C'?<div>Add Invitees<button onClick={()=>this.addInvitee()}>Add email</button><br/>{this.showInvitees()}</div>:''}
                             {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
         {/*close button*/}  {this.state.is_published && !this.state.is_closed?<button className="btn btn-warning" onClick={()=>this.closeSurvey()}>End/Close Survey</button>:''}<br/>
-                            Choose end date and time:<input onChange={(e)=>this.setState({end_time:e.target.value})} value={this.state.end_time} type="datetime-local"/>
-                            </div>
+                            Choose end date and time:<input onChange={(e)=>this.setState({end_time:e.target.value})} value={this.state.end_time} type="datetime-local"/><br/>
+                            {this.state.end_time!=="" && !this.state.is_closed && this.state.is_published?<button onClick={()=>this.extendTime()}>Extend time</button>:""}
+                        </div>
                     </div>
                 </div>
             </div>
