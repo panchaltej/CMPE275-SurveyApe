@@ -223,8 +223,10 @@ class QuestionForm extends Component {
         let uuid = this.props.match.params.uuid;
         let email=emailVal;
         let tempState=this.state;
-        debugger;
-        API.submitAnswers({tempState,email}).then
+        tempState["email"]=email;
+        //alert(email);
+       // debugger;
+        API.submitAnswers({tempState}).then
         ((output) => {
             debugger;
             console.log(output)
@@ -508,9 +510,18 @@ handleSave() {
 
                     }
                     if (this.state.questions[i].question_type == "TB") {
-                        if (this.state.questions[i].answers.length > 0)
+                        if (this.state.questions[i].answers.length > 0) {
                             document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
-                        //alert(document.getElementById(id).value)
+                            debugger;
+                            // if(this.state.questions[i].question_text.includes("email"))
+                            // {
+                            //     alert("contains email")
+                            //     if(document.getElementById(toString(id)).value=="")
+                            //     {
+                            //         document.getElementById(toString(id)).value=localStorage.getItem("email")
+                            //     }
+                            // }
+                        }//alert(document.getElementById(id).value)
                     }
                     if (this.state.questions[i].question_type == "DR") {
                         if (this.state.questions[i].answers.length > 0) {
@@ -526,6 +537,18 @@ handleSave() {
                             elements[parseInt(this.state.questions[i].answers[0].answerDescription) - 1].checked = true;
                         //alert(document.getElementById(id).value)
                     }
+
+                    // if (this.state.questions[i].question_type == "TB") {
+                    //     if (this.state.questions[i].question_text.includes("email")) {
+                    //         alert(localStorage.getItem("email"))
+                    //         if (document.getElementById(toString(id)) != undefined) {
+                    //             alert("The Doc val is :"+ document.getElementById(toString(id)).value)
+                    //             if (document.getElementById(toString(id)).value == "") {
+                    //                 document.getElementById(toString(id)).value = localStorage.getItem("email")
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
@@ -546,6 +569,14 @@ handleSave() {
     render() {
         if(this.state.questions!=undefined) {
             if (this.state.questions.length > 0) {
+               // renderValue.push(<h5>Your Email Id is:{localStorage.getItem("email")}</h5>)
+               //  renderValue.push(<h5 className="form-control questions"
+               //                       style={leftFloat}>Enter your Email Id:</h5>)
+               //
+               //  renderValue.push(<div className="optionsClass"><input type="text"
+               //                                                        className="form-check-input inputStyle"
+               //                                                        style={leftFloat} value={localStorage.getItem("email")}/><br/></div>)
+
                 for (var i = 0; i <= this.state.questions.length - 1; i++) {
                     if (this.state.questions[i].question_type == "R") {
 
@@ -700,6 +731,15 @@ handleSave() {
                         if (this.state.questions[i].answers.length > 0) {
                             if (document.getElementById(toString(id)) != undefined)
                                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
+                            debugger;
+                            // if(this.state.questions[i].question_text.includes("email"))
+                            // {
+                            //     if(document.getElementById(toString(id)).value=="")
+                            //     {
+                            //         document.getElementById(toString(id)).value=localStorage.getItem("email")
+                            //     }
+                            // }
+
                         }
 
                         //alert(document.getElementById(id).value)
@@ -722,6 +762,18 @@ handleSave() {
                         }
                         //alert(document.getElementById(id).value)
                     }
+
+                    // if (this.state.questions[i].question_type == "TB") {
+                    //     if (this.state.questions[i].question_text.includes("email")) {
+                    //         alert(localStorage.getItem("email"))
+                    //         if (document.getElementById(toString(id)) != undefined) {
+                    //             alert("The Doc val is :"+ document.getElementById(toString(id)).value)
+                    //             if (document.getElementById(toString(id)).value == "") {
+                    //                 document.getElementById(toString(id)).value = localStorage.getItem("email")
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }

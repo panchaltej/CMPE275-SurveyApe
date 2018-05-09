@@ -93,6 +93,7 @@ public class ResponseResource {
     public ResponseEntity<?> submitResponse(@RequestBody Map<String, Object> payload) throws JSONException {
         JSONObject tempState = new JSONObject(payload);
         JSONObject jsonObject = tempState.getJSONObject("tempState");
+        System.out.println("json"+jsonObject);
         Integer survey_id = jsonObject.getInt("surveyId");
         String emailId ="";
         String uuid = jsonObject.getString("uuid");
@@ -117,7 +118,7 @@ public class ResponseResource {
             saveResponse(jsonObject, emailId, type, true);
             final String username = "infosurveyape275@gmail.com";
             final String password = "qwerty123asdf";
-
+            String email =jsonObject.getString("email");;
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");
@@ -132,16 +133,36 @@ public class ResponseResource {
                     });
 
             try {
-String email="";
+
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress("infosurveyape275@gmail.com"));
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(email));
-                message.setSubject("Please verify your email address");
-                message.setText( "Hi "+","+  System.lineSeparator() +"Thank you for Filling out the survey with SurveyApe"+ System.lineSeparator() +"Your survey is now submitted successfully" );
+                message.setSubject("Survey Submitted successfully");
+                message.setText( "Hi,"+  System.lineSeparator() +"Your survey is submitted successfully" );
 
 
                 System.out.println("Done");
+//
+//                MimeBodyPart messageBodyPart = new MimeBodyPart();
+//
+//                Multipart multipart = new MimeMultipart();
+//
+//                messageBodyPart = new MimeBodyPart();
+//                String file = "src/main/resources/google.png";
+//                String fileName = "attachmentName";
+//                DataSource source = new FileDataSource(file);
+//                messageBodyPart.setDataHandler(new DataHandler(source));
+//                messageBodyPart.setFileName("fileName.jpg");
+//                messageBodyPart.setHeader("Content-ID", "<image>");
+//                multipart.addBodyPart(messageBodyPart);
+//
+//                message.setContent(multipart);
+                Transport.send(message);
+
+
+                System.out.println("Sent message successfully....");
+
 
 
             } catch (MessagingException e) {
