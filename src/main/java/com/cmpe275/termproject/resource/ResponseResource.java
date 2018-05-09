@@ -63,7 +63,7 @@ public class ResponseResource {
         Integer survey_id = jsonObject.getInt("surveyId");
         String emailId ="";
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        if(new Date().before(se.getEndTime())) {
+        if(se.getEndTime() == null || new Date().before(se.getEndTime())) {
             String type = se.getSurvey_type();
 
             if (type.equals("C")) {
@@ -98,7 +98,7 @@ public class ResponseResource {
         String uuid = jsonObject.getString("uuid");
 
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        if(new Date().before(se.getEndTime())) {
+        if(se.getEndTime() == null || new Date().before(se.getEndTime())) {
             String type = se.getSurvey_type();
 
             if (type.equals("C")) {
