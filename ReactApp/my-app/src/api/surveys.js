@@ -81,25 +81,18 @@ export const uploadFile = (payload) =>
             return error;
         });
 
-export const getOpenUniqueSurvey = (payload) =>
-        fetch(`${api}/survey/allopenuniquesurveys`, {
-            method: 'GET',
-            headers: {
-                ...headers,
-               // 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload),
-            credentials:'include'
-        }).then(res => res.json())
-    
-            .then(res=>{
-                console.log(res);
-                return res;
-            })
-            .catch(error => {
-                console.log("This is error");
-                return error;
-            });
+
+export const getOpenUniqueSurvey  = (payload) =>
+    axios.post(api + '/survey/allopenuniquesurveys', payload)
+        .then(res => {
+            console.log('response from server deletefile', res.data);
+
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error in deletefile API");
+            return error;
+        });
 
 export const registerEmailForOpenUnique = (payload) =>
             fetch(`${api}/survey/openUniqueSurvey/emailRegister`, {

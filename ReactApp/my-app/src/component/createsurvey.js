@@ -11,6 +11,7 @@ class HP extends Component{
         user_id:0,
         survey_name:'',
         surveytype:'G',
+        is_closed:false,
         is_published:false,
         closed_invitees:[],
         question:[],
@@ -21,8 +22,10 @@ class HP extends Component{
             {value: 'C',label:'Closed'}
             ],
         options:[
-            { value: 'R', label: 'MCQ-Single Text answer' },
-            { value: 'I', label: 'MCQ-Single Image answer' },
+            { value: 'R', label: 'MCQ-Single Text Dropwdown type' },
+            { value: 'R', label: 'MCQ-Single Text Radio type' },
+            { value: 'I', label: 'MCQ-Single Image Dropwdown type' },
+            { value: 'I', label: 'MCQ-Single Image Radio type' },
             { value: 'CB', label: 'MCQ-Multiple Text answers' },
             { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
             { value: 'DR', label: 'Yes/no' },
@@ -189,10 +192,10 @@ class HP extends Component{
         // reader.readAsArrayBuffer(this.state.question[0].options[0].option_description);
         //console.log(new Buffer(reader.result).toString('base64'));
 
-      //   API.createSurvey(surveyData).then
-      //       ((output) => {
-      //   console.log(output);
-      // }) ;
+        API.createSurvey(surveyData).then
+            ((output) => {
+        console.log(output);
+      }) ;
 
         //console.log(this.state.images);
 
@@ -281,6 +284,14 @@ class HP extends Component{
         this.props.route('/createSurvey')
     }
 
+    closeSurvey(){
+        //this.setState({is_closed:true});
+        function openInNewTab() {
+            var win = window.open("http://google.com");
+        }
+        openInNewTab();
+    }
+
     addInvitees(){
 
         let closed_invitees='';
@@ -303,7 +314,7 @@ class HP extends Component{
     <div>
 
                 <div className="container-fluid">
-                    <h1>{this.state.is_published?"This survey is now live!":""}</h1>
+                    <h1>{this.state.is_published?"This survey is now "+(this.state.is_closed?"closed!":"live!"):""}</h1>
                     <h2>Enter survey type:</h2><select disabled={this.state.is_published} onChange={(e)=>this.setState({surveytype:e.target.value})} value={this.state.surveytype}>
                     {this.state.surveytypes.map((e, index) => {
                         return <option key={index} value={e.value}>{e.label}</option>;
@@ -354,10 +365,11 @@ class HP extends Component{
                             {this.showQuestion()}
                         </div>
                         <div className="col-md-3">
-                            {this.state.is_published?<button className="btn btn-warning" onClick={()=>this.unPublish()}>Take this survey down</button>:<button onClick={()=>this.save()} className="btn btn-info">Save</button>}<br/><br/>
-                            {this.state.totalQuestions>0 && !this.state.is_published?<button className="btn btn-success" onClick={()=>this.publish()}>Go Live!</button>:''}<br/><br/>
+                            {this.state.is_published?<button disabled={this.state.is_closed} className="btn btn-warning" onClick={()=>this.unPublish()}>Unpublish</button>:<button onClick={()=>this.save()} className="btn btn-info">Save</button>}<br/><br/>
+                            {!this.state.is_published?<button className="btn btn-success" disabled={this.state.totalQuestions===0} onClick={()=>this.publish()}>Publish!</button>:''}<br/><br/>
                             {this.state.surveytype==='C'?<div>Add Invitees<button onClick={()=>this.addInvitee()}>Add email</button><br/>{this.showInvitees()}</div>:''}
                             {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
+        {/*close button*/}  {this.state.is_published && !this.state.is_closed?<button className="btn btn-warning" onClick={()=>this.closeSurvey()}>End/Close Survey</button>:''}<br/>
                             Choose end date and time:<input onChange={(e)=>this.setState({end_time:e.target.value})} value={this.state.end_time} type="datetime-local"/>
                             </div>
                     </div>
