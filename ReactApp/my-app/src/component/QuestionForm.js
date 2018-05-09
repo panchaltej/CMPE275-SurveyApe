@@ -163,6 +163,11 @@ class QuestionForm extends Component {
                     this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
+            if (this.state.questions[i].question_type == "I") {
+                if(this.state.questions[i].answers.length>0){}
+                    //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //alert(document.getElementById(id).value)
+            }
             if (this.state.questions[i].question_type == "ST") {
 
                 var elements = document.getElementsByName(id);
@@ -188,8 +193,8 @@ class QuestionForm extends Component {
         alert("submit executed");
 
         // Payload for saveanswers
-        let surveyId = this.props.match.params.surveyId;
-        let uuid = this.props.match.params.uuid;
+
+
 
         debugger;
 
@@ -199,8 +204,12 @@ class QuestionForm extends Component {
             localStorage.setItem("email",personEmail)
         }
         var emailVal=localStorage.getItem("email");
+        let surveyId = this.props.match.params.surveyId;
+        let uuid = this.props.match.params.uuid;
+        let email=emailVal;
+        let tempState=this.state;
 
-        API.submitAnswers(this.state).then
+        API.submitAnswers({tempState,email}).then
         ((output) => {
             console.log(output)
         
@@ -493,6 +502,17 @@ handleSave() {
 
                 renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
                 
+            }
+            if (this.state.questions[i].question_type==="I")
+            {
+
+                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>);
+                for(let j=0;j<=this.state.questions[i].options.length-1;j++)
+                {
+                    renderValue.push(<div className="optionsClass"><img src={""} alt={"option"+(i+1)}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+
+                }
+
             }
             if (this.state.questions[i].question_type=="DR")
             {

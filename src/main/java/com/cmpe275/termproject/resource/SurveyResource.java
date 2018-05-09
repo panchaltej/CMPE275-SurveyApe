@@ -72,7 +72,7 @@ public class SurveyResource {
 //            System.out.println(ex);
 //        }
 
-        if(surveyRepository.findOne(surveyId).getEndTime() != null || new Date().before(surveyRepository.findOne(surveyId).getEndTime())){
+        if(surveyRepository.findOne(surveyId).getEndTime() == null || new Date().before(surveyRepository.findOne(surveyId).getEndTime())){
             SavedResponse savedResponse = new SavedResponse();
 
             savedResponse.setSurveyId(surveyId);
@@ -646,7 +646,7 @@ public class SurveyResource {
         try {
             System.out.println("in images upload");
 //            for (int i = 0; i <files.length ; i++) {
-                files.transferTo(new File( "C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
+                files.transferTo(new File( "C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
 
             //}
 
