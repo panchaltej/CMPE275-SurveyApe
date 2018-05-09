@@ -22,13 +22,13 @@ class HP extends Component{
             {value: 'C',label:'Closed'}
             ],
         options:[
-            { value: 'R', label: 'MCQ-Single Text Dropwdown type' },
+            { value: 'DR', label: 'MCQ-Single Text Dropwdown type' },
             { value: 'R', label: 'MCQ-Single Text Radio type' },
             { value: 'I', label: 'MCQ-Single Image Dropwdown type' },
             { value: 'I', label: 'MCQ-Single Image Radio type' },
             { value: 'CB', label: 'MCQ-Multiple Text answers' },
             { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
-            { value: 'DR', label: 'Yes/no' },
+            { value: 'Y', label: 'Yes/no' },
             { value: 'TB', label: 'Short answer' },
             { value: 'DT', label: 'Date/time' },
             { value: 'ST', label: 'Star rating' },
@@ -44,7 +44,7 @@ class HP extends Component{
     addQuestion(qType){
         console.log(qType);
         let options=[];
-        if(qType==="DR") {
+        if(qType==="Y") {
             for(let i=0;i<2;i++){
                 options.push({"option_description":"","image_description":""});
             }
@@ -129,10 +129,10 @@ class HP extends Component{
           //console.log(this.state.question[i]);
           let qtype=this.state.question[i].question_type;
           console.log(qtype);
-            if(this.state.question[i].question_type==='DR'){ //yes/no
+            if(this.state.question[i].question_type==="Y"){ //yes/no
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/>{this.showOption(i)}</div>);
             }
-            else if(qtype==='R' || qtype==="CB" || qtype==="I"){
+            else if(qtype==='R' || qtype==="CB" || qtype==="I" || qtype==="DR"){
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/><button disabled={this.state.is_published} onClick={()=>this.addOption(i)}>Add option</button><br/>{this.showOption(i)}</div>);
             }
             else{
