@@ -223,8 +223,10 @@ class QuestionForm extends Component {
         let uuid = this.props.match.params.uuid;
         let email=emailVal;
         let tempState=this.state;
-        debugger;
-        API.submitAnswers({tempState,email}).then
+        tempState["email"]=email;
+        //alert(email);
+       // debugger;
+        API.submitAnswers({tempState}).then
         ((output) => {
             debugger;
             console.log(output)
@@ -567,6 +569,14 @@ handleSave() {
     render() {
         if(this.state.questions!=undefined) {
             if (this.state.questions.length > 0) {
+               // renderValue.push(<h5>Your Email Id is:{localStorage.getItem("email")}</h5>)
+               //  renderValue.push(<h5 className="form-control questions"
+               //                       style={leftFloat}>Enter your Email Id:</h5>)
+               //
+               //  renderValue.push(<div className="optionsClass"><input type="text"
+               //                                                        className="form-check-input inputStyle"
+               //                                                        style={leftFloat} value={localStorage.getItem("email")}/><br/></div>)
+
                 for (var i = 0; i <= this.state.questions.length - 1; i++) {
                     if (this.state.questions[i].question_type == "R") {
 
