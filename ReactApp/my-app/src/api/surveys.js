@@ -238,4 +238,6 @@ export const getfile  = () =>
         .catch(error => {
             console.log("This is error in API",error);
             return error;
+
         });
+
