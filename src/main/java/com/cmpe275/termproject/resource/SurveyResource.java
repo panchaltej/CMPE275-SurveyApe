@@ -142,7 +142,7 @@ public class SurveyResource {
                 userEntity = userRepository.findOneByEmail(closedSurveyEntity.getEmailId());
                 savedResponse.setIsLinkUsed(closedSurveyEntity.getIslinkused());
             }
-            if(userEntity.getId() != null) {
+            if(userEntity != null && userEntity.getId() != null) {
                 userId = userEntity.getId();
                 emailId = userEntity.getEmail_id();
                 savedResponse.setUserId(String.valueOf(userId));

@@ -19,7 +19,7 @@ class Stats extends Component {
 
     componentWillMount(){
         var payload = {
-            surveyId : "1"
+            surveyId : "19"
         }
         statsAPI.getStats(payload)
         .then((obj) => {
@@ -31,11 +31,87 @@ class Stats extends Component {
     }
 
     renderQuestions(){
-        if(this.state.stats.questions.length > 0){
+        if(this.state.stats.questions){
             return this.state.stats.questions.map((que) => {
+                if(que.question_type == "TB"){
+                    return(
+                    <div class="table-responsive">
+                        <h5>{que.question_text}</h5>
+                        {que.answers.map((option)=>{
+                            return(
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>{option.answerDescription}</td>
+                                        {/* <td>{option.count}</td> */}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            );
+                        }
+                        )}
+                    </div>
+                    )
+                }
+                else if(que.question_type == "ST"){
+                    var temp = [0,0,0,0,0]
+                    return(
+                    <div class="table-responsive">
+                        <h5>{que.question_text}</h5>
+                        {que.answers.map((option)=>{
+                            if(option.answerDescription == "1"){
+                                temp[0] = temp[0] + 1
+                            }
+                            if(option.answerDescription == "2"){
+                                temp[1] = temp[1] + 1
+                            }
+                            if(option.answerDescription == "3"){
+                                temp[2] = temp[2] + 1
+                            }
+                            if(option.answerDescription == "4"){
+                                temp[3] = temp[3] + 1
+                            }
+                            if(option.answerDescription == "5"){
+                                temp[4] = temp[4] + 1
+                            }
+                        })}
+                        
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>1-star</td>
+                                        <td>{temp[0]}</td>
+                                        {/* <td>{option.count}</td> */}
+                                    </tr>
+                                    <tr>
+                                        <td>2-star</td>
+                                        <td>{temp[1]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3-star</td>
+                                        <td>{temp[2]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4-star</td>
+                                        <td>{temp[3]}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td>{temp[4]}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            );
+                        
+                        
+                    </div>
+                            
+                    )
+                }
+                else{
                 return(
                     <div class="table-responsive">
-                        <h4>{que.question_text}</h4>
+                        <h5>{que.question_text}</h5>
                         {que.options.map((option)=>{
                             return(
                             <table class="table table-striped">
@@ -51,6 +127,7 @@ class Stats extends Component {
                         )}
                     </div>
                 );
+            }
             });
         }   
     }

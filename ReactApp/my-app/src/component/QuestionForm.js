@@ -150,9 +150,15 @@ class QuestionForm extends Component {
                 {
                     debugger;
                     var obj = {};
-                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
-                    this.state.questions[i].answers.push(obj);
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
                 }
 
 
@@ -179,9 +185,15 @@ class QuestionForm extends Component {
                     if(elements[temp_star].checked){
                         if(this.state.questions[i].options.length>0) {
                             var obj = {};
-                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            obj["optionId"] = this.state.questions[i].options[0].option_id;
                             obj["optionDescription"] =elements[temp_star].value;
+                            if(this.state.questions[i].answers.length >0){
+                                this.state.questions[i].answers=[];
                             this.state.questions[i].answers.push(obj);
+                            }
+                            else{
+                                this.state.questions[i].answers.push(obj);
+                            }
                         }
                         // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
@@ -303,8 +315,22 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers.length>0)
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                if(this.state.questions[i].options.length>0)
+                {
+                    debugger;
+                    var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
+                }
+                //if(this.state.questions[i].answers.length>0)
+                //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
@@ -335,7 +361,7 @@ handleSave() {
         }
         }
         debugger
-        alert("save executed");
+        // alert("save executed");
 
         // Payload for saveanswers
         let surveyId = this.props.match.params.surveyId;
@@ -435,72 +461,73 @@ handleSave() {
     }
 
     componentDidUpdate(){
-        if(this.state.questions.length > 0){
-        for (var i = 0; i <= this.state.questions.length - 1; i++) {
+        if(this.state.questions!=undefined) {
+            if (this.state.questions.length > 0) {
+                for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
-            var id = this.state.questions[i].question_id;
-            if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
+                    var id = this.state.questions[i].question_id;
+                    if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length > 0) {
 
-                var radioVal = document.getElementsByName(id);
-                if(radioVal)
-                for (var j = 0; j < radioVal.length; j++) {
-                    if(radioVal[j].value==this.state.questions[i].answers[0].answerDescription) {
-                        radioVal[j].checked=true;
+                        var radioVal = document.getElementsByName(id);
+                        if (radioVal)
+                            for (var j = 0; j < radioVal.length; j++) {
+                                if (radioVal[j].value == this.state.questions[i].answers[0].answerDescription) {
+                                    radioVal[j].checked = true;
+                                }
+                            }
+                    }
+
+
+                    if (this.state.questions[i].question_type == "CB") {
+                        debugger;
+                        var id12 = this.state.questions[i].question_id;
+                        var checkVal = document.getElementsByName(id12);
+                        var checkedBoxes = "";
+                        var checkedArray = []
+                        var checkedIdArray = []
+                        for (var k = 0; k < checkVal.length; k++) {
+                            for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                                if (this.state.questions[i].answers[m].answerDescription == checkVal[k].value) {
+                                    checkVal[k].checked = true;
+                                }
+                            }
+
+                        }
+                        // resultData.questions[i].answers = []
+                        // for (var k = 0; k < checkedArray.length; k++) {
+                        //     var obj = {};
+                        //     obj["option_id"] = checkedIdArray[k];
+                        //     obj["option_description"] = checkedArray[k]
+                        //     resultData.questions[i].answers.push(obj);
+                        // }
+                    }
+                    if (this.state.questions[i].question_type == "DT") {
+                        if (this.state.questions[i].answers.length > 0)
+                            document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                        //alert(document.getElementById(id).value)
+
+                    }
+                    if (this.state.questions[i].question_type == "TB") {
+                        if (this.state.questions[i].answers.length > 0)
+                            document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                        //alert(document.getElementById(id).value)
+                    }
+                    if (this.state.questions[i].question_type == "DR") {
+                        if (this.state.questions[i].answers.length > 0) {
+                            debugger;
+                            document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                        }
+                        //alert(document.getElementById(id).value)
+                    }
+                    if (this.state.questions[i].question_type == "ST") {
+                        var id = this.state.questions[i].question_id;
+                        var elements = document.getElementsByName(id);
+                        if (this.state.questions[i].answers.length > 0)
+                            elements[parseInt(this.state.questions[i].answers[0].answerDescription) - 1].checked = true;
+                        //alert(document.getElementById(id).value)
                     }
                 }
             }
-
-
-
-
-            if (this.state.questions[i].question_type == "CB") {
-                debugger;
-                var id12=this.state.questions[i].question_id;
-                var checkVal = document.getElementsByName(id12);
-                var checkedBoxes = "";
-                var checkedArray = []
-                var checkedIdArray = []
-                for (var k = 0; k < checkVal.length; k++) {
-                    for (var m = 0; m < this.state.questions[i].answers.length; m++) {
-                    if(this.state.questions[i].answers[m].answerDescription==checkVal[k].value)
-                    {
-                        checkVal[k].checked=true;
-                    }
-                    }
-
-                }
-                // resultData.questions[i].answers = []
-                // for (var k = 0; k < checkedArray.length; k++) {
-                //     var obj = {};
-                //     obj["option_id"] = checkedIdArray[k];
-                //     obj["option_description"] = checkedArray[k]
-                //     resultData.questions[i].answers.push(obj);
-                // }
-            }
-            if (this.state.questions[i].question_type == "DT") {
-                if(this.state.questions[i].answers.length>0)
-                 document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
-                //alert(document.getElementById(id).value)
-
-            }
-            if (this.state.questions[i].question_type == "TB") {
-                if(this.state.questions[i].answers.length>0)
-                 document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
-                //alert(document.getElementById(id).value)
-            }
-            if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers[0] != undefined)
-                document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
-                //alert(document.getElementById(id).value)
-            }
-            if (this.state.questions[i].question_type == "ST") {
-                var id = this.state.questions[i].question_id;
-                var elements=document.getElementsByName(id);
-                if(this.state.questions[i].answers.length>0)
-                elements[parseInt(this.state.questions[i].answers[0].answerDescription)-1].checked=true;
-                //alert(document.getElementById(id).value)
-            }
-        }
         }
     }
 
@@ -510,165 +537,193 @@ handleSave() {
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>)
         else
         alert(this.state.isLinkUsed)
+        window.location.reload();
         return(
+
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} disabled type="button" className="btn btn-success">  Submit</button>)
     }
 
     render() {
-        if(this.state.questions.length > 0){
-        for(var i=0;i<=this.state.questions.length-1;i++)
-        {
-            if (this.state.questions[i].question_type=="R")
-            {
+        if(this.state.questions!=undefined) {
+            if (this.state.questions.length > 0) {
+                for (var i = 0; i <= this.state.questions.length - 1; i++) {
+                    if (this.state.questions[i].question_type == "R") {
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
-                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
-                {
-                    renderValue.push(<div className="optionsClass"><input className="form-check-input" id={this.state.questions[i].question_id} onChange={ () =>{this.handleSave()}} style={leftFloat} type="radio" name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
-                    
-                }
-            }
-            if (this.state.questions[i].question_type=="CB")
-            {
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
+                        for (var j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"
+                                                                                  id={this.state.questions[i].question_id}
+                                                                                  onChange={() => {
+                                                                                      this.handleSave()
+                                                                                  }} style={leftFloat} type="radio"
+                                                                                  name={this.state.questions[i].question_id}
+                                                                                  value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/>
+                            </div>)
 
-                renderValue.push(<h5 className="form-control questions" style={leftFloat} >{this.state.questions[i].question_text}</h5>)
-                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
-                {
-                            renderValue.push(<div className="optionsClass"><input className="form-check-input"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} type="checkbox"  name={this.state.questions[i].question_id} value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/></div>)
-                            
-                }
-            }
-            if (this.state.questions[i].question_type=="DT")
-            {
+                        }
+                    }
+                    if (this.state.questions[i].question_type == "CB") {
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
+                        for (var j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            renderValue.push(<div className="optionsClass"><input className="form-check-input"
+                                                                                  style={leftFloat} onChange={() => {
+                                this.handleSave()
+                            }} id={this.state.questions[i].question_id} type="checkbox"
+                                                                                  name={this.state.questions[i].question_id}
+                                                                                  value={this.state.questions[i].options[j].option_description}/>{this.state.questions[i].options[j].option_description}<br/>
+                            </div>)
 
-                renderValue.push(<div className="optionsClass"><input type="date" className="form-check-input inputStyle"  style={leftFloat}  onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
-                
-            }
-            if (this.state.questions[i].question_type=="TB")
-            {
+                        }
+                    }
+                    if (this.state.questions[i].question_type == "DT") {
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
 
-                renderValue.push(<div className="optionsClass"><input type="text" className="form-check-input inputStyle"  style={leftFloat} onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
-                
-            }
-            if (this.state.questions[i].question_type==="I")
-            {
+                        renderValue.push(<div className="optionsClass"><input type="date"
+                                                                              className="form-check-input inputStyle"
+                                                                              style={leftFloat} onChange={() => {
+                            this.handleSave()
+                        }} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>);
-                for(let j=0;j<=this.state.questions[i].options.length-1;j++)
-                {
-                    renderValue.push(<div className="optionsClass"><img src={""} alt={"option"+(i+1)}/>{this.state.questions[i].options[j].option_description}<br/></div>)
+                    }
+                    if (this.state.questions[i].question_type == "TB") {
 
-                }
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
 
-            }
-            if (this.state.questions[i].question_type=="DR")
-            {
+                        renderValue.push(<div className="optionsClass"><input type="text"
+                                                                              className="form-check-input inputStyle"
+                                                                              style={leftFloat} onChange={() => {
+                            this.handleSave()
+                        }} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
-                var dropdownVal=[]
+                    }
+                    if (this.state.questions[i].question_type === "I") {
 
-                for(var j=0;j<=this.state.questions[i].options.length-1;j++)
-                {
-                    dropdownVal.push(<option>{this.state.questions[i].options[j].option_description}</option>)
-                }
-                renderValue.push(<select className="form-control optionsClass inputStyle" onChange={ () =>{this.handleSave()}} id={this.state.questions[i].question_id}>{dropdownVal}</select>);
-                
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>);
+                        for (let j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            renderValue.push(<div className="optionsClass"><img src={""}
+                                                                                alt={"option" + (i + 1)}/>{this.state.questions[i].options[j].option_description}<br/>
+                            </div>)
 
-            }
+                        }
 
-            if (this.state.questions[i].question_type=="ST")
-            {
+                    }
+                    if (this.state.questions[i].question_type == "DR") {
 
-                renderValue.push(<h5 className="form-control questions"  style={leftFloat} >{this.state.questions[i].question_text}</h5>)
-                var starComp=[]
-                var tempVar;
-                for(var j=1;j<=5;j++)
-                {
-                    tempVar="star-"+j;
-                    starComp.push(<input type="radio" name={this.state.questions[i].question_id} className={tempVar} id={tempVar}  value={j} onChange={ () =>{this.handleSave()}}/>)
-                    
-                    starComp.push(  <label className={tempVar} htmlFor={tempVar}>{j}</label>)
-                }
-                renderValue.push(<div className="stars">{starComp}<span></span></div>);
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
+                        var dropdownVal = []
 
-            }
-        }
-        }
+                        for (var j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            dropdownVal.push(<option>{this.state.questions[i].options[j].option_description}</option>)
+                        }
+                        renderValue.push(<select className="form-control optionsClass inputStyle" onChange={() => {
+                            this.handleSave()
+                        }} id={this.state.questions[i].question_id}>{dropdownVal}</select>);
 
-        if(this.state.questions.length > 0){
-        for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
-            var id = this.state.questions[i].question_id;
-            if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
+                    }
 
-                var radioVal = document.getElementsByName(toString(id));
-                for (var j = 0; j < radioVal.length; j++) {
-                    if(radioVal[j].value==this.state.questions[i].answers[0].optionDescription) {
-                        radioVal[j].checked=true;
+                    if (this.state.questions[i].question_type == "ST") {
+
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
+                        var starComp = []
+                        var tempVar;
+                        for (var j = 1; j <= 5; j++) {
+                            tempVar = "star-" + j;
+                            starComp.push(<input type="radio" name={this.state.questions[i].question_id}
+                                                 className={tempVar} id={tempVar} value={j} onChange={() => {
+                                this.handleSave()
+                            }}/>)
+
+                            starComp.push(<label className={tempVar} htmlFor={tempVar}>{j}</label>)
+                        }
+                        renderValue.push(<div className="stars">{starComp}<span></span></div>);
+
                     }
                 }
             }
-
-
-
-
-            if (this.state.questions[i].question_type == "CB") {
-                debugger;
-                var id12=this.state.questions[i].question_id;
-                var checkVal = document.getElementsByName(toString(id12));
-                var checkedBoxes = "";
-                var checkedArray = []
-                var checkedIdArray = []
-                for (var k = 0; k < checkVal.length; k++) {
-                    for (var m = 0; m < this.state.questions[i].answers.length; m++) {
-                    if(this.state.questions[i].answers[m].optionDescription==checkVal[k].value)
-                    {
-                        checkVal[k].checked=true;
-                    }
-                    }
-
-                }
-                // resultData.questions[i].answers = []
-                // for (var k = 0; k < checkedArray.length; k++) {
-                //     var obj = {};
-                //     obj["option_id"] = checkedIdArray[k];
-                //     obj["option_description"] = checkedArray[k]
-                //     resultData.questions[i].answers.push(obj);
-                // }
-            }
-            if (this.state.questions[i].question_type == "DT") {
-                if(this.state.questions[i].answers.length>0)
-                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
-                //alert(document.getElementById(id).value)
-
-            }
-            if (this.state.questions[i].question_type == "TB") {
-                if(this.state.questions[i].answers.length>0){
-                if(document.getElementById(toString(id)) != undefined)
-                 document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
-                }
-
-                //alert(document.getElementById(id).value)
-            }
-            if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers[0] != undefined)
-                document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
-                //alert(document.getElementById(id).value)
-            }
-            if (this.state.questions[i].question_type == "ST") {
-                var id = this.state.questions[i].question_id;
-                var elements=document.getElementsByName(toString(id));
-                if(this.state.questions[i].answers.length>0){
-                if(elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1] != undefined)
-                elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
-                }
-                //alert(document.getElementById(id).value)
-            }
         }
+        if(this.state.questions!=undefined) {
+            if (this.state.questions.length > 0) {
+                for (var i = 0; i <= this.state.questions.length - 1; i++) {
+
+                    var id = this.state.questions[i].question_id;
+                    if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length > 0) {
+
+                        var radioVal = document.getElementsByName(toString(id));
+                        for (var j = 0; j < radioVal.length; j++) {
+                            if (radioVal[j].value == this.state.questions[i].answers[0].optionDescription) {
+                                radioVal[j].checked = true;
+                            }
+                        }
+                    }
+
+
+                    if (this.state.questions[i].question_type == "CB") {
+                        debugger;
+                        var id12 = this.state.questions[i].question_id;
+                        var checkVal = document.getElementsByName(toString(id12));
+                        var checkedBoxes = "";
+                        var checkedArray = []
+                        var checkedIdArray = []
+                        for (var k = 0; k < checkVal.length; k++) {
+                            for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                                if (this.state.questions[i].answers[m].optionDescription == checkVal[k].value) {
+                                    checkVal[k].checked = true;
+                                }
+                            }
+
+                        }
+                        // resultData.questions[i].answers = []
+                        // for (var k = 0; k < checkedArray.length; k++) {
+                        //     var obj = {};
+                        //     obj["option_id"] = checkedIdArray[k];
+                        //     obj["option_description"] = checkedArray[k]
+                        //     resultData.questions[i].answers.push(obj);
+                        // }
+                    }
+                    if (this.state.questions[i].question_type == "DT") {
+                        if (this.state.questions[i].answers.length > 0)
+                            document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
+                        //alert(document.getElementById(id).value)
+
+                    }
+                    if (this.state.questions[i].question_type == "TB") {
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (document.getElementById(toString(id)) != undefined)
+                                document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
+                        }
+
+                        //alert(document.getElementById(id).value)
+                    }
+                    if (this.state.questions[i].question_type == "DR") {
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (document.getElementById(toString(id)) != undefined) {
+                                debugger;
+                                document.getElementById(toString(id)).value = this.state.questions[i].answers[0].answerDescription;
+                            }
+                        }
+                        //alert(document.getElementById(id).value)
+                    }
+                    if (this.state.questions[i].question_type == "ST") {
+                        var id = this.state.questions[i].question_id;
+                        var elements = document.getElementsByName(toString(id));
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (elements[parseInt(this.state.questions[i].answers[0].optionDescription) - 1] != undefined)
+                                elements[parseInt(this.state.questions[i].answers[0].optionDescription) - 1].checked = true;
+                        }
+                        //alert(document.getElementById(id).value)
+                    }
+                }
+            }
         }
         
         return (
