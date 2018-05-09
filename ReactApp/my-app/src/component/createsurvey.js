@@ -298,9 +298,9 @@ class HP extends Component{
     }
 
     closeSurvey(){
-        //this.setState({is_closed:true});
+        this.setState({is_closed:true});
         function openInNewTab() {
-            var win = window.open("http://google.com");
+            //var win = window.open("http://google.com");
         }
         openInNewTab();
     }
