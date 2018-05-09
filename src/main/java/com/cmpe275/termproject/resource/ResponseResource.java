@@ -63,7 +63,7 @@ public class ResponseResource {
         Integer survey_id = jsonObject.getInt("surveyId");
         String emailId ="";
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        //if(new Date().after(se.getEndTime())) {
+        if(new Date().before(se.getEndTime())) {
             String type = se.getSurvey_type();
 
             if (type.equals("C")) {
@@ -81,11 +81,11 @@ public class ResponseResource {
             saveResponse(jsonObject, emailId, type, false);
 
             return new ResponseEntity("SUCCESS", HttpStatus.OK);
-//        }
-//        else{
-//            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
-//            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
-//        }
+        }
+        else{
+            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional
@@ -98,7 +98,7 @@ public class ResponseResource {
         String uuid = jsonObject.getString("uuid");
 
         SurveyEntity se = surveyRepository.findOne(survey_id);
-        if(new Date().after(se.getEndTime())) {
+        if(new Date().before(se.getEndTime())) {
             String type = se.getSurvey_type();
 
             if (type.equals("C")) {
@@ -184,13 +184,12 @@ String email="";
                     answerEntity.setQuestionId(questionEntity);
                     answerEntity.setOptionId(answer_id);
                     answerEntity.setAnswerdescription(answer_description);
-
                     answerRepository.save(answerEntity);
 
                     if(isSubmit) {
                         for (int k = 0; k < options.length(); k++) {
-                            JSONObject option = options.getJSONObject(j);
-                            Integer option_id = option.getInt("optionId");
+                            JSONObject option = options.getJSONObject(k);
+                            Integer option_id = option.getInt("option_id");
                             OptionsEntity o = optionsRepository.findOne(option_id);
                             if (answer_id == option_id) {
                                 if (type.equals("C")) {
@@ -198,8 +197,9 @@ String email="";
                                         o.setCount(o.getCount() + 1);
                                     }
                                 } else if (type.equals("O")) {
-                                    if (openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1)
+                                    if (openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1) {
                                         o.setCount(o.getCount() + 1);
+                                    }
                                 } else {
                                     o.setCount(o.getCount() + 1);
                                 }

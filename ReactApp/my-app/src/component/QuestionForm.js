@@ -195,11 +195,11 @@ class QuestionForm extends Component {
         }
         var emailVal=localStorage.getItem("email");
 
-        // API.saveanswers(this.state).then
-        // ((output) => {
-        //     console.log(output)
-        //
-        // }) ;
+        API.submitAnswers(this.state).then
+        ((output) => {
+            console.log(output)
+        
+        }) ;
 
 
     }

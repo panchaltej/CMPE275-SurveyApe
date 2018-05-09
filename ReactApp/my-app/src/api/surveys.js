@@ -175,6 +175,25 @@ axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                             return error;
                         });
 
+    export const submitAnswers = (payload) =>
+        fetch(`${api}/survey/response/submit`, {
+            method: 'POST',
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials:'include'
+        }).then(res => res.json())
+    
+            .then(res=>{
+                //console.log(res);
+                return res;
+            })
+            .catch(error => {
+                console.log("This is error");
+                return error;
+            });
 export const unpublish  = (payload) =>
                         axios.post(api + '/survey/unpublish', payload)
                             .then(res => {

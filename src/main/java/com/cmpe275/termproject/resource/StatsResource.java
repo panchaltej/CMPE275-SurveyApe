@@ -115,7 +115,9 @@ public class StatsResource {
         surveyStats.setNumOfRegisteredUsers(numOfRegistered);
         surveyStats.setQuestions(questions);
 
-        return new ResponseEntity(surveyStats, HttpStatus.OK);
-
+        if(numberOfPart >= 2)
+            return new ResponseEntity(surveyStats, HttpStatus.OK);
+        else
+            return new ResponseEntity("Fewer than two participants", HttpStatus.OK);
     }
 }
