@@ -37,6 +37,15 @@ public class SurveyEntity {
         this.userid = user_id;
     }
 
+
+//    public Set<UserEntity> getUserid() {
+//        return userid;
+//    }
+//
+//    public void setUserid(Set<UserEntity> userid) {
+//        this.userid = userid;
+//    }
+
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             mappedBy = "surveyId",orphanRemoval = true)
@@ -47,6 +56,16 @@ public class SurveyEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private UserEntity userid;
+
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE
+//            })
+//    @JoinTable(name = "user_survey",
+//            joinColumns = { @JoinColumn(name = "post_id",referencedColumnName="surveyId"), },
+//            inverseJoinColumns = { @JoinColumn(name = "tag_id",referencedColumnName="user_id" ), })
+//    private Set<UserEntity> userid = new HashSet<>();
 
 
     public String getSurvey_type() {
@@ -146,9 +165,10 @@ public class SurveyEntity {
     @JsonIgnore
     private OpenSurveyEntity open_survey_link;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL, orphanRemoval = true,
             mappedBy = "surveyId")
     @JsonIgnore
-    private OpenUniqueSurveyEntity open_Unique_Survey_link;
+    private Set<OpenUniqueSurveyEntity> open_Unique_Survey_link = new HashSet<>();
 }

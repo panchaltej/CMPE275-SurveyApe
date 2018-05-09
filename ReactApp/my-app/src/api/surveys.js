@@ -205,3 +205,24 @@ export const unpublish  = (payload) =>
                                 console.log("This is error in API",error);
                                 return error;
                             });
+
+
+export const getgeneralSurvey = (payload) =>
+                            fetch(`${api}/survey/allgeneralsurveys`, {
+                                method: 'GET',
+                                headers: {
+                                    ...headers,
+                                   // 'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(payload),
+                                credentials:'include'
+                            }).then(res => res.json())
+                        
+                                .then(res=>{
+                                    console.log(res);
+                                    return res;
+                                })
+                                .catch(error => {
+                                    console.log("This is error");
+                                    return error;
+                              });

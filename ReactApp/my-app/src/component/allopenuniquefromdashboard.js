@@ -24,7 +24,7 @@ class openunique extends Component{
 
     fetch_all_open_unique_surveys()
     {
-        if(this.props.getallopenuniquesurveys){
+        if(this.props.getallopenuniquesurveys.length > 0){
             return this.props.getallopenuniquesurveys.map((surveys,index) =>{
                 return(
 
@@ -33,7 +33,7 @@ class openunique extends Component{
             <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                 <div class="d-flex justify-content-between align-items-center w-100">
                 <strong class="text-gray-dark">Survey Name</strong>
-                <a href="#" onClick={() =>{ 
+                <a onClick={() =>{ 
 
                             console.log("current surveys:",surveys)
                                         
@@ -43,10 +43,17 @@ class openunique extends Component{
                                             dashboard:true
                                         }
 
+
+                                      // API call for UUID entry in the call back of set state
+                                    API.emailregister(payload).then
+                                      ((output) => {
+                                          window.open(output.data);
+                                           })
+                                   }}>Take the survey</a>
+
                         
-                                            // axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
-                                            //     .then(res => {
-                                            //         console.log('response from server deletefile', res);
+                                            
+                                            {/* //         console.log('response from server deletefile', res);
 
                                             //         return res;
                                             //     })
@@ -56,13 +63,15 @@ class openunique extends Component{
                                             //     });
 
                                         // API call for UUID entry in the call back of set state
-                                        API.emailregister(payload).then
-                                        ((output) => {
-                                            window.open(output.data);
-                                            })
-                                    }}>Take the survey</a>
+                                    //     API.emailregister(payload).then
+                                    //     ((output) => {
+                                    //         window.open(output.data);
+                                    //         })
+                                    // }}>Take the survey
+                                   // </a> */}
                 </div>
                 <span class="d-block" align="left">{surveys.survey_name}</span>
+
             </div>
             </div>
                     )

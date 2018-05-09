@@ -18,7 +18,8 @@ public class OpenUniqueSurveyEntity {
     @Column(name = "islinkused", columnDefinition = "int default 0")
     private Integer islinkused;
 
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne
     @JoinColumn(name = "surveyId", nullable = false)
     private SurveyEntity surveyId;
 

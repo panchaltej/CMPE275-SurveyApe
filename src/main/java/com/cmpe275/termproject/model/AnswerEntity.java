@@ -22,6 +22,7 @@ public class AnswerEntity {
     private Integer userId;
 
     @Column(name = "email_id")
+    @JsonView({SurveyResponse.summary.class})
     private String emailId;
 
     @Column(name = "surveyId")
