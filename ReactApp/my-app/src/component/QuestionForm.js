@@ -499,9 +499,18 @@ handleSave() {
 
                     }
                     if (this.state.questions[i].question_type == "TB") {
-                        if (this.state.questions[i].answers.length > 0)
+                        if (this.state.questions[i].answers.length > 0) {
                             document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
-                        //alert(document.getElementById(id).value)
+                            debugger;
+                            // if(this.state.questions[i].question_text.includes("email"))
+                            // {
+                            //     alert("contains email")
+                            //     if(document.getElementById(toString(id)).value=="")
+                            //     {
+                            //         document.getElementById(toString(id)).value=localStorage.getItem("email")
+                            //     }
+                            // }
+                        }//alert(document.getElementById(id).value)
                     }
                     if (this.state.questions[i].question_type == "DR") {
                         if (this.state.questions[i].answers.length > 0) {
@@ -517,6 +526,18 @@ handleSave() {
                             elements[parseInt(this.state.questions[i].answers[0].answerDescription) - 1].checked = true;
                         //alert(document.getElementById(id).value)
                     }
+
+                    // if (this.state.questions[i].question_type == "TB") {
+                    //     if (this.state.questions[i].question_text.includes("email")) {
+                    //         alert(localStorage.getItem("email"))
+                    //         if (document.getElementById(toString(id)) != undefined) {
+                    //             alert("The Doc val is :"+ document.getElementById(toString(id)).value)
+                    //             if (document.getElementById(toString(id)).value == "") {
+                    //                 document.getElementById(toString(id)).value = localStorage.getItem("email")
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
@@ -691,6 +712,15 @@ handleSave() {
                         if (this.state.questions[i].answers.length > 0) {
                             if (document.getElementById(toString(id)) != undefined)
                                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
+                            debugger;
+                            // if(this.state.questions[i].question_text.includes("email"))
+                            // {
+                            //     if(document.getElementById(toString(id)).value=="")
+                            //     {
+                            //         document.getElementById(toString(id)).value=localStorage.getItem("email")
+                            //     }
+                            // }
+
                         }
 
                         //alert(document.getElementById(id).value)
@@ -713,6 +743,18 @@ handleSave() {
                         }
                         //alert(document.getElementById(id).value)
                     }
+
+                    // if (this.state.questions[i].question_type == "TB") {
+                    //     if (this.state.questions[i].question_text.includes("email")) {
+                    //         alert(localStorage.getItem("email"))
+                    //         if (document.getElementById(toString(id)) != undefined) {
+                    //             alert("The Doc val is :"+ document.getElementById(toString(id)).value)
+                    //             if (document.getElementById(toString(id)).value == "") {
+                    //                 document.getElementById(toString(id)).value = localStorage.getItem("email")
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }
             }
         }
