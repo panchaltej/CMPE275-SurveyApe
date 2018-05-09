@@ -536,8 +536,8 @@ handleSave() {
         return(
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>)
         else
-        alert(this.state.isLinkUsed)
-        window.location.reload();
+        alert("You had already submitted the survey")
+        //window.location.reload();
         return(
 
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} disabled type="button" className="btn btn-success">  Submit</button>)

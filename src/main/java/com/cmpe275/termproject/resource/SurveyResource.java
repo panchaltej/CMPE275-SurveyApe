@@ -404,6 +404,7 @@ public class SurveyResource {
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
                             closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyEntity.setEmailId(user);
                             closedSurveyRepository.save(closedSurveyEntity);
 
                             final String username = "infosurveyape275@gmail.com";
@@ -489,11 +490,28 @@ public class SurveyResource {
                     String[] invitess = jsonObject.getString("closed_invitees").split(",");
 
                     if (!jsonObject.getString("closed_invitees").equals("")) {
+
+                        // getting the older users
+                        Set<ClosedSurveyEntity> old_closed_survey_entries = surveyEntity.getClosed_surveys();
+
+                        Set<UserEntity> old_users = new HashSet<>();
+                        for(ClosedSurveyEntity c :old_closed_survey_entries )
+                        {
+                            System.out.println("c.getInvitee_user_id():"+c.getInviteeUserId());
+                            old_users.add(c.getInviteeUserId());
+                        }
+
                         for (String user : invitess) {
                             ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
                             closedSurveyEntity.setSurveyId(surveyEntity);
 
                             UserEntity userEntity = userRepository.findOneByEmail(user);
+
+                            if(old_users.contains(userEntity))
+                            {
+                                System.out.println("Already in the list");
+                                continue;
+                            }
                             closedSurveyEntity.setInviteeUserId(userEntity);
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
@@ -659,6 +677,9 @@ public class SurveyResource {
                     String[] invitess = jsonObject.getString("closed_invitees").split(",");
 
                     if (!jsonObject.getString("closed_invitees").equals("")) {
+
+
+
                         for (String user : invitess) {
                             ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
                             closedSurveyEntity.setSurveyId(surveyEntity);

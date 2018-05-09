@@ -208,7 +208,7 @@ class HP extends Component{
         API.createSurvey(surveyData).then
             ((output) => {
         console.log(output);
-        this.setState({survey_id:output},()=>console.log(this.state));
+        this.setState({survey_id:output,closed_invitees:[]},()=>console.log(this.state));
       }) ;
 
         //console.log(this.state.images);
@@ -261,7 +261,7 @@ class HP extends Component{
       API.createSurvey(surveyData).then
           ((output) => {
       console.log(output);
-      
+      this.setState({closed_invitees:[]});
    }) ;
         this.setState({is_published:true});
     }

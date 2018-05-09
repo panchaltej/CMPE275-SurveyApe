@@ -13,6 +13,7 @@ import Allsavedsurveys from './component/allsavedsurveys';
 import Openuniquesurvey from './component/allopenuniquesurveys'
 import Allgeneralsurveys from './component/allgeneralsurveys'
 import Questionform from './component/QuestionForm'
+import Allopenfromdashboard from './component/allopenuniquefromdashboard'
 
 import { Route, withRouter } from 'react-router-dom';
 import Landingpage from './component/landingpage'
@@ -124,6 +125,11 @@ class App extends Component {
         <Route exact path="/allgeneralsurveys" render={() => (
                 <div>
                     <Allgeneralsurveys/>
+                </div>
+            )}/>
+              <Route exact path="/allopenfromdashboard" render={() => (
+                <div>
+                    <Allopenfromdashboard/>
                 </div>
             )}/>
        <Route exact path="/survey/:surveyId/:uuid" render={() => (  

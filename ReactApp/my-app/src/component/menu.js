@@ -29,7 +29,7 @@ class menu extends Component{
 
                 
             <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a className="navbar-brand" href="#">Welcome to the Survey APE!</a>
+      <a className="navbar-brand" href="#">Hi,{localStorage.getItem("email")}!</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
 
@@ -67,7 +67,7 @@ class menu extends Component{
 
       <div className="jumbotron">
         <div className="container">
-          <h1 className="display-3">Hello,User! </h1>
+          <h6 className="display-3">Survey APE!</h6>
         </div>
       </div>
 

@@ -1,9 +1,15 @@
 package com.cmpe275.termproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "closed_surveys")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="closed_survey_id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ClosedSurveyEntity {
 
     @Id
