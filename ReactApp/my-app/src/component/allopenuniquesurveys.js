@@ -9,7 +9,8 @@ import React, {Component} from 'react';
 class openunique extends Component{
     state={
         usreid:"",
-        current_survey:{}
+        current_survey:{},
+        dashboard:false
     }
 
     componentDidMount()

@@ -2,6 +2,7 @@ package com.cmpe275.termproject.resource;
 
 import com.cmpe275.termproject.model.OpenUniqueSurveyEntity;
 import com.cmpe275.termproject.model.SurveyEntity;
+import com.cmpe275.termproject.model.UserEntity;
 import com.cmpe275.termproject.repository.*;
 import com.cmpe275.termproject.view.Survey;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -58,8 +59,34 @@ public class OpenUniqueSurveyResource {
         JSONObject jsonObject = new JSONObject(payload);
         JSONObject current_survey = jsonObject.getJSONObject("current_survey");
         UUID uuid = UUID.randomUUID();
-
         System.out.println("jsonObject:"+jsonObject);
+
+        // Logic added for open survey coming from dashboard
+        if(jsonObject.getBoolean("dashboard"))
+        {
+            SurveyEntity surveyEntity = surveyRepository.findOne(current_survey.getInt("surveyId"));
+            OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
+            openUniqueSurveyEntity.setSurveyId(surveyEntity);
+            openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
+
+            UserEntity userEntity = userRepository.findOne(jsonObject.getInt("usreid"));
+
+            if(openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(userEntity.getEmail_id(),surveyEntity) != null )
+                {
+                    OpenUniqueSurveyEntity op = openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(userEntity.getEmail_id(),surveyEntity);
+                    return new ResponseEntity("http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+op.getUuid(), HttpStatus.OK);
+            }
+            openUniqueSurveyEntity.setEmailId(userEntity.getEmail_id());
+            openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+            openUniqueSurveyEntity.setIslinkused(0);
+            openUniqueSurveyRepository.save(openUniqueSurveyEntity);
+
+            JSONObject responsejsonObject = new JSONObject(payload);
+            //responsejsonObject.put("url","http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid));
+            return new ResponseEntity("http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid), HttpStatus.OK);
+        }
+
+        else{
 
         SurveyEntity surveyEntity = surveyRepository.findOne(current_survey.getInt("surveyId"));
         OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
@@ -69,6 +96,12 @@ public class OpenUniqueSurveyResource {
         openUniqueSurveyEntity.setEmailId(jsonObject.getString("usreid"));
         openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
         openUniqueSurveyEntity.setIslinkused(0);
+
+            if(openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"),surveyEntity) != null )
+            {
+                OpenUniqueSurveyEntity op = openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"),surveyEntity);
+                return new ResponseEntity("http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+op.getUuid(), HttpStatus.OK);
+            }
 
         openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 
@@ -105,6 +138,7 @@ public class OpenUniqueSurveyResource {
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        }
         }
 
         return new ResponseEntity("OK", HttpStatus.OK);

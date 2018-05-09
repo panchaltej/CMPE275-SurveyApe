@@ -1,4 +1,8 @@
+
+import axios from "axios"
 const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
+
+
 
 const headers = {
     'Accept': 'application/json'
@@ -65,25 +69,32 @@ export const addInvitees = (payload) =>
             return error;
         });
 
-export const getOpenUniqueSurvey = (payload) =>
-        fetch(`${api}/survey/allopenuniquesurveys`, {
-            method: 'GET',
-            headers: {
-                ...headers,
-               // 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload),
-            credentials:'include'
-        }).then(res => res.json())
-    
-            .then(res=>{
-                console.log(res);
-                return res;
-            })
-            .catch(error => {
-                console.log("This is error");
-                return error;
-            });
+
+
+export const uploadFile = (payload) =>
+    axios.post(api + '/survey/uploadImages', payload,{withCredentials:true})
+        .then(res => {
+            console.log('response from server fileupload', res.data);
+
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error in fileupload API",error);
+            return error;
+        });
+
+
+export const getOpenUniqueSurvey  = (payload) =>
+    axios.post(api + '/survey/allopenuniquesurveys', payload)
+        .then(res => {
+            console.log('response from server deletefile', res.data);
+
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error in deletefile API");
+            return error;
+        });
 
 export const registerEmailForOpenUnique = (payload) =>
             fetch(`${api}/survey/openUniqueSurvey/emailRegister`, {
@@ -94,7 +105,7 @@ export const registerEmailForOpenUnique = (payload) =>
                 },
                 body: JSON.stringify(payload),
                 credentials:'include'
-            }).then(res => res.json())
+            }).then(res => res.body)
         
                 .then(res=>{
                     console.log(res);
@@ -141,5 +152,17 @@ export const saveanswers = (payload) =>
                         })
                         .catch(error => {
                             console.log("This is error");
+                            return error;
+                        });
+
+export const emailregister  = (payload) =>
+axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
+                        .then(res => {
+                            console.log('response from server deletefile', res);
+
+                            return res;
+                        })
+                        .catch(error => {
+                            console.log("This is error in API",error);
                             return error;
                         });

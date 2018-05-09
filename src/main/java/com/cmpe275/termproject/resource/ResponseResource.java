@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.*;
 
 @RestController
@@ -112,7 +115,38 @@ public class ResponseResource {
                 }
             }
             saveResponse(jsonObject, emailId, type, true);
+            final String username = "infosurveyape275@gmail.com";
+            final String password = "qwerty123asdf";
 
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(username, password);
+                        }
+                    });
+
+            try {
+String email="";
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("infosurveyape275@gmail.com"));
+                message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(email));
+                message.setSubject("Please verify your email address");
+                message.setText( "Hi "+","+  System.lineSeparator() +"Thank you for Filling out the survey with SurveyApe"+ System.lineSeparator() +"Your survey is now submitted successfully" );
+
+
+                System.out.println("Done");
+
+
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
             return new ResponseEntity("SUCCESS", HttpStatus.OK);
         }
         else{

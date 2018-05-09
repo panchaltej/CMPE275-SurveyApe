@@ -10,6 +10,8 @@ import {BrowserRouter} from 'react-router-dom';
  import Allsavedsurveys from './allsavedsurveys';
  import Landingpage from './landingpage'
  import Openuniquesurvey from './allopenuniquesurveys'
+ import Allopenfromdashboard from './allopenuniquefromdashboard'
+ 
 
 let initialState=true;
 class menu extends Component{
@@ -23,68 +25,74 @@ class menu extends Component{
 
             <div>
 
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+                
+            <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a className="navbar-brand" href="#">Navbar</a>
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span className="navbar-toggler-icon"></span>
+
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      <div className="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul className="navbar-nav mr-auto">
+          <li className="nav-item active">
+            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+          <li className="nav-item">
+            <a className="nav-link" href="#">Link</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+          <li className="nav-item">
+            <a className="nav-link disabled" href="#">Disabled</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div className="dropdown-menu" aria-labelledby="dropdown01">
+              <a className="dropdown-item" href="#">Action</a>
+              <a className="dropdown-item" href="#">Another action</a>
+              <a className="dropdown-item" href="#">Something else here</a>
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form className="form-inline my-2 my-lg-0">
+          <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
+          <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
       </div>
     </nav>
 
     <main role="main">
 
-      <div class="jumbotron">
-        <div class="container">
-          <h1 class="display-3">Hello,User! </h1>
+      <div className="jumbotron">
+        <div className="container">
+          <h1 className="display-3">Hello,User! </h1>
         </div>
       </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <h2>Create Survey</h2>
-            <p><button class="btn btn-secondary"
+
+      <div className="container">
+        <div className="row">
+          <div className="col-md-4">
+            <h2>Create Survey</h2> 
+            <p><button className="btn btn-secondary"
+
             onClick={() => {
               localStorage.setItem("initial",'true');
                 this.props.history.push("/createsurvey");
             }}>GO &raquo;</button></p>
           </div>
-          <div class="col-md-4">
+          <div className="col-md-4">
             <h2>Saved Surveys</h2>
-            <p><button class="btn btn-secondary"
+            <p><button className="btn btn-secondary"
             onClick={() => {
               localStorage.setItem("initial",'false');
                 this.props.history.push("/allsavedsurveys");
             }}> GO &raquo;</button></p>
           </div>
-          <div class="col-md-4">
+          <div className="col-md-4">
             <h2>Open Surveys</h2>
-            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><button class="btn btn-secondary" role="button"  onClick={() => {
+                this.props.history.push("/allopenfromdashboard");
+            }}>GO &raquo;</button></p>
           </div>
         </div>
 
@@ -120,6 +128,11 @@ class menu extends Component{
       <Route exact path="/allopenuniquesurveys" render={() => (
                 <div>
                     <Openuniquesurvey/>
+                </div>
+            )}/>
+      <Route exact path="/allopenfromdashboard" render={() => (
+                <div>
+                    <Allopenfromdashboard/>
                 </div>
             )}/>
     </div>

@@ -16,7 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -501,6 +503,32 @@ public class SurveyResource {
     public ResponseEntity<?> allOpenUniqueSurveys() throws JSONException {
 
         return new ResponseEntity(surveyRepository.findBySurveytype("O"),HttpStatus.OK);
+    }
+
+    @Transactional
+    @JsonView({Survey.summary.class})
+    @GetMapping(value = "/allgeneralsurveys")
+    public ResponseEntity<?> allGeneralSurveys() throws JSONException {
+
+        return new ResponseEntity(surveyRepository.findBySurveytype("G"),HttpStatus.OK);}
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE,value = "/uploadImages")
+    public ResponseEntity<?> Upload(@RequestParam("mypic") MultipartFile files) throws Exception{
+        try {
+            System.out.println("in images upload");
+//            for (int i = 0; i <files.length ; i++) {
+                files.transferTo(new File( "C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
+
+            //}
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+
+        JSONObject jo = new JSONObject();
+        jo.put("message", "uploaded successfully");
+        return new ResponseEntity("uploaded successfully", HttpStatus.CREATED);
+
     }
 }
 
