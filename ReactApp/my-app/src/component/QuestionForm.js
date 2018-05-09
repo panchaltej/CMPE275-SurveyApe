@@ -395,18 +395,19 @@ handleSave() {
                     console.log(output)
                    debugger;
                    console.log(this)
+                   if(output){
                     var questions = output.questions;
-                   if(questions!=undefined && questions.length!=0) {
-                       questions.map((q) => {
-                           var ans = q.answers;
-                           var new_ans = [];
-                           ans.map((a) => {
-                               if (a.emailId == localStorage.getItem("email"))
-                                   new_ans.push(a);
-                           });
-                           q.answers = new_ans;
-                       });
-                   }
+                    if(questions && questions.length > 0){
+                    questions.map((q)=>{
+                        var ans = q.answers;
+                        var new_ans = [];
+                        ans.map((a)=>{
+                            if(a.emailId == localStorage.getItem("email"))
+                            new_ans.push(a);
+                        });
+                        q.answers = new_ans;
+                    });
+                    
                     this.setState({
                             "surveyId": output.surveyId,
                             "userId": output.userId,
@@ -414,6 +415,14 @@ handleSave() {
                             "uuid":uuid,
                             "isLinkUsed":output.isLinkUsed
                        }, console.log("State:"+this.state.surveyId));
+                    }
+                    else{
+                        alert("Survey is closed or not published yet!")
+                    }
+                }
+                else{
+                    alert("Survey is closed or not published yet!")
+                }
                     }) ;
         debugger;
 }
@@ -548,8 +557,8 @@ handleSave() {
         return(
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>)
         else
-        alert(this.state.isLinkUsed)
-        window.location.reload();
+        alert("You had already submitted the survey")
+        //window.location.reload();
         return(
 
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} disabled type="button" className="btn btn-success">  Submit</button>)

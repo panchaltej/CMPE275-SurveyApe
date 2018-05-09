@@ -29,7 +29,7 @@ class menu extends Component{
 
                 
             <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a className="navbar-brand" href="#">Navbar</a>
+      <a className="navbar-brand" href="#">Hi,{localStorage.getItem("email")}!</a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
 
@@ -38,20 +38,20 @@ class menu extends Component{
       <div className="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+            <a className="nav-link" href="#"> <span className="sr-only">(current)</span></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">Link</a>
+            <a className="nav-link" href="#"></a>
           </li>
           <li className="nav-item">
-            <a className="nav-link disabled" href="#">Disabled</a>
+            <a className="nav-link disabled" href="#"></a>
           </li>
           <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <a className="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
             <div className="dropdown-menu" aria-labelledby="dropdown01">
-              <a className="dropdown-item" href="#">Action</a>
-              <a className="dropdown-item" href="#">Another action</a>
-              <a className="dropdown-item" href="#">Something else here</a>
+              <a className="dropdown-item" href="#"></a>
+              <a className="dropdown-item" href="#"></a>
+              <a className="dropdown-item" href="#"></a>
             </div>
           </li>
         </ul>
@@ -67,7 +67,7 @@ class menu extends Component{
 
       <div className="jumbotron">
         <div className="container">
-          <h1 className="display-3">Hello,User! </h1>
+          <h6 className="display-3">Survey APE!</h6>
         </div>
       </div>
 

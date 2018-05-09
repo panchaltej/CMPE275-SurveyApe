@@ -159,7 +159,7 @@ class HP extends Component{
 
             this.setState({end_time:date.toISOString().substring(0,16),user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
 
-            alert(date.toISOString().substring(0,16));
+            //alert(date.toISOString().substring(0,16));
             let abc=date.toISOString().substring(0,16);
             if(abc==="1969-12-31T17:00"){
                 abc="";
@@ -185,7 +185,7 @@ class HP extends Component{
         let surveyData={
           //Change User Id based on LOGIN
 
-          user_id:1,
+          user_id:localStorage.getItem("email"),
             end_time:this.state.end_time,
 
             survey_id:this.state.survey_id,
@@ -208,7 +208,7 @@ class HP extends Component{
         API.createSurvey(surveyData).then
             ((output) => {
         console.log(output);
-        this.setState({survey_id:output},()=>console.log(this.state));
+        this.setState({survey_id:output,closed_invitees:[]},()=>console.log(this.state));
       }) ;
 
         //console.log(this.state.images);
@@ -246,7 +246,7 @@ class HP extends Component{
 
         let surveyData={
             //Change User Id based on LOGIN
-            user_id:1,
+            user_id:localStorage.getItem("email"),
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -261,7 +261,7 @@ class HP extends Component{
       API.createSurvey(surveyData).then
           ((output) => {
       console.log(output);
-      
+      this.setState({closed_invitees:[]});
    }) ;
         this.setState({is_published:true});
     }
@@ -272,6 +272,9 @@ class HP extends Component{
             console.log(output);
             if(output.data==="ok") {
                 this.setState({is_published: false});
+            }
+            else{
+                alert("Answers are alredy submitted!");
             }
         });
     }
