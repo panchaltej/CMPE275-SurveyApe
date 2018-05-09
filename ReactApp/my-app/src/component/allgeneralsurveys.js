@@ -4,27 +4,27 @@ import React, {Component} from 'react';
  import {connect} from 'react-redux';
  import { Route, Link,Switch,withRouter } from 'react-router-dom';
  import * as API from '../api/surveys' 
- import {allopenuniquesurveys,openuniqueemailid} from '../action/getallsavedsurveys'
+ import {allgeneralsurveys} from '../action/getallsavedsurveys'
 
 class openunique extends Component{
     state={
-        usreid:1,
+        usreid:"",
         current_survey:{},
-        dashboard:true
+        dashboard:false
     }
 
     componentDidMount()
     {
-        API.getOpenUniqueSurvey().then
+        API.getgeneralSurvey().then
         ((output) => {
-            console.log("In dash board:",output);
-            this.props.allopenuniquesurveys(output)
+            console.log(output);
+            this.props.allgeneralsurveys(output)
              }) ; 
     }
 
     fetch_all_open_unique_surveys()
     {
-        return this.props.getallopenuniquesurveys.map((surveys,index) =>{
+        return this.props.getgeneralsurveys.map((surveys,index) =>{
             return(
 
                 <div class="media text-muted pt-3">
@@ -32,21 +32,13 @@ class openunique extends Component{
           <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Survey Name</strong>
-              <a href="#" onClick={() =>{ 
-
-                        console.log("current surveys:",surveys)
+              <a href="#"  onClick={() =>{ 
                                        
-                                    var payload = {
-                                        usreid:1,
-                                        current_survey:surveys,
-                                        dashboard:true
-                                    }
-
-                                      // API call for UUID entry in the call back of set state
-                                    API.emailregister(payload).then
-                                      ((output) => {
-                                          window.open(output.data);
-                                           })
+                                       this.setState({
+                                        current_survey: surveys
+                                           
+                                       });
+                                       window.open("http://localhost:3000/survey/"+surveys.surveyId+"/general");
                                    }}>Take the survey</a>
             </div>
             <span class="d-block" align="left">{surveys.survey_name}</span>
@@ -76,6 +68,7 @@ class openunique extends Component{
        
       </div>
     </main>
+    
     </div>
  )
     }
@@ -83,14 +76,13 @@ class openunique extends Component{
 
 function mapDispatchToProps(dispatch) {
     return {
-        allopenuniquesurveys : (data) => dispatch(allopenuniquesurveys(data)),
-        openuniqueemailid : (data) => dispatch(openuniqueemailid(data))
+        allgeneralsurveys : (data) => dispatch(allgeneralsurveys(data))
     };
   }
 
   function mapStateToProps(state){
     return {
-        getallopenuniquesurveys: state.getallopenuniquesurveys
+        getgeneralsurveys: state.getgeneralsurveys
     }
 }
 

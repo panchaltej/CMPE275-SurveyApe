@@ -40,7 +40,10 @@ class lendingpage extends Component{
               <li>and help us determining</li>
               <li>the best you want</li>
             </ul>
-            <button type="button" class="btn btn-lg btn-block btn-outline-primary">Get Started</button>
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary" onClick={() =>{ 
+                                      this.props.history.push("/allgeneralsurveys");
+                                       
+                                   }}>Get Started</button>
           </div>
         </div>
         <div class="card mb-4 box-shadow">

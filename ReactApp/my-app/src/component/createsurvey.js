@@ -154,7 +154,6 @@ class HP extends Component{
             let temp=this.props.selectedsavedsurveys;
             let date=new Date(temp.endTime);
             date.setHours(date.getHours()-7);
-            alert(date.toISOString().substring(0,16));
             this.setState({end_time:date.toISOString().substring(0,16),user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
 
         }
@@ -243,7 +242,7 @@ class HP extends Component{
             is_published:true,
             closed_invitees:closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):'',
             questions:this.state.question,
-            end_time:this.state.end_timex
+            end_time:this.state.end_time
 
         };
 
