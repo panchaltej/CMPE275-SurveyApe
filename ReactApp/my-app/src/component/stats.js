@@ -15,40 +15,59 @@ import * as statsAPI from '../api/stats'
 
 class Stats extends Component {
 
-    state={}
+    state={"stats":{}}
 
     componentWillMount(){
         var payload = {
-            surveyId : "2"
+            surveyId : "1"
         }
         statsAPI.getStats(payload)
         .then((obj) => {
-            console.log(obj);
-            this.setState(obj);
+            
+            this.setState({
+                "stats": obj
+            });
         });
     }
 
     renderQuestions(){
-        return this.state.questions.map((s) => {
+        if(this.state.stats.questions){
+            return this.state.stats.questions.map((que) => {
+                return(
+                    <div class="table-responsive">
+                        <h4>{que.question_text}</h4>
+                        {que.options.map((option)=>{
+                            return(
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>{option.option_description}</td>
+                                        <td>{option.count}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            );
+                        }
+                        )}
+                    </div>
+                );
+            });
+        }   
+    }
+
+    renderstartDate(){
+        if(this.state.stats.startTime){
             return(
-                <div class="table-responsive">
-                    <h4>{s.questionname}</h4>
-                    {s.options.map((option)=>{
-                        return(
-                        <table class="table table-striped">
-                            <tbody>
-                                <tr>
-                                    <td>{option.name}</td>
-                                    <td>{option.count}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        );
-                    }
-                    )}
-                </div>
+                <p>{new Date(this.state.stats.startTime)+""}</p>
+        );}
+    }
+
+    renderendDate(){
+        if(this.state.stats.endTime){
+            return(
+                <p>{new Date(this.state.stats.endTime)+""}</p>
             );
-        });
+        }
     }
 
     render() {
@@ -70,6 +89,33 @@ class Stats extends Component {
 
                             <canvas width="1000" height="0"></canvas>
 
+                            <form>
+                                <div class="form-group row">
+                                    <label for="staticEmail" class="col-sm-2 col-form-label">Start Time</label>
+                                    <div class="col-sm-10">
+                                    <label for="staticEmail">{this.renderstartDate()}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-2 col-form-label">End Time</label>
+                                    <div class="col-sm-10">
+                                    <label for="inputPassword">{this.renderendDate()}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-2 col-form-label"># of participants</label>
+                                    <div class="col-sm-10">
+                                    <label for="inputPassword">{this.state.stats.numOfParticipants}</label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-2 col-form-label">Participation Rate</label>
+                                    <div class="col-sm-10">
+                                    <label for="inputPassword">{this.state.stats.participationRate}</label>
+                                    </div>
+                                </div>
+                            </form>
+                            
                             <h4>Questions</h4>
                             {this.renderQuestions()}
                             </main>
