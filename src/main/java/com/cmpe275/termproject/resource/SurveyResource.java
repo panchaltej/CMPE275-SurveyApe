@@ -308,7 +308,7 @@ public class SurveyResource {
                 JSONArray options_array = question_object.getJSONArray("options");
                 Set<OptionsEntity> option_list = new HashSet<>();
 
-                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DR") || question_object.getString("question_type").equals("DT"))
+                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DT"))
                 {
                     OptionsEntity optionsEntity = new OptionsEntity();
                     optionsEntity.setOption_description("");
@@ -514,7 +514,7 @@ public class SurveyResource {
                 Set<OptionsEntity> option_list = new HashSet<>();
 
                 // added for Harsh - Question type
-                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DR") || question_object.getString("question_type").equals("DT"))
+                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DT"))
                 {
                     OptionsEntity optionsEntity = new OptionsEntity();
                     optionsEntity.setOption_description("");
