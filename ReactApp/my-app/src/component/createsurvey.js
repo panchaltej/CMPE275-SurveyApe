@@ -14,6 +14,7 @@ class HP extends Component{
         is_published:false,
         closed_invitees:[],
         question:[],
+        end_time:"",
         surveytypes:[
             {value: 'G',label:'General'},
             {value: 'O',label:'Open'},
@@ -28,7 +29,12 @@ class HP extends Component{
             { value: 'TB', label: 'Short answer' },
             { value: 'DT', label: 'Date/time' },
             { value: 'ST', label: 'Star rating' },
-        ]
+        ],
+        images:[]
+    };
+
+    fileChangedHandler = (event) => {
+        this.setState({selectedFile: event.target.files[0]})
     };
 
 
@@ -37,7 +43,7 @@ class HP extends Component{
         let options=[];
         if(qType==="DR") {
             for(let i=0;i<2;i++){
-                options.push({"option_description":""});
+                options.push({"option_description":"","image_description":""});
             }
         }
         let temp={"question_text":"","question_type":qType,"options":options};
@@ -67,9 +73,36 @@ class HP extends Component{
 
     showOption(index) {
         let options = [];
+        let question=this.state.question;
+        //alert(this.state.question[index].question_type);
         for (let i = 0; i < this.state.question[index].options.length; i++) {
-            options.push(<div key={i}><br/><input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setOptionName(index,i,e)} value={this.state.question[index].options[i].option_description} placeholder={'Option '+(i+1)} /><button disabled={this.state.is_published} onClick={()=>this.deleteOption(index,i)}>Delete</button><br/></div>);
+            if(this.state.question[index].question_type!=="I") {
+                options.push(<div key={i}><br/><input style={{width: "300px"}} disabled={this.state.is_published}
+                                                      onChange={(e) => this.setOptionName(index, i, e)}
+                                                      value={this.state.question[index].options[i].option_description}
+                                                      placeholder={'Option ' + (i + 1)}/>
+                    <button disabled={this.state.is_published} onClick={() => this.deleteOption(index, i)}>Delete</button>
+                    <br/></div>);
+            }
+            else{ //for images
+                // let reader  = new FileReader();
+                // let temp="";
+                // if(this.state.question[index].options[i].option_description!==""){
+                //     reader.onloadend = function () {
+                //         temp=new Buffer(reader.result).toString('base64'); //this is an ArrayBuffer
+                //         question[index].options[i].image_description=temp;
+                //     };
+                //     reader.readAsArrayBuffer(this.state.question[index].options[i].option_description);
+                //     this.setState({question:question});
+                // }
 
+                options.push(<div key={i}><br/><input type="file" style={{width: "300px"}} disabled={this.state.is_published}
+                                                      onChange={(e)=>this.handleFileUpload(index,i,e)}
+                                                      placeholder={'Option ' + (i + 1)}/>
+                    {/*<img src={"data:image/jpeg;base64,"+this.state.question[index].options[i].image_description} alt="Mountain View"/>*/}
+                    <button disabled={this.state.is_published} onClick={() => this.deleteOption(index, i)}>Delete</button>
+                    <br/></div>);
+            }
         }
         return options;
     }
@@ -94,7 +127,7 @@ class HP extends Component{
             if(this.state.question[i].question_type==='DR'){ //yes/no
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/>{this.showOption(i)}</div>);
             }
-            else if(qtype==='R' || qtype==="I" || qtype==="CB"){
+            else if(qtype==='R' || qtype==="CB" || qtype==="I"){
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/><button disabled={this.state.is_published} onClick={()=>this.addOption(i)}>Add option</button><br/>{this.showOption(i)}</div>);
             }
             else{
@@ -115,7 +148,9 @@ class HP extends Component{
             //alert("sgtadsg");
             console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
-            this.setState({user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+
+            this.setState({end_time:temp.endTime,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+
         }
         else{
             //alert("Initializing your survey...");//only for debugging
@@ -133,7 +168,10 @@ class HP extends Component{
         }
         let surveyData={
           //Change User Id based on LOGIN
-          user_id:1 ,
+
+          user_id:1,
+            end_time:this.state.end_time,
+
             survey_id:this.state.survey_id,
             survey_name:this.state.survey_name,
             surveytype:this.state.surveytype,
@@ -141,14 +179,46 @@ class HP extends Component{
             closed_invitees:closed_invitees.substring(0, closed_invitees.length-1),
             questions:this.state.question
         };
+        //console.log(new Buffer(this.state.question[0].options[0].option_description.file).toString('base64'));
+        //let fileBuffer = new Buffer(this.state.question[0].options[0].option_description);
+        // let reader  = new FileReader();
+        //
+        // reader.onloadend = function () {
+        //     console.log(new Buffer(reader.result).toString('base64')); //this is an ArrayBuffer
+        // };
+        // reader.readAsArrayBuffer(this.state.question[0].options[0].option_description);
+        //console.log(new Buffer(reader.result).toString('base64'));
 
-        API.createSurvey(surveyData).then
-            ((output) => {
-        console.log(output);
-      }) ;
+      //   API.createSurvey(surveyData).then
+      //       ((output) => {
+      //   console.log(output);
+      // }) ;
+
+        //console.log(this.state.images);
+
+        for(let i=0;i<this.state.images.length;i++){
+            API.uploadFile(this.state.images[i])
+                .then((res) => {
+
+                });
+        }
         
         console.log(surveyData);
     }
+
+    handleFileUpload = (index,i,event) => {
+        alert("in images");
+        const payload = new FormData();
+        //var f = event.target.files[0];
+        let temp = this.state.images;
+        let question=this.state.question;
+        question[index].options[i].option_description=event.target.files[0].name;
+        payload.append('mypic', event.target.files[0]);
+        temp.push(payload);
+        //console.log(f);
+        this.setState({images:temp,question:question});
+
+    };
 
     publish(){
       console.log(this.state.survey_id);
@@ -288,7 +358,8 @@ class HP extends Component{
                             {this.state.totalQuestions>0 && !this.state.is_published?<button className="btn btn-success" onClick={()=>this.publish()}>Go Live!</button>:''}<br/><br/>
                             {this.state.surveytype==='C'?<div>Add Invitees<button onClick={()=>this.addInvitee()}>Add email</button><br/>{this.showInvitees()}</div>:''}
                             {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
-                        </div>
+                            Choose end date and time:<input onChange={(e)=>this.setState({end_time:e.target.value})} value={this.state.end_time} type="datetime-local"/>
+                            </div>
                     </div>
                 </div>
             </div>

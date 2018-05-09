@@ -1,5 +1,7 @@
+
 import axios from "axios"
 const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
+
 
 
 const headers = {
@@ -64,6 +66,20 @@ export const addInvitees = (payload) =>
         })
         .catch(error => {
             console.log("This is error");
+            return error;
+        });
+
+
+
+export const uploadFile = (payload) =>
+    axios.post(api + '/survey/uploadImages', payload,{withCredentials:true})
+        .then(res => {
+            console.log('response from server fileupload', res.data);
+
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error in fileupload API",error);
             return error;
         });
 
@@ -146,6 +162,7 @@ export const saveanswers = (payload) =>
                             return error;
                         });
 
+<<<<<<< HEAD
 export const emailregister  = (payload) =>
 axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                         .then(res => {
@@ -157,3 +174,5 @@ axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                             console.log("This is error in API",error);
                             return error;
                         });
+=======
+>>>>>>> master

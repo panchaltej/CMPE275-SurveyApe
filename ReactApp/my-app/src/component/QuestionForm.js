@@ -83,6 +83,127 @@ class QuestionForm extends Component {
         "questions":[]
     }
 
+    handleSubmit() {
+        var answers = [];
+
+        for (var i = 0; i <= this.state.questions.length - 1; i++) {
+            // debugger;
+            var id = this.state.questions[i].question_id;
+            if (this.state.questions[i].question_type == "R") {
+
+                var radioVal = document.getElementsByName(id);
+
+                var radio_value;
+                var opt_id;
+                for (var j = 0; j < radioVal.length; j++) {
+                    if (radioVal[j].checked) {
+                        radio_value = radioVal[j].value;
+                        opt_id = this.state.questions[i].options[j].option_id;
+                    }
+                }
+                this.state.questions[i].answers = [];
+                var obj = {};
+                obj["optionId"] = opt_id;
+                obj["optionDescription"] = radio_value;
+                this.state.questions[i].answers.push(obj);
+            }
+            // resultData.questions[i].answers[0].optionId=opt_id;
+            // resultData.questions[i].answers[0].option_description=radio_value;
+            // for(var temp=1;temp<resultData.questions[i].answers.length;temp++)
+            // delete resultData.questions[i].answers[temp]
+
+            if (this.state.questions[i].question_type == "CB") {
+                debugger;
+                var checkVal = document.getElementsByName(id);
+                var checkedBoxes = "";
+                var checkedArray = []
+                var checkedIdArray = []
+                for (var k = 0; k < checkVal.length; k++) {
+
+                    if (checkVal[k].checked) {
+                        checkedBoxes = checkedBoxes + checkVal[k].value;
+                        checkedBoxes = checkedBoxes + ',';
+                        checkedArray.push(checkVal[k].value);
+                        checkedIdArray.push(this.state.questions[i].options[k].option_id)
+                    }
+                }
+                this.state.questions[i].answers = []
+                for (var k = 0; k < checkedArray.length; k++) {
+                    var obj = {};
+                    obj["optionId"] = checkedIdArray[k];
+                    obj["optionDescription"] = checkedArray[k]
+                    this.state.questions[i].answers.push(obj);
+                }
+            }
+            if (this.state.questions[i].question_type == "DT") {
+                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //alert(document.getElementById(id).value)
+
+            }
+            if (this.state.questions[i].question_type == "TB") {
+                debugger;
+                if(this.state.questions[i].options.length>0)
+                {
+                    debugger;
+                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    this.state.questions[i].answers.push(obj);
+                }
+
+
+                // this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "DR") {
+                if(this.state.questions[i].answers.length>0)
+                    this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //alert(document.getElementById(id).value)
+            }
+            if (this.state.questions[i].question_type == "ST") {
+
+                var elements = document.getElementsByName(id);
+                for(var temp_star=0;temp_star<elements.length;temp_star++)
+                {
+                    if(elements[temp_star].checked){
+                        if(this.state.questions[i].options.length>0) {
+                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            obj["optionDescription"] =elements[temp_star].value;
+                            this.state.questions[i].answers.push(obj);
+                        }
+                        // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
+                    }
+                }
+
+                //resultData.questions[i].answers[0].option_description = document.getElementById(id).value;
+                //alert(document.getElementById(id).value)
+            }
+        }
+        debugger
+        alert("submit executed");
+
+        // Payload for saveanswers
+        let surveyId = this.props.match.params.surveyId;
+        let uuid = this.props.match.params.uuid;
+
+        debugger;
+
+
+        if (localStorage.getItem("email") == null) {
+            var personEmail = prompt("Please enter your email");
+            localStorage.setItem("email",personEmail)
+        }
+        var emailVal=localStorage.getItem("email");
+
+        // API.saveanswers(this.state).then
+        // ((output) => {
+        //     console.log(output)
+        //
+        // }) ;
+
+
+    }
+
 
 handleSave() {
         var answers = [];
@@ -142,10 +263,22 @@ handleSave() {
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                debugger;
+                if(this.state.questions[i].options.length>0)
+                {
+                     debugger;
+                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    this.state.questions[i].answers.push(obj);
+                }
+
+
+               // this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
+                if(this.state.questions[i].answers.length>0)
                 this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
@@ -155,7 +288,12 @@ handleSave() {
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
                 {
                     if(elements[temp_star].checked){
-                        this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
+                        if(this.state.questions[i].options.length>0) {
+                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            obj["optionDescription"] =elements[temp_star].value;
+                            this.state.questions[i].answers.push(obj);
+                        }
+                       // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
                 }
 
@@ -283,11 +421,13 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
                 //alert(document.getElementById(id).value)
             }
@@ -298,6 +438,7 @@ handleSave() {
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
                 var elements=document.getElementsByName(id);
+                if(this.state.questions[i].answers.length>0)
                 elements[parseInt(this.state.questions[i].answers[0].answerDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
@@ -417,12 +558,15 @@ handleSave() {
                 // }
             }
             if (this.state.questions[i].question_type == "DT") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
+                if(this.state.questions[i].answers.length>0)
                  document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
+
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
@@ -432,6 +576,7 @@ handleSave() {
             if (this.state.questions[i].question_type == "ST") {
                 var id = this.state.questions[i].question_id;
                 var elements=document.getElementsByName(toString(id));
+                if(this.state.questions[i].answers.length>0)
                 elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
@@ -453,7 +598,7 @@ handleSave() {
                                 {renderValue}
 
                                 <div className="col-md-offset-3 col-md-9" >
-                                    <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSave()}} type="button" className="btn btn-success">  Save</button>
+                                    <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>
                                 </div>
                             </div>
                         </div>
