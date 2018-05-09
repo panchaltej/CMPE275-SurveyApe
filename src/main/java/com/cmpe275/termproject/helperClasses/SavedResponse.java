@@ -16,6 +16,9 @@ public class SavedResponse {
     private Integer emailId;
     @JsonView({SurveyResponse.summary.class})
     private List<QuestionEntity> questions;
+    @JsonView({SurveyResponse.summary.class})
+    private Integer isLinkUsed;
+
 
 //    public Integer getUserId() {
 //        return userId;
@@ -48,5 +51,13 @@ public class SavedResponse {
 
     public void setQuestions(List<QuestionEntity> questions) {
         this.questions = questions;
+    }
+
+    public Integer getIsLinkUsed() {
+        return isLinkUsed;
+    }
+
+    public void setIsLinkUsed(Integer isLinkUsed) {
+        this.isLinkUsed = isLinkUsed;
     }
 }
