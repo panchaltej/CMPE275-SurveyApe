@@ -506,6 +506,12 @@ public class SurveyResource {
     }
 
     @Transactional
+    @JsonView({Survey.summary.class})
+    @GetMapping(value = "/allgeneralsurveys")
+    public ResponseEntity<?> allGeneralSurveys() throws JSONException {
+
+        return new ResponseEntity(surveyRepository.findBySurveytype("G"),HttpStatus.OK);}
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE,value = "/uploadImages")
     public ResponseEntity<?> Upload(@RequestParam("mypic") MultipartFile files) throws Exception{
         try {
@@ -522,6 +528,7 @@ public class SurveyResource {
         JSONObject jo = new JSONObject();
         jo.put("message", "uploaded successfully");
         return new ResponseEntity("uploaded successfully", HttpStatus.CREATED);
+
     }
 }
 

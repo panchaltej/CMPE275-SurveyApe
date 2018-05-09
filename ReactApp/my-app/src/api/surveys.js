@@ -1,5 +1,7 @@
-import axios from 'axios';
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
+
+import axios from "axios"
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
+
 
 
 const headers = {
@@ -103,7 +105,7 @@ export const registerEmailForOpenUnique = (payload) =>
                 },
                 body: JSON.stringify(payload),
                 credentials:'include'
-            }).then(res => res.json())
+            }).then(res => res.body)
         
                 .then(res=>{
                     console.log(res);
@@ -153,3 +155,14 @@ export const saveanswers = (payload) =>
                             return error;
                         });
 
+export const emailregister  = (payload) =>
+axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
+                        .then(res => {
+                            console.log('response from server deletefile', res);
+
+                            return res;
+                        })
+                        .catch(error => {
+                            console.log("This is error in API",error);
+                            return error;
+                        });

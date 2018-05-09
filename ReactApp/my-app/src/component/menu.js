@@ -10,6 +10,8 @@ import {BrowserRouter} from 'react-router-dom';
  import Allsavedsurveys from './allsavedsurveys';
  import Landingpage from './landingpage'
  import Openuniquesurvey from './allopenuniquesurveys'
+ import Allopenfromdashboard from './allopenuniquefromdashboard'
+ 
 
 let initialState=true;
 class menu extends Component{
@@ -88,7 +90,9 @@ class menu extends Component{
           </div>
           <div className="col-md-4">
             <h2>Open Surveys</h2>
-            <p><a className="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><button class="btn btn-secondary" role="button"  onClick={() => {
+                this.props.history.push("/allopenfromdashboard");
+            }}>GO &raquo;</button></p>
           </div>
         </div>
 
@@ -124,6 +128,11 @@ class menu extends Component{
       <Route exact path="/allopenuniquesurveys" render={() => (
                 <div>
                     <Openuniquesurvey/>
+                </div>
+            )}/>
+      <Route exact path="/allopenfromdashboard" render={() => (
+                <div>
+                    <Allopenfromdashboard/>
                 </div>
             )}/>
     </div>
