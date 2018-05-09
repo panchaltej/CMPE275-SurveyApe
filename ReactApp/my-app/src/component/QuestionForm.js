@@ -183,8 +183,8 @@ class QuestionForm extends Component {
         alert("submit executed");
 
         // Payload for saveanswers
-        let surveyId = this.props.match.params.surveyId;
-        let uuid = this.props.match.params.uuid;
+
+
 
         debugger;
 
@@ -194,8 +194,12 @@ class QuestionForm extends Component {
             localStorage.setItem("email",personEmail)
         }
         var emailVal=localStorage.getItem("email");
+        let surveyId = this.props.match.params.surveyId;
+        let uuid = this.props.match.params.uuid;
+        let email=emailVal;
+        let tempState=this.state;
 
-        API.submitAnswers(this.state).then
+        API.submitAnswers({tempState,email}).then
         ((output) => {
             console.log(output)
         
