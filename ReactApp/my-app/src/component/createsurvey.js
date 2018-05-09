@@ -78,6 +78,7 @@ class HP extends Component{
         let options = [];
         let question=this.state.question;
         //alert(this.state.question[index].question_type);
+        if(this.state.question){
         for (let i = 0; i < this.state.question[index].options.length; i++) {
             if(this.state.question[index].question_type!=="I") {
                 options.push(<div key={i}><br/><input style={{width: "300px"}} disabled={this.state.is_published}
@@ -107,6 +108,7 @@ class HP extends Component{
                     <br/></div>);
             }
         }
+        }
         return options;
     }
     deleteOption(index,i){
@@ -123,6 +125,7 @@ class HP extends Component{
 
     showQuestion(){
         let answers = [];
+        if(this.state.totalQuestions){
         for (let i = 0; i < this.state.totalQuestions; i++) {
           //console.log(this.state.question[i]);
           let qtype=this.state.question[i].question_type;
@@ -136,6 +139,7 @@ class HP extends Component{
             else{
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button></div>);
             }
+        }
         }
         return answers;
     }
@@ -169,8 +173,10 @@ class HP extends Component{
 
     save(){
         let closed_invitees='';
+        if(this.state.closed_invitees){
         for(let i=0;i<this.state.closed_invitees.length;i++){
             closed_invitees+=this.state.closed_invitees[i]+",";
+        }
         }
         let surveyData={
           //Change User Id based on LOGIN
@@ -201,12 +207,13 @@ class HP extends Component{
       }) ;
 
         //console.log(this.state.images);
-
+        if(this.state.images){
         for(let i=0;i<this.state.images.length;i++){
             API.uploadFile(this.state.images[i])
                 .then((res) => {
 
                 });
+        }
         }
         
         console.log(surveyData);
@@ -229,8 +236,10 @@ class HP extends Component{
     publish(){
       console.log(this.state.survey_id);
         let closed_invitees='';
+        if(this.state.closed_invitees){
         for(let i=0;i<this.state.closed_invitees.length;i++){
             closed_invitees+=this.state.closed_invitees[i]+",";
+        }
         }
         console.log("closed_invitees to be sent",closed_invitees.length);
 
@@ -279,12 +288,14 @@ class HP extends Component{
         //     length=this.props.selectedsavedsurveys.closed_invitees.split(",").length;
         // }
         //alert(this.state.closed_invitees);
+        if(this.state.closed_invitees){
         for(let i=0;i<this.state.closed_invitees.length;i++){
             temp.push(<div key={i}><input disabled={false} onChange={(e)=> {
                 let invitee=this.state.closed_invitees;
                 invitee[i]=e.target.value;
                 this.setState({closed_invitees:invitee});
             }} value={this.state.closed_invitees[i]} placeholder={"Invitee email:"+(i+1)}/></div>);
+        }
         }
         return temp;
     }
@@ -308,8 +319,10 @@ class HP extends Component{
     addInvitees(){
 
         let closed_invitees='';
+        if(this.state.closed_invitees){
         for(let i=0;i<this.state.closed_invitees.length;i++){
             closed_invitees+=this.state.closed_invitees[i]+",";
+        }
         }
         let invitee_data={"survey_id":this.state.survey_id,"invitees":closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):''};
         API.addInvitees(invitee_data).then

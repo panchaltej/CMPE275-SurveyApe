@@ -85,7 +85,7 @@ class QuestionForm extends Component {
 
     handleSubmit() {
         var answers = [];
-
+        if(this.state.questions.length){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
             // debugger;
             var id = this.state.questions[i].question_id;
@@ -95,6 +95,7 @@ class QuestionForm extends Component {
 
                 var radio_value;
                 var opt_id;
+                if(radioVal)
                 for (var j = 0; j < radioVal.length; j++) {
                     if (radioVal[j].checked) {
                         radio_value = radioVal[j].value;
@@ -118,6 +119,7 @@ class QuestionForm extends Component {
                 var checkedBoxes = "";
                 var checkedArray = []
                 var checkedIdArray = []
+                if(checkVal)
                 for (var k = 0; k < checkVal.length; k++) {
 
                     if (checkVal[k].checked) {
@@ -128,6 +130,7 @@ class QuestionForm extends Component {
                     }
                 }
                 this.state.questions[i].answers = []
+                if(checkedArray)
                 for (var k = 0; k < checkedArray.length; k++) {
                     var obj = {};
                     obj["optionId"] = checkedIdArray[k];
@@ -163,6 +166,7 @@ class QuestionForm extends Component {
             if (this.state.questions[i].question_type == "ST") {
 
                 var elements = document.getElementsByName(id);
+                if(elements)
                 for(var temp_star=0;temp_star<elements.length;temp_star++)
                 {
                     if(elements[temp_star].checked){
@@ -178,6 +182,7 @@ class QuestionForm extends Component {
                 //resultData.questions[i].answers[0].option_description = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
+        }
         }
         debugger
         alert("submit executed");
@@ -211,7 +216,7 @@ class QuestionForm extends Component {
 
 handleSave() {
         var answers = [];
-
+        if(this.state.questions){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
             // debugger;
             var id = this.state.questions[i].question_id;
@@ -305,6 +310,7 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
         }
+        }
         debugger
         alert("save executed");
 
@@ -384,12 +390,14 @@ handleSave() {
     }
 
     componentDidUpdate(){
+        if(this.state.questions){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
             var id = this.state.questions[i].question_id;
             if (this.state.questions[i].question_type == "R" && this.state.questions[i].answers.length>0) {
 
                 var radioVal = document.getElementsByName(id);
+                if(radioVal)
                 for (var j = 0; j < radioVal.length; j++) {
                     if(radioVal[j].value==this.state.questions[i].answers[0].answerDescription) {
                         radioVal[j].checked=true;
@@ -447,9 +455,11 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
         }
+        }
     }
 
     render() {
+        if(this.state.questions){
         for(var i=0;i<=this.state.questions.length-1;i++)
         {
             if (this.state.questions[i].question_type=="R")
@@ -520,7 +530,9 @@ handleSave() {
 
             }
         }
+        }
 
+        if(this.state.questions){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
             var id = this.state.questions[i].question_id;
@@ -584,6 +596,7 @@ handleSave() {
                 elements[parseInt(this.state.questions[i].answers[0].optionDescription)-1].checked=true;
                 //alert(document.getElementById(id).value)
             }
+        }
         }
         
         return (
