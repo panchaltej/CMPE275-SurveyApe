@@ -17,7 +17,7 @@ export const createSurvey = (payload) =>
         },
         body: JSON.stringify(payload),
         credentials:'include'
-    }).then(res => res.status)
+    }).then(res => res.json())
 
         .then(res=>{
             console.log(res);
@@ -240,3 +240,44 @@ export const getfile  = () =>
             return error;
 
         });
+
+        export const updateendtime = (payload) =>
+        fetch(`${api}/survey/updateendtime`, {
+            method: 'POST',
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload),
+            credentials:'include'
+        }).then(res => res.json())
+    
+            .then(res=>{
+                //console.log(res);
+                return res;
+            })
+            .catch(error => {
+                console.log("This is error");
+                return error;
+            });
+
+export const closesurvey = (payload) =>
+            fetch(`${api}/survey/closesurvey`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload),
+                credentials:'include'
+            }).then(res => res.json())
+        
+                .then(res=>{
+                    //console.log(res);
+                    return res;
+                })
+                .catch(error => {
+                    console.log("This is error");
+                    return error;
+                });
+

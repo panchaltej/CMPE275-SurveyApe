@@ -171,4 +171,16 @@ public class SurveyEntity {
             mappedBy = "surveyId")
     @JsonIgnore
     private Set<OpenUniqueSurveyEntity> open_Unique_Survey_link = new HashSet<>();
+
+    public String getClosed() {
+        return closed;
+    }
+
+    public void setClosed(String closed) {
+        this.closed = closed;
+    }
+
+    @Column(name = "closed")
+    @JsonView({Survey.summary.class})
+    private String closed;
 }

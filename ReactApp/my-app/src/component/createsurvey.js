@@ -22,13 +22,13 @@ class HP extends Component{
             {value: 'C',label:'Closed'}
             ],
         options:[
-            { value: 'R', label: 'MCQ-Single Text Dropwdown type' },
+            { value: 'DR', label: 'MCQ-Single Text Dropwdown type' },
             { value: 'R', label: 'MCQ-Single Text Radio type' },
             { value: 'I', label: 'MCQ-Single Image Dropwdown type' },
             { value: 'I', label: 'MCQ-Single Image Radio type' },
             { value: 'CB', label: 'MCQ-Multiple Text answers' },
             { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
-            { value: 'DR', label: 'Yes/no' },
+            { value: 'Y', label: 'Yes/no' },
             { value: 'TB', label: 'Short answer' },
             { value: 'DT', label: 'Date/time' },
             { value: 'ST', label: 'Star rating' },
@@ -44,7 +44,7 @@ class HP extends Component{
     addQuestion(qType){
         console.log(qType);
         let options=[];
-        if(qType==="DR") {
+        if(qType==="Y") {
             for(let i=0;i<2;i++){
                 options.push({"option_description":"","image_description":""});
             }
@@ -129,10 +129,10 @@ class HP extends Component{
           //console.log(this.state.question[i]);
           let qtype=this.state.question[i].question_type;
           console.log(qtype);
-            if(this.state.question[i].question_type==='DR'){ //yes/no
+            if(this.state.question[i].question_type==="Y"){ //yes/no
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/>{this.showOption(i)}</div>);
             }
-            else if(qtype==='R' || qtype==="CB" || qtype==="I"){
+            else if(qtype==='R' || qtype==="CB" || qtype==="I" || qtype==="DR"){
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/><button disabled={this.state.is_published} onClick={()=>this.addOption(i)}>Add option</button><br/>{this.showOption(i)}</div>);
             }
             else{
@@ -164,7 +164,7 @@ class HP extends Component{
             if(abc==="1969-12-31T17:00"){
                 abc="";
             }
-            this.setState({end_time:abc,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+            this.setState({is_closed:temp.closed,end_time:abc,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
 
 
         }
@@ -208,13 +208,14 @@ class HP extends Component{
         API.createSurvey(surveyData).then
             ((output) => {
         console.log(output);
+        this.setState({survey_id:output},()=>console.log(this.state));
       }) ;
 
         //console.log(this.state.images);
         for(let i=0;i<this.state.images.length;i++){
             API.uploadFile(this.state.images[i])
                 .then((res) => {
-
+                    
                 });
         }
         
@@ -307,11 +308,11 @@ class HP extends Component{
     }
 
     closeSurvey(){
-        //this.setState({is_closed:true});
-        function openInNewTab() {
-            var win = window.open("http://google.com");
-        }
-        openInNewTab();
+        this.setState({is_closed:true});
+        API.closesurvey({"survey_id":this.state.survey_id}).then
+        ((output) => {
+            console.log(output);
+        }) ;
     }
 
     addInvitees(){
@@ -333,6 +334,11 @@ class HP extends Component{
             end_time:this.state.end_time
         };
         console.log("data",data);
+        API.updateendtime(data).then
+        ((output) => {
+            console.log(output);
+        }) ;
+        
     }
 
     render(){
@@ -399,10 +405,10 @@ class HP extends Component{
                             {this.state.is_published?<button disabled={this.state.is_closed} className="btn btn-warning" onClick={()=>this.unPublish()}>Unpublish</button>:<button onClick={()=>this.save()} className="btn btn-info">Save</button>}<br/><br/>
                             {!this.state.is_published?<button className="btn btn-success" disabled={this.state.totalQuestions===0} onClick={()=>this.publish()}>Publish!</button>:''}<br/><br/>
                             {this.state.surveytype==='C'?<div>Add Invitees<button onClick={()=>this.addInvitee()}>Add email</button><br/>{this.showInvitees()}</div>:''}
-                            {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
+                            {this.state.surveytype==='C' && this.state.is_published && this.state.closed_invitees.length>0?<button disabled={this.state.is_closed} onClick={()=>this.addInvitees()} className="btn btn-success">Send Invites</button>:''}
         {/*close button*/}  {this.state.is_published && !this.state.is_closed?<button className="btn btn-warning" onClick={()=>this.closeSurvey()}>End/Close Survey</button>:''}<br/>
                             Choose end date and time:<input onChange={(e)=>this.setState({end_time:e.target.value})} value={this.state.end_time} type="datetime-local"/><br/>
-                            {this.state.end_time!=="" && !this.state.is_closed && this.state.is_published?<button onClick={()=>this.extendTime()}>Extend time</button>:""}
+                            {!this.state.is_closed && this.state.is_published?<button onClick={()=>this.extendTime()}>Extend time</button>:""}
                         </div>
                     </div>
                 </div>
