@@ -11,11 +11,13 @@ import {BrowserRouter} from 'react-router-dom';
  import Landingpage from './landingpage'
  import Openuniquesurvey from './allopenuniquesurveys'
  import Allopenfromdashboard from './allopenuniquefromdashboard'
- 
-
 let initialState=true;
 class menu extends Component{
-
+    handleSignOut(){
+        localStorage.setItem("email","");
+        this.props.history.push("/");
+        window.location.reload();
+    }
     render()
     {
         return(
@@ -54,6 +56,7 @@ class menu extends Component{
           </li>
         </ul>
         <form className="form-inline my-2 my-lg-0">
+            <button className="btn btn-warning" onClick={ () =>{this.handleSignOut()}}>signout</button>
           <input className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
           <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -130,6 +133,11 @@ class menu extends Component{
                     <Openuniquesurvey/>
                 </div>
             )}/>
+                <Route exact path="/" render={() => (
+                    <div>
+                        <Landingpage/>
+                    </div>
+                )}/>
       <Route exact path="/allopenfromdashboard" render={() => (
                 <div>
                     <Allopenfromdashboard/>

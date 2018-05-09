@@ -72,7 +72,7 @@ public class SurveyResource {
 //            System.out.println(ex);
 //        }
 
-        if(new Date().before(surveyRepository.findOne(surveyId).getEndTime())){
+        if(surveyRepository.findOne(surveyId).getEndTime() != null || new Date().before(surveyRepository.findOne(surveyId).getEndTime())){
             SavedResponse savedResponse = new SavedResponse();
 
             savedResponse.setSurveyId(surveyId);

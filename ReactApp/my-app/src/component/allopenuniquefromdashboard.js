@@ -24,23 +24,25 @@ class openunique extends Component{
 
     fetch_all_open_unique_surveys()
     {
-        return this.props.getallopenuniquesurveys.map((surveys,index) =>{
-            return(
+        if(this.props.getallopenuniquesurveys){
+            return this.props.getallopenuniquesurveys.map((surveys,index) =>{
+                return(
 
-                <div class="media text-muted pt-3">
-          <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded"/>
-          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <div class="d-flex justify-content-between align-items-center w-100">
-              <strong class="text-gray-dark">Survey Name</strong>
-              <a href="#" onClick={() =>{ 
+                    <div class="media text-muted pt-3">
+            <img data-src="holder.js/32x32?theme=thumb&bg=007bff&fg=007bff&size=1" alt="" class="mr-2 rounded"/>
+            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                <strong class="text-gray-dark">Survey Name</strong>
+                <a href="#" onClick={() =>{ 
 
-                        console.log("current surveys:",surveys)
-                                       
-                                    var payload = {
-                                        usreid:1,
-                                        current_survey:surveys,
-                                        dashboard:true
-                                    }
+                            console.log("current surveys:",surveys)
+                                        
+                                        var payload = {
+                                            usreid:1,
+                                            current_survey:surveys,
+                                            dashboard:true
+                                        }
+
 
                                       // API call for UUID entry in the call back of set state
                                     API.emailregister(payload).then
@@ -48,12 +50,33 @@ class openunique extends Component{
                                           window.open(output.data);
                                            })
                                    }}>Take the survey</a>
+
+                        
+                                            
+                                            {/* //         console.log('response from server deletefile', res);
+
+                                            //         return res;
+                                            //     })
+                                            //     .catch(error => {
+                                            //         console.log("This is error in API",error);
+                                            //         return error;
+                                            //     });
+
+                                        // API call for UUID entry in the call back of set state
+                                    //     API.emailregister(payload).then
+                                    //     ((output) => {
+                                    //         window.open(output.data);
+                                    //         })
+                                    // }}>Take the survey
+                                   // </a> */}
+                </div>
+                <span class="d-block" align="left">{surveys.survey_name}</span>
+
             </div>
-            <span class="d-block" align="left">{surveys.survey_name}</span>
-          </div>
-        </div>
-                )
-              })
+            </div>
+                    )
+                })
+        }
     }
 
   render()
