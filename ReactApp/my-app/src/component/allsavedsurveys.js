@@ -23,7 +23,7 @@ class savedsurveys extends Component{
     dispaly_all_surveys()
     {
       console.log("this.props.getallsavedsurveys:"+this.props.getallsavedsurveys)
-      if(this.props.getallsavedsurveys){
+      if(this.props.getallsavedsurveys.length > 0){
       return this.props.getallsavedsurveys.map((surveys,index) =>{
       return(
       

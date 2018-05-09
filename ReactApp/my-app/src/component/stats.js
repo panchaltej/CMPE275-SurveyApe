@@ -31,7 +31,7 @@ class Stats extends Component {
     }
 
     renderQuestions(){
-        if(this.state.stats.questions){
+        if(this.state.stats.questions.length > 0){
             return this.state.stats.questions.map((que) => {
                 return(
                     <div class="table-responsive">

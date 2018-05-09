@@ -78,7 +78,7 @@ class HP extends Component{
         let options = [];
         let question=this.state.question;
         //alert(this.state.question[index].question_type);
-        if(this.state.question){
+        if(this.state.question.length > 0){
         for (let i = 0; i < this.state.question[index].options.length; i++) {
             if(this.state.question[index].question_type!=="I") {
                 options.push(<div key={i}><br/><input style={{width: "300px"}} disabled={this.state.is_published}
@@ -125,7 +125,7 @@ class HP extends Component{
 
     showQuestion(){
         let answers = [];
-        if(this.state.totalQuestions){
+        if(this.state.totalQuestions.length > 0){
         for (let i = 0; i < this.state.totalQuestions; i++) {
           //console.log(this.state.question[i]);
           let qtype=this.state.question[i].question_type;
@@ -173,7 +173,7 @@ class HP extends Component{
 
     save(){
         let closed_invitees='';
-        if(this.state.closed_invitees){
+        if(this.state.closed_invitees.length > 0){
         for(let i=0;i<this.state.closed_invitees.length;i++){
             closed_invitees+=this.state.closed_invitees[i]+",";
         }
@@ -207,7 +207,7 @@ class HP extends Component{
       }) ;
 
         //console.log(this.state.images);
-        if(this.state.images){
+        if(this.state.images.length > 0){
         for(let i=0;i<this.state.images.length;i++){
             API.uploadFile(this.state.images[i])
                 .then((res) => {
