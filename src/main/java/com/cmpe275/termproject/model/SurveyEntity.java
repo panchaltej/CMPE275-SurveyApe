@@ -65,8 +65,17 @@ public class SurveyEntity {
         this.surveytype = survey_type;
     }
 
+    public boolean isIspublished() {
+        return ispublished;
+    }
+
+    public void setIspublished(boolean ispublished) {
+        this.ispublished = ispublished;
+    }
+
     @Column(name = "end_time")
     @JsonView({Survey.summary.class})
+
     private Date endTime;
 
     @Column(name = "start_time")

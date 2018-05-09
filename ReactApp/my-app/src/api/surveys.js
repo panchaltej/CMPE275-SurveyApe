@@ -84,19 +84,7 @@ export const uploadFile = (payload) =>
         });
 
 
-// export const getOpenUniqueSurvey  = (payload) =>
-//     axios.post(api + '/survey/allopenuniquesurveys', payload)
-//         .then(res => {
-//             console.log('response from server deletefile', res.data);
-
-//             return res;
-//         })
-//         .catch(error => {
-//             console.log("This is error in deletefile API");
-//             return error;
-//         });
-
-export const getOpenUniqueSurvey = (payload) =>
+        export const getOpenUniqueSurvey = (payload) =>
                 fetch(`${api}/survey/allopenuniquesurveys`, {
                     method: 'GET',
                     headers: {
@@ -206,3 +194,14 @@ axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                 console.log("This is error");
                 return error;
             });
+export const unpublish  = (payload) =>
+                        axios.post(api + '/survey/unpublish', payload)
+                            .then(res => {
+                                console.log('response from server unpublish', res);
+                    
+                                return res;
+                            })
+                            .catch(error => {
+                                console.log("This is error in API",error);
+                                return error;
+                            });
