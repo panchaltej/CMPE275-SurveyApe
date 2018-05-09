@@ -23,10 +23,13 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
+import org.apache.commons.codec.binary.Base64;
 
 import java.util.*;
+//import org.apache.commons.codec.binary.Base64;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -75,7 +78,9 @@ public class SurveyResource {
 //            System.out.println(ex);
 //        }
 
+
         if((surveyRepository.findOne(surveyId).getEndTime() == null || new Date().before(surveyRepository.findOne(surveyId).getEndTime())) &&( surveyRepository.findOne(surveyId).isIs_published()) && surveyRepository.findOne(surveyId).getClosed() != "Y" ){
+
             SavedResponse savedResponse = new SavedResponse();
 
             savedResponse.setSurveyId(surveyId);
@@ -117,10 +122,18 @@ public class SurveyResource {
                     System.out.println("ASDADQWDASDAWD"+emailId.toLowerCase());
                     if(!ans.getEmailId().toLowerCase().equals(emailId.toLowerCase()) || emailId.equals("")){
                         System.out.println("@$@##$#");
-                        answers.remove(ans);
+//                        answers.remove(ans);
                     }
                 }
             }
+//            for(QuestionEntity q:questions){
+//                if(q.getQuestion_type().equals("I")){
+//                    for(OptionsEntity o:q.getOptions()){
+//                        o.setOption_description("data:image/jpeg;base64,"+encoder());
+//                    }
+//                }
+//                System.out.println(q.getQuestion_type());
+//            }
             savedResponse.setQuestions(questions);
 
            if(!s.isIs_published()){
@@ -689,7 +702,11 @@ public class SurveyResource {
     @GetMapping(value = "/allopenuniquesurveys")
     public ResponseEntity<?> allOpenUniqueSurveys() throws JSONException {
 
+
         return new ResponseEntity(surveyRepository.findAllBySurveytype("O"),HttpStatus.OK);
+
+        //return new ResponseEntity(surveyRepository.findBySurveytype("O"),HttpStatus.OK);
+
     }
 
     @Transactional
@@ -717,6 +734,38 @@ public class SurveyResource {
         return new ResponseEntity("uploaded successfully", HttpStatus.CREATED);
 
     }
+
+//    private String encodeFileToBase64Binary(){
+//        File file = new File("C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources\\2cd43b_434c5b3602af429f927d290cbc27d790_mv2.png");
+//        //String encodedfile = null;
+//
+//        String imageDataString=null;
+//        try {
+//            // Reading a Image file from file system
+//            FileInputStream imageInFile = new FileInputStream(file);
+//            byte imageData[] = new byte[(int) file.length()];
+//            imageInFile.read(imageData);
+//
+//            // Converting Image byte array into Base64 String
+//            imageDataString = encodeImage(imageData);
+//
+//            System.out.println("Image Successfully Manipulated!");
+//        } catch (Exception e) {
+//            System.out.println("Image not found" + e);
+//        }
+//        return imageDataString;
+//    }
+//
+//    /**
+//     * Encodes the byte array into base64 string
+//     *
+//     * @param imageByteArray - byte array
+//     * @return String a {@link java.lang.String}
+//     */
+//    public String encodeImage(byte[] imageByteArray) {
+//        return Base64.encodeBase64URLSafeString(imageByteArray);
+//    }
+
 
     @Transactional
     @JsonView({Survey.summary.class})
@@ -778,6 +827,34 @@ public class SurveyResource {
         surveyRepository.save(surveyEntity);
 
         return new ResponseEntity("Survey is closed",HttpStatus.OK);
+    }
+    public String encoder()  {
+        String imagePath="C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources\\1.png";
+        File f = new File(imagePath);
+        String imageString="";//change path of image according to you
+        try{
+        FileInputStream fis = new FileInputStream(f);
+        byte byteArray[] = new byte[(int)f.length()];
+        fis.read(byteArray);
+        imageString = Base64.encodeBase64String(byteArray);
+
+        fis.close();}
+        catch (Exception ex){
+            System.out.println(ex);
+        }
+        return  imageString;
+    }
+
+    @Transactional
+    @GetMapping(value = "/getfile")
+    public ResponseEntity<?> getfile() throws JSONException {
+
+        //JSONObject jsonObject = new JSONObject(payload);
+
+        //File file = new File("C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources\\2cd43b_434c5b3602af429f927d290cbc27d790_mv2.png");
+        System.out.println(encoder());
+        return new ResponseEntity(encoder(),HttpStatus.OK);
+
     }
 }
 
