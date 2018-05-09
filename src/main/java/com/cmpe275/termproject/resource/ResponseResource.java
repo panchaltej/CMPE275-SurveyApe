@@ -78,7 +78,7 @@ public class ResponseResource {
                 }
             }
 
-            saveResponse(jsonObject, emailId);
+            saveResponse(jsonObject, emailId, type, false);
 
             return new ResponseEntity("SUCCESS", HttpStatus.OK);
 //        }
@@ -111,10 +111,10 @@ public class ResponseResource {
                 OpenUniqueSurveyEntity openUniqueSurveyEntity = openUniqueSurveyRepository.findOneByUuid(uuid);
                 if (openUniqueSurveyEntity != null) {
                     emailId = openUniqueSurveyEntity.getEmailId();
-//                    openUniqueSurveyEntity.setIslinkused(1);
+                    openUniqueSurveyEntity.setIslinkused(1);
                 }
             }
-            saveResponse(jsonObject, emailId);
+            saveResponse(jsonObject, emailId, type, true);
             final String username = "infosurveyape275@gmail.com";
             final String password = "qwerty123asdf";
 
@@ -155,10 +155,11 @@ String email="";
         }
     }
 
-    public void saveResponse(JSONObject jsonObject, String emailId){
+    public void saveResponse(JSONObject jsonObject, String emailId, String type, boolean isSubmit){
         try {
             Integer survey_id = jsonObject.getInt("surveyId");
 //            Integer user_id = jsonObject.getInt("user_id");
+            SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);
             JSONArray questions = jsonObject.getJSONArray("questions");
             System.out.println("EMAILID "+emailId);
             answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
@@ -167,6 +168,7 @@ String email="";
                 JSONObject question = questions.getJSONObject(i);
                 Integer question_id = question.getInt("question_id");
                 JSONArray answers = question.getJSONArray("answers");
+                JSONArray options = question.getJSONArray("options");
                 System.out.println(question_id);
 
                 for (int j = 0; j < answers.length(); j++) {
@@ -184,6 +186,28 @@ String email="";
                     answerEntity.setAnswerdescription(answer_description);
 
                     answerRepository.save(answerEntity);
+
+                    if(isSubmit) {
+                        for (int k = 0; k < options.length(); k++) {
+                            JSONObject option = options.getJSONObject(j);
+                            Integer option_id = option.getInt("optionId");
+                            OptionsEntity o = optionsRepository.findOne(option_id);
+                            if (answer_id == option_id) {
+                                if (type.equals("C")) {
+                                    if (closedSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1) {
+                                        o.setCount(o.getCount() + 1);
+                                    }
+                                } else if (type.equals("O")) {
+                                    if (openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1)
+                                        o.setCount(o.getCount() + 1);
+                                } else {
+                                    o.setCount(o.getCount() + 1);
+                                }
+                                optionsRepository.save(o);
+                            }
+                        }
+                    }
+
                 }
             }
         }

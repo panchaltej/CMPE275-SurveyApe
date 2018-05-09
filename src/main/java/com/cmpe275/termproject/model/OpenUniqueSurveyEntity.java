@@ -15,8 +15,8 @@ public class OpenUniqueSurveyEntity {
     @Column(name = "invitation_link")
     private String invitation_link;
 
-    @Column(name = "islinkused")
-    private String islinkused;
+    @Column(name = "islinkused", columnDefinition = "int default 0")
+    private Integer islinkused;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "surveyId", nullable = false)
@@ -44,11 +44,11 @@ public class OpenUniqueSurveyEntity {
         this.invitation_link = invitation_link;
     }
 
-    public String getIslinkused() {
+    public Integer getIslinkused() {
         return islinkused;
     }
 
-    public void setIslinkused(String islinkused) {
+    public void setIslinkused(Integer islinkused) {
         this.islinkused = islinkused;
     }
 

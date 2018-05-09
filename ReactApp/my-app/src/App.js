@@ -7,6 +7,7 @@ import SignUp from "./component/SignUp";
 import VerificationPage from "./component/VerificationPage"
 import QuestionForm from "./component/QuestionForm"
 import Menu from "./component/menu"
+import Stats from "./component/stats"
 import Createsurvey from './component/createsurvey';
 import Allsavedsurveys from './component/allsavedsurveys';
 import Openuniquesurvey from './component/allopenuniquesurveys'
@@ -110,10 +111,14 @@ class App extends Component {
                 </div>
             )}/>
        <Route exact path="/survey/:surveyId/:uuid" render={() => (  
-           <div>
-           <Questionform/>
-       </div>
-   )}/>   
+            <div>
+                <Questionform/>
+            </div>
+        )}/>
+        <Route exact path="/stats" render={() => (  
+        <div>
+        <Stats/>
+        </div>)}/>   
                 </div>
             </div>
         );

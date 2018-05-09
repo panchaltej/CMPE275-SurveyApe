@@ -78,7 +78,7 @@ public class OpenUniqueSurveyResource {
             }
             openUniqueSurveyEntity.setEmailId(userEntity.getEmail_id());
             openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
-            openUniqueSurveyEntity.setIslinkused("");
+            openUniqueSurveyEntity.setIslinkused(0);
             openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 
             JSONObject responsejsonObject = new JSONObject(payload);
@@ -95,7 +95,7 @@ public class OpenUniqueSurveyResource {
         openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
         openUniqueSurveyEntity.setEmailId(jsonObject.getString("usreid"));
         openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
-        openUniqueSurveyEntity.setIslinkused("");
+        openUniqueSurveyEntity.setIslinkused(0);
 
             if(openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"),surveyEntity) != null )
             {

@@ -11,31 +11,21 @@ import Createsurvey from './createsurvey';
 import Allsavedsurveys from './allsavedsurveys';
 import Openuniquesurvey from './allopenuniquesurveys';
 import Landingpage from './landingpage';
+import * as statsAPI from '../api/stats' 
 
 class Stats extends Component {
-    state={
-        questions:[{
-            questionname: 'xyz',
-            options:[{
-                name: 'option1',
-                count: 10
-            },
-            {
-                name: 'option2',
-                count: 10
-            }]
-        },
-        {
-            questionname: 'abc',
-            options:[{
-                name: 'option3',
-                count: 10
-            },
-            {
-                name: 'option4',
-                count: 20
-            }]
-        }]
+
+    state={}
+
+    componentWillMount(){
+        var payload = {
+            surveyId : "2"
+        }
+        statsAPI.getStats(payload)
+        .then((obj) => {
+            console.log(obj);
+            this.setState(obj);
+        });
     }
 
     renderQuestions(){
