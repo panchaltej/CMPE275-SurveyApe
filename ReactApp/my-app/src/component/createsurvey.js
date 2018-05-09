@@ -152,7 +152,7 @@ class HP extends Component{
             console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
 
-            this.setState({end_time:temp.endTime,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.survey_id,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+            this.setState({end_time:temp.endTime,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
 
         }
         else{
@@ -239,9 +239,12 @@ class HP extends Component{
             surveytype:this.state.surveytype,
             is_published:true,
             closed_invitees:closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):'',
-            questions:this.state.question
+            questions:this.state.question,
+            end_time:this.state.end_timex
+
         };
 
+        console.log("Survey_id:",surveyData)
       API.createSurvey(surveyData).then
           ((output) => {
       console.log(output);
@@ -250,7 +253,14 @@ class HP extends Component{
         this.setState({is_published:true});
     }
     unPublish(){
-        this.setState({is_published:false});
+        let payload={"survey_id":this.state.survey_id};
+        API.unpublish(payload).then
+        ((output) => {
+            console.log(output);
+            if(output.data==="ok") {
+                this.setState({is_published: false});
+            }
+        });
     }
 
     addInvitee(){

@@ -15,9 +15,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
@@ -56,7 +60,19 @@ public class SurveyResource {
     public ResponseEntity<?> sendSavedResponse(@PathVariable("surveyId") Integer surveyId,
                                                @PathVariable("uuid") String uuid) throws JSONException {
         // Update the end time logic
-        //if(new Date().after(surveyRepository.findOne(surveyId).getEndTime())){
+//        System.out.println("surveyRepository.findOne(surveyId).getEndTime():"+surveyRepository.findOne(surveyId).getEndTime());
+//        Date tempdate=surveyRepository.findOne(surveyId).getEndTime();
+//        //System.out.println(tempdate);
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+//        System.out.println(sdf.format(new Date()));
+//        try {
+//            System.out.println(sdf.parse(sdf.format(new Date()).toString()).after(sdf.parse(tempdate.toString())));
+//        }
+//        catch (Exception ex) {
+//            System.out.println(ex);
+//        }
+
+        if(new Date().before(surveyRepository.findOne(surveyId).getEndTime())){
             SavedResponse savedResponse = new SavedResponse();
 
             savedResponse.setSurveyId(surveyId);
@@ -99,12 +115,17 @@ public class SurveyResource {
             }
             savedResponse.setQuestions(questions);
 
+           if(!s.isIs_published()){
+               BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+               return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity(savedResponse, HttpStatus.OK);
-//        }
-//        else{
-//            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
-//            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
-//        }
+
+        }
+        else{
+            BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
+            return new ResponseEntity<BadRequest>(badRequest, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Transactional
@@ -177,9 +198,8 @@ public class SurveyResource {
             }
         }
 
-        if (jsonObject.getInt("survey_id") != 0)
-        {
-           surveyEntity = surveyRepository.findOne(jsonObject.getInt("survey_id"));
+        if (jsonObject.getInt("survey_id") != 0) {
+            surveyEntity = surveyRepository.findOne(jsonObject.getInt("survey_id"));
 
             // Adding the survey details
             surveyEntity.setSurvey_name(jsonObject.getString("survey_name"));
@@ -187,21 +207,19 @@ public class SurveyResource {
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
 
-//            try {
-//                String endTime = jsonObject.getString("end_time");
-//                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
-//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-//                Date endDateTime = formatter.parse(endTime);
-//                surveyEntity.setEndTime(endDateTime);
-//            }
-//            catch (Exception e){
-//                System.out.println(e);
-//            }
+            try {
+                String endTime = jsonObject.getString("end_time");
+                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+                Date endDateTime = formatter.parse(endTime);
+                surveyEntity.setEndTime(endDateTime);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
             surveyEntity.setStartTime(new Date());
 
             // removing older question and options
-            for(QuestionEntity q : surveyEntity.getQuestions())
-            {
+            for (QuestionEntity q : surveyEntity.getQuestions()) {
                 q.getOptions().clear();
                 questionRepository.save(q);
             }
@@ -214,8 +232,7 @@ public class SurveyResource {
             JSONArray question_array = jsonObject.getJSONArray("questions");
             Set<QuestionEntity> question_list = new HashSet<>();
 
-            for(int i = 0; i < question_array.length(); i++)
-            {
+            for (int i = 0; i < question_array.length(); i++) {
                 JSONObject question_object = question_array.getJSONObject(i);
 
                 QuestionEntity questionEntity = new QuestionEntity();
@@ -229,10 +246,9 @@ public class SurveyResource {
                 JSONArray options_array = question_object.getJSONArray("options");
                 Set<OptionsEntity> option_list = new HashSet<>();
 
-                for(int j = 0; j < options_array.length(); j++)
-                {
+                for (int j = 0; j < options_array.length(); j++) {
                     JSONObject option_object = options_array.getJSONObject(j);
-                    System.out.println("option_object"+option_object);
+                    System.out.println("option_object" + option_object);
                     OptionsEntity optionsEntity = new OptionsEntity();
                     optionsEntity.setOption_description(option_object.getString("option_description"));
                     optionsEntity.setQuestion_id(questionEntity);
@@ -247,39 +263,136 @@ public class SurveyResource {
             }
 
             // Survey Type logic handling
-            if (jsonObject.getString("surveytype").equals("G")) {
 
-                OpenSurveyEntity openSurveyEntity = new OpenSurveyEntity();
-                openSurveyEntity.setSurvey_id(surveyEntity);
-                UUID uuid = UUID.randomUUID();
-                openSurveyEntity.setUuid(String.valueOf(uuid));
-                openSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
-                openSurveyEntity.setIslinkused(0);
-                openSurveyRepository.save(openSurveyEntity);
+            if (jsonObject.getBoolean("is_published")) {
+                if (jsonObject.getString("surveytype").equals("G")) {
 
-            }
-
-
-            if (jsonObject.getString("surveytype").equals("C") && jsonObject.getString("closed_invitees")!="") {
-
-                // Generating invitees array
-
-                String[] invitess = jsonObject.getString("closed_invitees").split(",");
-                //System.out.println(jsonObject.getString("closed_invitees")+":abcdefghijkl");
-                //System.out.println(invitess.length+"abcdefghijkl");
-                for (String user : invitess) {
-                    ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
-                    closedSurveyEntity.setSurveyId(surveyEntity);
-
-                    List<UserEntity> userEntity = userRepository.findByEmail(user);
-                    closedSurveyEntity.setInviteeUserId(userEntity.get(0));
+                    OpenSurveyEntity openSurveyEntity = new OpenSurveyEntity();
+                    openSurveyEntity.setSurvey_id(surveyEntity);
                     UUID uuid = UUID.randomUUID();
-                    closedSurveyEntity.setUudi(String.valueOf(uuid));
-                    closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
-                    closedSurveyRepository.save(closedSurveyEntity);
+                    openSurveyEntity.setUuid(String.valueOf(uuid));
+                    openSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                    openSurveyEntity.setIslinkused(0);
+                    openSurveyRepository.save(openSurveyEntity);
 
                 }
 
+
+                if (jsonObject.getString("surveytype").equals("C") ) {
+
+                    // Generating invitees array
+
+                    String[] invitess = jsonObject.getString("closed_invitees").split(",");
+                    //System.out.println(jsonObject.getString("closed_invitees")+":abcdefghijkl");
+                    //System.out.println(invitess.length+"abcdefghijkl");
+                   if( jsonObject.getString("closed_invitees") != ""){
+                        for (String user : invitess) {
+
+                            ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
+                            closedSurveyEntity.setSurveyId(surveyEntity);
+
+                            UserEntity userEntity = userRepository.findOneByEmail(user);
+                            closedSurveyEntity.setInviteeUserId(userEntity);
+                            UUID uuid = UUID.randomUUID();
+                            closedSurveyEntity.setUudi(String.valueOf(uuid));
+                            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyRepository.save(closedSurveyEntity);
+
+                            final String username = "infosurveyape275@gmail.com";
+                            final String password = "qwerty123asdf";
+
+                            Properties props = new Properties();
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.starttls.enable", "true");
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.port", "587");
+
+                            Session session = Session.getInstance(props,
+                                    new javax.mail.Authenticator() {
+                                        protected PasswordAuthentication getPasswordAuthentication() {
+                                            return new PasswordAuthentication(username, password);
+                                        }
+                                    });
+
+                            try {
+
+                                Message message = new MimeMessage(session);
+                                message.setFrom(new InternetAddress("infosurveyape275@gmail.com"));
+                                message.setRecipients(Message.RecipientType.TO,
+                                        InternetAddress.parse(user));
+                                message.setSubject("Please verify your email address");
+                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+
+                                Transport.send(message);
+
+                                System.out.println("Done");
+
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+
+                    List<ClosedSurveyEntity> closed_email = closedSurveyRepository.findAllBySurveyId(surveyEntity);
+                    System.out.println("closed_email:"+closed_email.size());
+
+                    for(ClosedSurveyEntity c:closed_email) {
+                        if (c.getEmailId() != null) {
+                            System.out.println("c.getEmailId()):" + c.getEmailId());
+                            final String username = "infosurveyape275@gmail.com";
+                            final String password = "qwerty123asdf";
+
+                            Properties props = new Properties();
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.starttls.enable", "true");
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.smtp.port", "587");
+
+                            Session session = Session.getInstance(props,
+                                    new javax.mail.Authenticator() {
+                                        protected PasswordAuthentication getPasswordAuthentication() {
+                                            return new PasswordAuthentication(username, password);
+                                        }
+                                    });
+
+                            try {
+
+                                Message message = new MimeMessage(session);
+                                message.setFrom(new InternetAddress("infosurveyape275@gmail.com"));
+                                message.setRecipients(Message.RecipientType.TO,
+                                        InternetAddress.parse(c.getEmailId()));
+                                message.setSubject("Please verify your email address");
+                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid());
+
+                                Transport.send(message);
+
+                                System.out.println("Done");
+
+                            } catch (MessagingException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }
+                }
+            }
+            else {
+                if (jsonObject.getString("surveytype").equals("C")) {
+                    String[] invitess = jsonObject.getString("closed_invitees").split(",");
+
+                    for (String user : invitess) {
+                        ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
+                        closedSurveyEntity.setSurveyId(surveyEntity);
+
+                        UserEntity userEntity= userRepository.findOneByEmail(user);
+                        closedSurveyEntity.setInviteeUserId(userEntity);
+                        UUID uuid = UUID.randomUUID();
+                        closedSurveyEntity.setUudi(String.valueOf(uuid));
+                        closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                        closedSurveyEntity.setEmailId(user);
+                        closedSurveyRepository.save(closedSurveyEntity);
+                    }
+                }
             }
         }
 
@@ -293,16 +406,16 @@ public class SurveyResource {
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
             surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
 
-//            try {
-//                String endTime = jsonObject.getString("end_time");
-//                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
-//                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-//                Date endDateTime = formatter.parse(endTime);
-//                surveyEntity.setEndTime(endDateTime);
-//            }
-//            catch (Exception e){
-//                System.out.println(e);
-//            }
+            try {
+                String endTime = jsonObject.getString("end_time");
+                //  DATE FORMAT FROM HTML <input type="datetime-local" : 2018-05-09T14:02
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+                Date endDateTime = formatter.parse(endTime);
+                surveyEntity.setEndTime(endDateTime);
+            }
+            catch (Exception e){
+                System.out.println(e);
+            }
             surveyEntity.setStartTime(new Date());
 
             // save the survey
@@ -342,52 +455,6 @@ public class SurveyResource {
             //Save the Survey
             SurveyEntity se = surveyRepository.save(surveyEntity);
             
-//
-//<<<<<<< HEAD
-//=======
-//                OpenSurveyEntity openSurveyEntity = new OpenSurveyEntity();
-//                openSurveyEntity.setSurvey_id(surveyEntity);
-//                UUID uuid = UUID.randomUUID();
-//                openSurveyEntity.setUuid(String.valueOf(uuid));
-//                openSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
-////                openSurveyEntity.setIslinkused(0);
-//                openSurveyEntity.setEmailId(jsonObject.getString("emailId"));
-//                openSurveyRepository.save(openSurveyEntity);
-//
-//            }
-//            if (jsonObject.getString("survey_type").equals("C")) {
-//                // Generating invitees array
-//                String[] invitess = jsonObject.getString("closed_invitees").split(",");
-//
-//                for (String user : invitess) {
-//                    ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
-//                    closedSurveyEntity.setSurveyId(surveyEntity);
-//
-//                    List<UserEntity> userEntity = userRepository.findByEmail(user);
-//                    closedSurveyEntity.setInviteeUserId(userEntity.get(0));
-//                    UUID uuid = UUID.randomUUID();
-//                    closedSurveyEntity.setUudi(String.valueOf(uuid));
-//                    closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
-//                    closedSurveyRepository.save(closedSurveyEntity);
-//
-//                }
-//
-//            }
-//
-//            if (jsonObject.getString("survey_type").equals("O")) {
-//
-//                OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
-//                openUniqueSurveyEntity.setSurvey_id(surveyEntity);
-//                UUID uuid = UUID.randomUUID();
-//                openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurvey_id() + "/" + String.valueOf(uuid));
-//                openUniqueSurveyEntity.setIslinkused("");
-//                openUniqueSurveyRepository.save(openUniqueSurveyEntity);
-//
-//
-//
-//
-//            }
-//>>>>>>> master
 
             if(jsonObject.getBoolean("is_published"))
             {
@@ -411,15 +478,72 @@ public class SurveyResource {
                         ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
                         closedSurveyEntity.setSurveyId(surveyEntity);
 
+                        //List<UserEntity> userEntity = userRepository.findByEmail(user);
+                        UserEntity userEntity= userRepository.findOneByEmail(user);
+                        closedSurveyEntity.setInviteeUserId(userEntity);
+                        UUID uuid = UUID.randomUUID();
+                        closedSurveyEntity.setUudi(String.valueOf(uuid));
+                        closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+                        closedSurveyEntity.setEmailId(user);
+                        closedSurveyRepository.save(closedSurveyEntity);
+
+                        // mail the survey link to the invitees
+
+                        final String username = "infosurveyape275@gmail.com";
+                        final String password = "qwerty123asdf";
+
+                        Properties props = new Properties();
+                        props.put("mail.smtp.auth", "true");
+                        props.put("mail.smtp.starttls.enable", "true");
+                        props.put("mail.smtp.host", "smtp.gmail.com");
+                        props.put("mail.smtp.port", "587");
+
+                        Session session = Session.getInstance(props,
+                                new javax.mail.Authenticator() {
+                                    protected PasswordAuthentication getPasswordAuthentication() {
+                                        return new PasswordAuthentication(username, password);
+                                    }
+                                });
+
+                        try {
+
+                            Message message = new MimeMessage(session);
+                            message.setFrom(new InternetAddress("infosurveyape275@gmail.com"));
+                            message.setRecipients(Message.RecipientType.TO,
+                                    InternetAddress.parse(user));
+                            message.setSubject("Please verify your email address");
+                            message.setText("You have been invited to take the survey !"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/"+se.getSurveyId()+"/"+String.valueOf(uuid));
+
+                            Transport.send(message);
+
+                            System.out.println("Done");
+
+                        } catch (MessagingException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+
+                }
+
+            }
+            else
+            {
+                if (jsonObject.getString("surveytype").equals("C")) {
+                    String[] invitess = jsonObject.getString("closed_invitees").split(",");
+
+                    for (String user : invitess) {
+                        ClosedSurveyEntity closedSurveyEntity = new ClosedSurveyEntity();
+                        closedSurveyEntity.setSurveyId(surveyEntity);
+
                         List<UserEntity> userEntity = userRepository.findByEmail(user);
                         closedSurveyEntity.setInviteeUserId(userEntity.get(0));
                         UUID uuid = UUID.randomUUID();
                         closedSurveyEntity.setUudi(String.valueOf(uuid));
                         closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+                        closedSurveyEntity.setEmailId(user);
                         closedSurveyRepository.save(closedSurveyEntity);
-
                     }
-
                 }
 
             }
@@ -528,6 +652,20 @@ public class SurveyResource {
         JSONObject jo = new JSONObject();
         jo.put("message", "uploaded successfully");
         return new ResponseEntity("uploaded successfully", HttpStatus.CREATED);
+
+    }
+
+    @Transactional
+    @JsonView({Survey.summary.class})
+    @PostMapping(value = "/unpublish")
+    public ResponseEntity<?> unpublishsurvey(@RequestBody Map<String, Object> payload) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(payload);
+        SurveyEntity surveyEntity = surveyRepository.findOne(jsonObject.getInt("survey_id"));
+
+        surveyEntity.setIs_published(false);
+        surveyRepository.save(surveyEntity);
+        return new ResponseEntity("ok",HttpStatus.OK);
 
     }
 }
