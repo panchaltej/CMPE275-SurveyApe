@@ -24,7 +24,7 @@ class openunique extends Component{
 
     fetch_all_open_unique_surveys()
     {
-        if(this.props.getallopenuniquesurveys){
+        if(this.props.getallopenuniquesurveys.length > 0){
             return this.props.getallopenuniquesurveys.map((surveys,index) =>{
                 return(
 

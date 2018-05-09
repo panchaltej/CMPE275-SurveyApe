@@ -85,7 +85,7 @@ class QuestionForm extends Component {
 
     handleSubmit() {
         var answers = [];
-        if(this.state.questions.length){
+        if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
             // debugger;
             var id = this.state.questions[i].question_id;
@@ -224,7 +224,7 @@ class QuestionForm extends Component {
 
 handleSave() {
         var answers = [];
-        if(this.state.questions){
+        if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
             // debugger;
             var id = this.state.questions[i].question_id;
@@ -412,7 +412,7 @@ handleSave() {
     }
 
     componentDidUpdate(){
-        if(this.state.questions){
+        if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
             var id = this.state.questions[i].question_id;
@@ -481,7 +481,7 @@ handleSave() {
     }
 
     render() {
-        if(this.state.questions){
+        if(this.state.questions.length > 0){
         for(var i=0;i<=this.state.questions.length-1;i++)
         {
             if (this.state.questions[i].question_type=="R")
@@ -565,7 +565,7 @@ handleSave() {
         }
         }
 
-        if(this.state.questions){
+        if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
 
             var id = this.state.questions[i].question_id;
