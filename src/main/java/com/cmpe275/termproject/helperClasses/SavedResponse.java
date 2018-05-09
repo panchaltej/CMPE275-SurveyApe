@@ -13,18 +13,26 @@ public class SavedResponse {
     @JsonView({SurveyResponse.summary.class})
     private Integer surveyId;
     @JsonView({SurveyResponse.summary.class})
-    private Integer emailId;
+    private String emailId;
     @JsonView({SurveyResponse.summary.class})
     private List<QuestionEntity> questions;
     @JsonView({SurveyResponse.summary.class})
     private Integer isLinkUsed;
-
 
 //    public Integer getUserId() {
 //        return userId;
 //    }
 //
 //    public void setUserId(Integer userId) {
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
+    }
+
 //        this.userId = userId;
 //    }
 

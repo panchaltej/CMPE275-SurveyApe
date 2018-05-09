@@ -169,7 +169,8 @@ String email="";
             SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);
             JSONArray questions = jsonObject.getJSONArray("questions");
             System.out.println("EMAILID "+emailId);
-            answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
+            if(!type.equals("G") || !isSubmit)
+                answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
 
             for (int i = 0; i < questions.length(); i++) {
                 JSONObject question = questions.getJSONObject(i);

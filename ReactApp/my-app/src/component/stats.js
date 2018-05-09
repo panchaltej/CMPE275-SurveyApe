@@ -19,7 +19,7 @@ class Stats extends Component {
 
     componentWillMount(){
         var payload = {
-            surveyId : "19"
+            surveyId : localStorage.getItem("survey_id")
         }
         statsAPI.getStats(payload)
         .then((obj) => {
@@ -96,7 +96,7 @@ class Stats extends Component {
                                         <td>{temp[3]}</td>
                                     </tr>
                                     <tr>
-                                        <td>5</td>
+                                        <td>5-star</td>
                                         <td>{temp[4]}</td>
                                     </tr>
                                 </tbody>
@@ -188,7 +188,7 @@ class Stats extends Component {
                                 <div class="form-group row">
                                     <label for="inputPassword" class="col-sm-2 col-form-label">Participation Rate</label>
                                     <div class="col-sm-10">
-                                    <label for="inputPassword">{this.state.stats.participationRate}</label>
+                                    <label for="inputPassword">{this.state.stats.participationRate*100+"%"}</label>
                                     </div>
                                 </div>
                             </form>

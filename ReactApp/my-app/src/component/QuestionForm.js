@@ -402,7 +402,7 @@ handleSave() {
                         var ans = q.answers;
                         var new_ans = [];
                         ans.map((a)=>{
-                            if(a.emailId == localStorage.getItem("email"))
+                            if(a.emailId == output.emailId)
                             new_ans.push(a);
                         });
                         q.answers = new_ans;

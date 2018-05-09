@@ -150,6 +150,7 @@ public class SurveyResource {
 
 
             List<QuestionEntity> questions = questionRepository.findAllBySurveyId(s);
+            savedResponse.setEmailId(emailId);
             for(QuestionEntity q: questions){
                 Set<AnswerEntity> answers = q.getAnswers();
                 System.out.println("SIZE"+answers.size());
@@ -171,6 +172,7 @@ public class SurveyResource {
 //                System.out.println(q.getQuestion_type());
 //            }
             savedResponse.setQuestions(questions);
+
             System.out.println(savedResponse.getQuestions().get(0).getQuestion_text());
 
            if(!s.isIs_published()){

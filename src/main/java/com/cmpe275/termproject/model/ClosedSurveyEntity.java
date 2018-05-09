@@ -1,6 +1,7 @@
 package com.cmpe275.termproject.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -22,6 +23,7 @@ public class ClosedSurveyEntity {
     private SurveyEntity surveyId;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "inviteeUserId",nullable = false)
     private UserEntity inviteeUserId;
 
