@@ -181,6 +181,6 @@ public class SurveyEntity {
     }
 
     @Column(name = "closed")
-
+    @JsonView({Survey.summary.class})
     private String closed;
 }
