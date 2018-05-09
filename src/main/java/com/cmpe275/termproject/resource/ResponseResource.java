@@ -155,15 +155,15 @@ String email="";
         }
     }
 
-    public void saveResponse(JSONObject tempState, String emailId, String type, boolean isSubmit){
+    public void saveResponse(JSONObject jsonObject, String emailId, String type, boolean isSubmit){
         try {
-            JSONObject jsonObject;
-            if(isSubmit){
-             jsonObject = tempState.getJSONObject("tempState");
-            }
-            else{
-                jsonObject = tempState;
-            }
+//            JSONObject jsonObject;
+//            if(isSubmit){
+//             jsonObject = temp.getJSONObject("tempState");
+//            }
+//            else{
+//                jsonObject = temp;
+//            }
             Integer survey_id = jsonObject.getInt("surveyId");
 //            Integer user_id = jsonObject.getInt("user_id");
             SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);
@@ -202,13 +202,16 @@ String email="";
                                 if (type.equals("C")) {
                                     if (closedSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1) {
                                         o.setCount(o.getCount() + 1);
+                                        System.out.println(o.getCount());
                                     }
                                 } else if (type.equals("O")) {
                                     if (openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(emailId, surveyEntity).getIslinkused() == 1) {
                                         o.setCount(o.getCount() + 1);
+                                        System.out.println(o.getCount());
                                     }
                                 } else {
                                     o.setCount(o.getCount() + 1);
+                                    System.out.println(o.getCount());
                                 }
                                 optionsRepository.save(o);
                             }

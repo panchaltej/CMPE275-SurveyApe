@@ -150,9 +150,15 @@ class QuestionForm extends Component {
                 {
                     debugger;
                     var obj = {};
-                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
-                    this.state.questions[i].answers.push(obj);
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
                 }
 
 
@@ -179,9 +185,15 @@ class QuestionForm extends Component {
                     if(elements[temp_star].checked){
                         if(this.state.questions[i].options.length>0) {
                             var obj = {};
-                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            obj["optionId"] = this.state.questions[i].options[0].option_id;
                             obj["optionDescription"] =elements[temp_star].value;
+                            if(this.state.questions[i].answers.length >0){
+                                this.state.questions[i].answers=[];
                             this.state.questions[i].answers.push(obj);
+                            }
+                            else{
+                                this.state.questions[i].answers.push(obj);
+                            }
                         }
                         // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
@@ -349,7 +361,7 @@ handleSave() {
         }
         }
         debugger
-        alert("save executed");
+        // alert("save executed");
 
         // Payload for saveanswers
         let surveyId = this.props.match.params.surveyId;

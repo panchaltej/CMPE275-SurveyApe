@@ -35,10 +35,10 @@ class openunique extends Component{
                 <strong class="text-gray-dark">Survey Name</strong>
                 <a onClick={() =>{ 
 
-                            console.log("current surveys:",surveys)
+                            console.log("current EMAIL:",localStorage.getItem("email"))
                                         
                                         var payload = {
-                                            usreid:1,
+                                            userid:localStorage.getItem("email"),
                                             current_survey:surveys,
                                             dashboard:true
                                         }

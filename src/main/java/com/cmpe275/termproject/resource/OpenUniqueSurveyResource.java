@@ -97,13 +97,13 @@ public class OpenUniqueSurveyResource {
 
         // Logic added for open survey coming from dashboard
         if(jsonObject.getBoolean("dashboard"))
-        {
+        {   System.out.println("WERQQE@$#$"+jsonObject.getString("userid"));
             SurveyEntity surveyEntity = surveyRepository.findOne(current_survey.getInt("surveyId"));
             OpenUniqueSurveyEntity openUniqueSurveyEntity = new OpenUniqueSurveyEntity();
             openUniqueSurveyEntity.setSurveyId(surveyEntity);
             openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
 
-            UserEntity userEntity = userRepository.findOne(jsonObject.getInt("usreid"));
+            UserEntity userEntity = userRepository.findOneByEmail(jsonObject.getString("userid"));
 
             if(openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(userEntity.getEmail_id(),surveyEntity) != null )
                 {
