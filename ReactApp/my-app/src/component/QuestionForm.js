@@ -303,8 +303,22 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers.length>0)
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                if(this.state.questions[i].options.length>0)
+                {
+                    debugger;
+                    var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
+                }
+                //if(this.state.questions[i].answers.length>0)
+                //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
@@ -479,8 +493,10 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers[0] != undefined)
-                document.getElementById(id).value=this.state.questions[i].answers[0].answerDescription;
+                if(this.state.questions[i].answers.length >0) {
+                    debugger;
+                    document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                }
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
@@ -645,8 +661,12 @@ handleSave() {
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "DR") {
-                if(this.state.questions[i].answers[0] != undefined)
-                document.getElementById(toString(id)).value=this.state.questions[i].answers[0].optionDescription;
+                if(this.state.questions[i].answers.length>0) {
+                    if (document.getElementById(toString(id)) != undefined) {
+                        debugger;
+                        document.getElementById(toString(id)).value = this.state.questions[i].answers[0].answerDescription;
+                    }
+                }
                 //alert(document.getElementById(id).value)
             }
             if (this.state.questions[i].question_type == "ST") {
