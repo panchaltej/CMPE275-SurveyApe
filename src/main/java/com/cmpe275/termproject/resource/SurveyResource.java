@@ -77,9 +77,43 @@ public class SurveyResource {
 //        catch (Exception ex) {
 //            System.out.println(ex);
 //        }
+//        System.out.println("1:"+surveyRepository.findOne(surveyId).getEndTime());
+//        System.out.println("2:"+new Date().before(surveyRepository.findOne(surveyId).getEndTime()));
+//        System.out.println("3:"+surveyRepository.findOne(surveyId).isIs_published());
+//        System.out.println("4:"+surveyRepository.findOne(surveyId).getClosed().equals("Y"));
+
+        boolean flag =false;
+        boolean flag_closed =false;
+
+        if(surveyRepository.findOne(surveyId).getEndTime() == null)
+        {
+            flag =true;
+        }
+        else if(surveyRepository.findOne(surveyId).getEndTime() != null)
+        {
+            if(new Date().before(surveyRepository.findOne(surveyId).getEndTime()))
+            {
+                flag =true;
+            }
+        }
+        else
+        {
+            flag =false;
+        }
+
+        if(surveyRepository.findOne(surveyId).getClosed() != null)
+        {
+            if(!surveyRepository.findOne(surveyId).getClosed().equals("Y"))
+            {
+                flag_closed = true;
+            }
+        }
+        else {
+            flag_closed = true;
+        }
 
 
-        if((surveyRepository.findOne(surveyId).getEndTime() == null || new Date().before(surveyRepository.findOne(surveyId).getEndTime())) &&( surveyRepository.findOne(surveyId).isIs_published()) && surveyRepository.findOne(surveyId).getClosed() != "Y" ){
+        if(flag && surveyRepository.findOne(surveyId).isIs_published() && flag_closed ){
 
             SavedResponse savedResponse = new SavedResponse();
 
@@ -137,6 +171,7 @@ public class SurveyResource {
 //                System.out.println(q.getQuestion_type());
 //            }
             savedResponse.setQuestions(questions);
+            System.out.println(savedResponse.getQuestions().get(0).getQuestion_text());
 
            if(!s.isIs_published()){
                BadRequest badRequest = BadRequest.createBadRequest(400, "Sorry, the survey you are looking for has already expired");
@@ -266,7 +301,9 @@ public class SurveyResource {
             surveyEntity.setSurvey_name(jsonObject.getString("survey_name"));
             surveyEntity.setIs_published(jsonObject.getBoolean("is_published"));
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
-            surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
+            //surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
+            surveyEntity.setUser_id(userRepository.findOneByEmail(jsonObject.getString("user_id")));
+
 
             try {
                 String endTime = jsonObject.getString("end_time");
@@ -477,7 +514,8 @@ public class SurveyResource {
             surveyEntity.setSurvey_name(jsonObject.getString("survey_name"));
             surveyEntity.setIs_published(jsonObject.getBoolean("is_published"));
             surveyEntity.setSurvey_type(jsonObject.getString("surveytype"));
-            surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
+            //surveyEntity.setUser_id(userRepository.findOne(jsonObject.getInt("user_id")));
+            surveyEntity.setUser_id(userRepository.findOneByEmail(jsonObject.getString("user_id")));
 
             try {
                 String endTime = jsonObject.getString("end_time");
@@ -685,29 +723,18 @@ public class SurveyResource {
     @Transactional
     @JsonView({Survey.summary.class})
     @GetMapping(value = "/allsavedsurveys")
-    public ResponseEntity<?> allSavedSurveys(@RequestParam("user_id") int user_id) throws JSONException {
+    public ResponseEntity<?> allSavedSurveys(@RequestParam("user_id") String user_id) throws JSONException {
 
         //JSONObject jsonObject = new JSONObject(payload);
         //int user_id = jsonObject.getInt("user_id");
         //System.out.println("user_id:"+user_id);
-        UserEntity userEntity = userRepository.findOne(user_id);
+        //UserEntity userEntity = userRepository.findOne(user_id);
+        UserEntity userEntity  = userRepository.findOneByEmail(user_id);
 
         if(userEntity== null)
         {
             return new ResponseEntity("No Such User!!",HttpStatus.OK);
         }
-
-        //System.out.println("userEntity.getSurveys():"+userEntity.getSurveys());
-
-//        for (SurveyEntity s:userEntity.getSurveys())
-//        {
-//            System.out.println(s.getSurvey_id()+ "::"+s.getSurvey_name());
-//        }
-        //njndvhubvuhb
-        //return new ResponseEntity(userEntity.getSurveys() , HttpStatus.OK);
-        //System.out.println(surveyRepository.findByIspublishedAndUserid(true,userEntity));
-
-        //return new ResponseEntity(surveyRepository.findByUseridAndEndTimeGreaterThan(userEntity, new Date()),HttpStatus.OK);
         return new ResponseEntity(surveyRepository.findAllByUserid(userEntity),HttpStatus.OK);
     }
 
@@ -790,8 +817,10 @@ public class SurveyResource {
         JSONObject jsonObject = new JSONObject(payload);
         SurveyEntity surveyEntity = surveyRepository.findOne(jsonObject.getInt("survey_id"));
 
-        System.out.println(answerRepository.findBySurveyId(jsonObject.getInt("survey_id")));
-        if (answerRepository.findBySurveyId(jsonObject.getInt("survey_id")) == null)
+        //System.out.println(answerRepository.findBySurveyId(jsonObject.getInt("survey_id")));
+       List<AnswerEntity> list = answerRepository.findAllBySurveyId(jsonObject.getInt("survey_id"));
+
+        if (list.size() == 0)
         {
             surveyEntity.setIs_published(false);
             surveyRepository.save(surveyEntity);

@@ -30,7 +30,7 @@ export const createSurvey = (payload) =>
 
 //insertHotelData
 export const getSavedSurveys = (payload) =>
-    fetch(`${api}/survey/allsavedsurveys?user_id=1`, {
+    fetch(`${api}/survey/allsavedsurveys?user_id=`+localStorage.getItem("email"), {
         method: 'GET',
         headers: {
             ...headers,
@@ -123,7 +123,7 @@ export const registerEmailForOpenUnique = (payload) =>
                     console.log("This is error");
                     return error;
                 });
-export const rendersurveys = (payload) =>
+                export const rendersurveys = (payload) =>
                 fetch(`${api}/survey/`+payload.surveyId+`/`+payload.uuid, {
                     method: 'GET',
                     headers: {

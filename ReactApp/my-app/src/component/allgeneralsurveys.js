@@ -24,6 +24,7 @@ class openunique extends Component{
 
     fetch_all_open_unique_surveys()
     {
+        if(this.props.getgeneralsurveys && this.props.getgeneralsurveys.length > 0){
         return this.props.getgeneralsurveys.map((surveys,index) =>{
             return(
 
@@ -46,6 +47,7 @@ class openunique extends Component{
         </div>
                 )
               })
+            }
     }
 
   render()
@@ -56,7 +58,7 @@ class openunique extends Component{
       <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded box-shadow">
         <img class="mr-3" src="https://getbootstrap.com/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48"/>
         <div class="lh-100">
-          <h6 class="mb-0 text-white lh-100">Open Unique Surveys</h6>
+          <h6 class="mb-0 text-white lh-100">General Surveys!</h6>
           <small>Survey APE!</small>
         </div>
       </div>

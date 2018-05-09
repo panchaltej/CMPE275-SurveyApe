@@ -369,7 +369,9 @@ handleSave() {
                     console.log(output)
                    debugger;
                    console.log(this)
+                   if(output){
                     var questions = output.questions;
+                    if(questions && questions.length > 0){
                     questions.map((q)=>{
                         var ans = q.answers;
                         var new_ans = [];
@@ -387,6 +389,14 @@ handleSave() {
                             "uuid":uuid,
                             "isLinkUsed":output.isLinkUsed
                        }, console.log("State:"+this.state.surveyId));
+                    }
+                    else{
+                        alert("Survey is closed or not published yet!")
+                    }
+                }
+                else{
+                    alert("Survey is closed or not published yet!")
+                }
                     }) ;
         debugger;
 }
