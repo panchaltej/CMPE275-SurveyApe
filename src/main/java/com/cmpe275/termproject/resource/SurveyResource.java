@@ -225,6 +225,7 @@ public class SurveyResource {
 
             // removing older question and options
             for (QuestionEntity q : surveyEntity.getQuestions()) {
+                System.out.println("q.getOptions():"+q.getOptions());
                 q.getOptions().clear();
                 questionRepository.save(q);
             }
@@ -251,15 +252,24 @@ public class SurveyResource {
                 JSONArray options_array = question_object.getJSONArray("options");
                 Set<OptionsEntity> option_list = new HashSet<>();
 
-                for (int j = 0; j < options_array.length(); j++) {
-                    JSONObject option_object = options_array.getJSONObject(j);
-                    System.out.println("option_object" + option_object);
+                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DR") || question_object.getString("question_type").equals("DT"))
+                {
                     OptionsEntity optionsEntity = new OptionsEntity();
-                    optionsEntity.setOption_description(option_object.getString("option_description"));
+                    optionsEntity.setOption_description("");
                     optionsEntity.setQuestion_id(questionEntity);
                     optionsRepository.save(optionsEntity);
+                }
+                else {
+                    for (int j = 0; j < options_array.length(); j++) {
+                        JSONObject option_object = options_array.getJSONObject(j);
+                        System.out.println("option_object" + option_object);
+                        OptionsEntity optionsEntity = new OptionsEntity();
+                        optionsEntity.setOption_description(option_object.getString("option_description"));
+                        optionsEntity.setQuestion_id(questionEntity);
+                        optionsRepository.save(optionsEntity);
 
 
+                    }
                 }
 
                 // if Survey is a closed survey then update the Invitess also
@@ -445,16 +455,28 @@ public class SurveyResource {
                 JSONArray options_array = question_object.getJSONArray("options");
                 Set<OptionsEntity> option_list = new HashSet<>();
 
-                for (int j = 0; j < options_array.length(); j++) {
-                    JSONObject option_object = options_array.getJSONObject(j);
-                    System.out.println("option_object" + option_object);
+                // added for Harsh - Question type
+                if(question_object.getString("question_type").equals("TB") || question_object.getString("question_type").equals("ST") || question_object.getString("question_type").equals("DR") || question_object.getString("question_type").equals("DT"))
+                {
                     OptionsEntity optionsEntity = new OptionsEntity();
-                    optionsEntity.setOption_description(option_object.getString("option_description"));
+                    optionsEntity.setOption_description("");
                     optionsEntity.setQuestion_id(questionEntity);
                     optionsRepository.save(optionsEntity);
-
-
                 }
+                else {
+
+                    for (int j = 0; j < options_array.length(); j++) {
+                        JSONObject option_object = options_array.getJSONObject(j);
+                        System.out.println("option_object" + option_object);
+                        OptionsEntity optionsEntity = new OptionsEntity();
+                        optionsEntity.setOption_description(option_object.getString("option_description"));
+                        optionsEntity.setQuestion_id(questionEntity);
+                        optionsRepository.save(optionsEntity);
+
+
+                    }
+                }
+
             }
 
             //Save the Survey
@@ -623,7 +645,7 @@ public class SurveyResource {
         //System.out.println(surveyRepository.findByIspublishedAndUserid(true,userEntity));
 
         //return new ResponseEntity(surveyRepository.findByUseridAndEndTimeGreaterThan(userEntity, new Date()),HttpStatus.OK);
-        return new ResponseEntity(surveyRepository.findByUserid(userEntity),HttpStatus.OK);
+        return new ResponseEntity(surveyRepository.findAllByUserid(userEntity),HttpStatus.OK);
     }
 
     @Transactional
@@ -631,7 +653,7 @@ public class SurveyResource {
     @GetMapping(value = "/allopenuniquesurveys")
     public ResponseEntity<?> allOpenUniqueSurveys() throws JSONException {
 
-        return new ResponseEntity(surveyRepository.findBySurveytype("O"),HttpStatus.OK);
+        return new ResponseEntity(surveyRepository.findAllBySurveytype("O"),HttpStatus.OK);
     }
 
     @Transactional

@@ -32,7 +32,7 @@ class openunique extends Component{
           <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <div class="d-flex justify-content-between align-items-center w-100">
               <strong class="text-gray-dark">Survey Name</strong>
-              <a href="#"  onClick={() =>{ 
+              <a onClick={() =>{ 
                                        
                                        this.setState({
                                         current_survey: surveys

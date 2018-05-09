@@ -41,6 +41,16 @@ public class UserEntity {
             mappedBy = "userid",orphanRemoval = true)
     private Set<SurveyEntity> surveys = new HashSet<>();
 
+//    @ManyToMany(fetch = FetchType.LAZY,
+//            cascade = {
+//                    CascadeType.PERSIST,
+//                    CascadeType.MERGE
+//            })
+//    @JoinTable(name = "user_survey",
+//            inverseJoinColumns = { @JoinColumn(name = "post_id",referencedColumnName="surveyId"), },
+//            joinColumns = { @JoinColumn(name = "tag_id",referencedColumnName="user_id" ), })
+//    private Set<SurveyEntity> surveys = new HashSet<>();
+
     @Column(name = "verification_number")
     private String verificationCode;
 

@@ -12,8 +12,11 @@ public interface SurveyRepository  extends JpaRepository<SurveyEntity, Integer> 
     //SurveyEntity findBySurvey_nameAndUser_id(String Survey_name,int User_id);
     List<SurveyEntity> findByIspublishedAndUserid (boolean is_published,UserEntity user_id);
     List<SurveyEntity> findByUserid (UserEntity user_id);
+    List<SurveyEntity> findAllByUserid (UserEntity user_id);
+
 
     List<SurveyEntity> findBySurveytype (String surveytype);
+    List<SurveyEntity> findAllBySurveytype (String surveytype);
 
     List<SurveyEntity> findByUseridAndEndTimeGreaterThan (UserEntity user_id, Date date);
     SurveyEntity findBySurveyId(Integer surveyId);

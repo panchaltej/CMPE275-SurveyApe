@@ -91,8 +91,8 @@ public class ResponseResource {
     @Transactional
     @PostMapping(value = "/submit",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> submitResponse(@RequestBody Map<String, Object> payload) throws JSONException {
-
-        JSONObject jsonObject = new JSONObject(payload);
+        JSONObject tempState = new JSONObject(payload);
+        JSONObject jsonObject = tempState.getJSONObject("tempState");
         Integer survey_id = jsonObject.getInt("surveyId");
         String emailId ="";
         String uuid = jsonObject.getString("uuid");
@@ -155,8 +155,15 @@ String email="";
         }
     }
 
-    public void saveResponse(JSONObject jsonObject, String emailId, String type, boolean isSubmit){
+    public void saveResponse(JSONObject tempState, String emailId, String type, boolean isSubmit){
         try {
+            JSONObject jsonObject;
+            if(isSubmit){
+             jsonObject = tempState.getJSONObject("tempState");
+            }
+            else{
+                jsonObject = tempState;
+            }
             Integer survey_id = jsonObject.getInt("surveyId");
 //            Integer user_id = jsonObject.getInt("user_id");
             SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);

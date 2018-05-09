@@ -148,6 +148,7 @@ class QuestionForm extends Component {
                 if(this.state.questions[i].options.length>0)
                 {
                     debugger;
+                    var obj = {};
                     obj["optionId"] = this.state.questions[i].options[0].optionId;
                     obj["optionDescription"] = document.getElementById(id).value
                     this.state.questions[i].answers.push(obj);
@@ -176,6 +177,7 @@ class QuestionForm extends Component {
                 {
                     if(elements[temp_star].checked){
                         if(this.state.questions[i].options.length>0) {
+                            var obj = {};
                             obj["optionId"] = this.state.questions[i].options[0].optionId;
                             obj["optionDescription"] =elements[temp_star].value;
                             this.state.questions[i].answers.push(obj);
@@ -196,7 +198,7 @@ class QuestionForm extends Component {
 
 
 
-        debugger;
+        
 
 
         if (localStorage.getItem("email") == null) {
@@ -208,9 +210,10 @@ class QuestionForm extends Component {
         let uuid = this.props.match.params.uuid;
         let email=emailVal;
         let tempState=this.state;
-
+        debugger;
         API.submitAnswers({tempState,email}).then
         ((output) => {
+            debugger;
             console.log(output)
         
         }) ;
@@ -281,9 +284,16 @@ handleSave() {
                 if(this.state.questions[i].options.length>0)
                 {
                      debugger;
-                    obj["optionId"] = this.state.questions[i].options[0].optionId;
+                     var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
-                    this.state.questions[i].answers.push(obj);
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
                 }
 
 
@@ -303,9 +313,16 @@ handleSave() {
                 {
                     if(elements[temp_star].checked){
                         if(this.state.questions[i].options.length>0) {
-                            obj["optionId"] = this.state.questions[i].options[0].optionId;
+                            var obj = {};
+                            obj["optionId"] = this.state.questions[i].options[0].option_id;
                             obj["optionDescription"] =elements[temp_star].value;
-                            this.state.questions[i].answers.push(obj);
+                            if(this.state.questions[i].answers.length >0){
+                                this.state.questions[i].answers=[];
+                                this.state.questions[i].answers.push(obj);
+                            }
+                            else{
+                                this.state.questions[i].answers.push(obj);
+                            }
                         }
                        // this.state.questions[i].answers[0].optionDescription = elements[temp_star].value;
                     }
