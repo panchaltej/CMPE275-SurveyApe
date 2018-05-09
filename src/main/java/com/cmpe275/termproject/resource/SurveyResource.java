@@ -502,6 +502,14 @@ public class SurveyResource {
 
         return new ResponseEntity(surveyRepository.findBySurveytype("O"),HttpStatus.OK);
     }
+
+    @Transactional
+    @JsonView({Survey.summary.class})
+    @GetMapping(value = "/allgeneralsurveys")
+    public ResponseEntity<?> allGeneralSurveys() throws JSONException {
+
+        return new ResponseEntity(surveyRepository.findBySurveytype("G"),HttpStatus.OK);
+    }
 }
 
 
