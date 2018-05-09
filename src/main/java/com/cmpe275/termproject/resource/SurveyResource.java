@@ -114,7 +114,7 @@ public class SurveyResource {
                     System.out.println("ASDADQWDASDAWD"+emailId.toLowerCase());
                     if(!ans.getEmailId().toLowerCase().equals(emailId.toLowerCase()) || emailId.equals("")){
                         System.out.println("@$@##$#");
-                        answers.remove(ans);
+//                        answers.remove(ans);
                     }
                 }
             }

@@ -368,6 +368,17 @@ handleSave() {
                     console.log(output)
                    debugger;
                    console.log(this)
+                    var questions = output.questions;
+                    questions.map((q)=>{
+                        var ans = q.answers;
+                        var new_ans = [];
+                        ans.map((a)=>{
+                            if(a.emailId == localStorage.getItem("email"))
+                            new_ans.push(a);
+                        });
+                        q.answers = new_ans;
+                    });
+                    
                     this.setState({
                             "surveyId": output.surveyId,
                             "userId": output.userId,
