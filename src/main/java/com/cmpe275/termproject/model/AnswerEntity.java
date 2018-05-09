@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.model;
 
+import com.cmpe275.termproject.view.Stats;
 import com.cmpe275.termproject.view.SurveyResponse;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,7 +23,7 @@ public class AnswerEntity {
     private Integer userId;
 
     @Column(name = "email_id")
-    @JsonView({SurveyResponse.summary.class})
+    @JsonView({SurveyResponse.summary.class, Stats.summary.class})
     private String emailId;
 
     @Column(name = "surveyId")
@@ -36,11 +37,11 @@ public class AnswerEntity {
     private QuestionEntity questionId;
 
     @Column(name = "option_id")
-    @JsonView({SurveyResponse.summary.class})
+    @JsonView({SurveyResponse.summary.class, Stats.summary.class})
     private Integer optionId;
 
     @Column(name = "answer_description")
-    @JsonView({SurveyResponse.summary.class})
+    @JsonView({SurveyResponse.summary.class, Stats.summary.class})
     private String answerDescription;
 
 
