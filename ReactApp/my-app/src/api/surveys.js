@@ -162,7 +162,6 @@ export const saveanswers = (payload) =>
                             return error;
                         });
 
-<<<<<<< HEAD
 export const emailregister  = (payload) =>
 axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                         .then(res => {
@@ -174,5 +173,3 @@ axios.post(api + '/survey/openUniqueSurvey/emailRegister', payload)
                             console.log("This is error in API",error);
                             return error;
                         });
-=======
->>>>>>> master
