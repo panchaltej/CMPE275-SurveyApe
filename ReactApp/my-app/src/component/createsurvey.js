@@ -252,7 +252,7 @@ class HP extends Component{
             is_published:true,
             closed_invitees:closed_invitees.length>0?closed_invitees.substring(0, closed_invitees.length-1):'',
             questions:this.state.question,
-            end_time:this.state.end_timex
+            end_time:this.state.end_time
 
         };
 
