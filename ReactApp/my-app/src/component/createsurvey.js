@@ -150,13 +150,16 @@ class HP extends Component{
       console.log("selectedsavedsurveys in componentWillMount:",this.props.selectedsavedsurveys  );
       //alert(this.props.initial);
       console.log(localStorage.getItem("initial")==='false');
+      //alert(new Date(temp.endTime).toISOString.substring(0,16));
         if(typeof this.props.selectedsavedsurveys.questions != 'undefined' && this.props.selectedsavedsurveys.survey_id!==0 && localStorage.getItem("initial")==='false'){
             //Make API call
             //alert("sgtadsg");
             console.log("check:"+this.props.selectedsavedsurveys.closed_invitees);
             let temp=this.props.selectedsavedsurveys;
-
-            this.setState({end_time:temp.endTime,user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
+            let date=new Date(temp.endTime);
+            date.setHours(date.getHours()-7);
+            alert(date.toISOString().substring(0,16));
+            this.setState({end_time:date.toISOString().substring(0,16),user_id:temp.user_id,closed_invitees:[],is_published:temp.ispublished,surveytype:temp.surveytype,survey_id:temp.surveyId,totalQuestions:temp.questions.length,question:temp.questions,survey_name:temp.survey_name});
 
         }
         else{

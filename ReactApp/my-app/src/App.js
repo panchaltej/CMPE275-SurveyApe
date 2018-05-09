@@ -31,6 +31,14 @@ class App extends Component {
     }
     render()
     {
+        var renderpage=[]
+        if(localStorage.getItem("email")!=null && localStorage.getItem("email")!="")
+            renderpage.push(<div><Menu/></div>)
+        else {
+            renderpage.push(<h3>Please sign In before creating survey</h3>)
+            renderpage.push(<br/>)
+            renderpage.push(<a href="http://localhost:3000/">Click here to login</a>)
+        }
         return (
             <div className="App">
                 <div className="container-fluid">
@@ -62,7 +70,9 @@ class App extends Component {
                         </BrowserRouter>
                     )}/>
                     <Route exact path="/dashboard" render={() => (<BrowserRouter>
-                            <Menu/>
+                            <div>
+                                {renderpage}
+                            </div>
                         </BrowserRouter>
                     )}/>
                     <Route exact path="/successfullyVerified" render={() => (<BrowserRouter>
