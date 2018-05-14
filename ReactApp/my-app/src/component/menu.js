@@ -67,7 +67,9 @@ class menu extends Component{
 
       <div className="jumbotron">
         <div className="container">
-          <h6 className="display-3">Survey APE!</h6>
+          <button className="display-3" style = {{"background":"transparent", border:"0px"}} onClick={() =>{ 
+            this.props.history.push("/");
+              }}>Survey APE!</button>
         </div>
       </div>
 

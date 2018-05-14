@@ -8,20 +8,46 @@ class lendingpage extends Component{
     state={
         usreid:""
     }
+
+    handleSignOut(){
+      localStorage.setItem("email","");
+      this.props.history.push("/");
+      window.location.reload();
+    }
+
+    renderButton(){
+      if(localStorage.getItem("email")!=null && localStorage.getItem("email")!="")
+      return(
+        <div>
+          <button className="btn btn-warning" onClick={() =>{ 
+            this.props.history.push("/dashboard");
+              }}>Dashboard</button>
+          <button className="btn btn-warning" onClick={ () =>{this.handleSignOut()}}>signout</button>
+        </div>
+          )
+      else
+      return(
+        <div>
+          <button class="btn btn-outline-primary"  onClick={() =>{ 
+            this.props.history.push("/signin");
+              }}>Sign in</button>
+          <button class="btn btn-outline-primary"  onClick={() =>{ 
+                    this.props.history.push("/signup");             
+              }}>Sign up</button>
+        </div>
+          )
+    }
+
     render()
     {
         return(
             <div>
           <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
       <h5 class="my-0 mr-md-auto font-weight-normal">Welcome to the Survey APE!</h5>
-      <a class="btn btn-outline-primary"  onClick={() =>{ 
-                                      this.props.history.push("/signin");
-                                       
-                                   }}>Sign in</a>
-      <a class="btn btn-outline-primary"  onClick={() =>{ 
-                                      this.props.history.push("/signup");
-                                       
-                                   }}>Sign up</a>
+      <div>
+        {this.renderButton()}
+      
+      </div>
     </div>
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
       <h3 class="display-4">Choose the Survey Option</h3>
