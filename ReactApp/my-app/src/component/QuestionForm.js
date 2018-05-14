@@ -554,6 +554,22 @@ handleSave() {
         }
     }
 
+    componentDidMount(){ //added only for fetching images
+        setTimeout(()=>{
+            let list= document.getElementsByClassName("Images");
+            for (let i = 0; i < list.length; i++) {
+
+                (function(e) {
+                    let payload={"imageName":list[e].alt};
+                API.getImages(payload).then((response)=>{
+                    list[e].src="data:image/png;base64,"+response.data;
+                    })
+                })(i);
+            }
+        },100)
+
+    }
+
     renderButton(){
         if(this.state.isLinkUsed == 0 || this.state.isLinkUsed == undefined)
         return(
@@ -638,11 +654,11 @@ handleSave() {
                         renderValue.push(<h5 className="form-control questions"
                                              style={leftFloat}>{this.state.questions[i].question_text}</h5>);
                         for (let j = 0; j <= this.state.questions[i].options.length - 1; j++) {
-                            renderValue.push(<div className="optionsClass"><img src={""}
-                                                                                alt={"option" + (i + 1)}/>{this.state.questions[i].options[j].option_description}<br/>
-                            </div>)
-
+                                renderValue.push(<div className="optionsClass"><img src={""} className="Images"
+                                                                                    alt={this.state.questions[i].options[j].option_description}/><br/>
+                                </div>);
                         }
+
 
                     }
                     if (this.state.questions[i].question_type == "DR") {

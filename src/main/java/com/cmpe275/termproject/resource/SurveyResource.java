@@ -785,7 +785,7 @@ public class SurveyResource {
         try {
             System.out.println("in images upload");
 //            for (int i = 0; i <files.length ; i++) {
-                files.transferTo(new File( "C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
+                files.transferTo(new File( "C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
 
             //}
 
@@ -894,8 +894,8 @@ public class SurveyResource {
 
         return new ResponseEntity("Survey is closed",HttpStatus.OK);
     }
-    public String encoder()  {
-        String imagePath="C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources\\1.png";
+    public String encoder(String imagename)  {
+        String imagePath="C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources\\"+imagename;
         File f = new File(imagePath);
         String imageString="";//change path of image according to you
         try{
@@ -912,14 +912,13 @@ public class SurveyResource {
     }
 
     @Transactional
-    @GetMapping(value = "/getfile")
-    public ResponseEntity<?> getfile() throws JSONException {
-
-        //JSONObject jsonObject = new JSONObject(payload);
-
-        //File file = new File("C:\\Repos\\CMPE275\\CMPE275-SurveyApe\\src\\main\\resources\\2cd43b_434c5b3602af429f927d290cbc27d790_mv2.png");
-        System.out.println(encoder());
-        return new ResponseEntity(encoder(),HttpStatus.OK);
+    @PostMapping(value = "/getfile")
+    public ResponseEntity<?> getfile(@RequestBody Map<String, Object> payload) throws JSONException {
+        JSONObject jsonObject = new JSONObject(payload);
+        System.out.println("imagename:"+jsonObject.getString("imageName"));
+        String temp=encoder(jsonObject.getString("imageName"));
+        System.out.println("image data"+temp);
+        return new ResponseEntity(temp,HttpStatus.OK);
 
     }
 }

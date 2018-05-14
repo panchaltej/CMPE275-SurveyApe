@@ -228,15 +228,14 @@ export const getgeneralSurvey = (payload) =>
                                     return error;
                               });
 
-export const getfile  = () =>
-    axios.get(api + '/survey/getfile')
+export const getImages  = (payload) =>
+    axios.post(api + '/survey/getfile',payload)
         .then(res => {
-            //console.log('response from server getfile', res.data);
-
+            //console.log('response from server getImages', res.data);
             return res;
         })
         .catch(error => {
-            console.log("This is error in API",error);
+            console.log("This is error in getImages API",error);
             return error;
 
         });

@@ -24,7 +24,6 @@ class HP extends Component{
         options:[
             { value: 'DR', label: 'MCQ-Single Text Dropwdown type' },
             { value: 'R', label: 'MCQ-Single Text Radio type' },
-            { value: 'I', label: 'MCQ-Single Image Dropwdown type' },
             { value: 'I', label: 'MCQ-Single Image Radio type' },
             { value: 'CB', label: 'MCQ-Multiple Text answers' },
             { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
