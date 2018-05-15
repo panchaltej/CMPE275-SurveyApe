@@ -191,7 +191,7 @@ public class ResponseResource {
             SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);
             JSONArray questions = jsonObject.getJSONArray("questions");
             System.out.println("EMAILID "+emailId);
-            if(!emailId.equals(""))
+            if(!emailId.equals("") && !type.equals("G"))
                 answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
 
             for (int i = 0; i < questions.length(); i++) {

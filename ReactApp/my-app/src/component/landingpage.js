@@ -90,7 +90,7 @@ class lendingpage extends Component{
                 
         </div>
         </div>
-        <div class="card mb-4 box-shadow">
+        {/* <div class="card mb-4 box-shadow">
           <div class="card-header">
             <h4 class="my-0 font-weight-normal">Close Surveys</h4>
           </div>
@@ -102,7 +102,7 @@ class lendingpage extends Component{
             </ul>
             <button type="button" class="btn btn-lg btn-block btn-outline-primary">Contact us</button>
           </div>
-        </div>
+        </div> */}
       </div>
       </div>
 
