@@ -118,7 +118,7 @@ public class ResponseResource {
             saveResponse(jsonObject, emailId, type, true);
             final String username = "infosurveyape275@gmail.com";
             final String password = "qwerty123asdf";
-            String email =jsonObject.getString("email");;
+            String email =emailId;;
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.starttls.enable", "true");

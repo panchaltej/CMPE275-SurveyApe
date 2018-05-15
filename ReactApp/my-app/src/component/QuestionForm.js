@@ -230,8 +230,8 @@ class QuestionForm extends Component {
         ((output) => {
             debugger;
             console.log(output)
-        
         }) ;
+        
 
 
     }
