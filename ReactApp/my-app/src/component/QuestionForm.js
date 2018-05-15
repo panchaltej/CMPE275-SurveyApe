@@ -81,7 +81,8 @@ class QuestionForm extends Component {
         "surveyId":0,
         "userId":0,
         "questions":[],
-        "isLinkUsed":0
+        "isLinkUsed":0,
+        "emailId":""
     }
 
     handleSubmit() {
@@ -221,20 +222,22 @@ class QuestionForm extends Component {
 
         
 
-
-        if (localStorage.getItem("email") == null) {
+        var emailVal = this.state.emailId;
+        if (this.state.emailId == null || this.state.emailId == "") {
             var personEmail = prompt("Please enter your email");
-            localStorage.setItem("email",personEmail)
+            // localStorage.setItem("email",personEmail)
+            emailVal = personEmail;
         }
-        var emailVal=localStorage.getItem("email");
+        // var emailVal=localStorage.getItem("email");
         let surveyId = this.props.match.params.surveyId;
         let uuid = this.props.match.params.uuid;
         let email=emailVal;
         let tempState=this.state;
-        tempState["email"]=email;
+        // tempState["email"]=email;
         //alert(email);
-       // //debugger;
-        API.submitAnswers({tempState}).then
+
+       // debugger;
+        API.submitAnswers({tempState, email}).then
         ((output) => {
             //debugger;
             console.log(output)
@@ -445,7 +448,7 @@ handleSave() {
                         var ans = q.answers;
                         var new_ans = [];
                         ans.map((a)=>{
-                            if(a.emailId == output.emailId)
+                            if(a.emailId == output.emailId && a.emailId != "")
                             new_ans.push(a);
                         });
                         q.answers = new_ans;
@@ -456,7 +459,8 @@ handleSave() {
                             "userId": output.userId,
                             "questions": output.questions,
                             "uuid":uuid,
-                            "isLinkUsed":output.isLinkUsed
+                            "isLinkUsed":output.isLinkUsed,
+                            "emailId": localStorage.getItem("email")
                        }, console.log("State:"+this.state.surveyId));
                     }
                     else{
