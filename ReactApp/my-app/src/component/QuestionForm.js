@@ -702,6 +702,24 @@ handleSave() {
 
 
                     }
+                    if (this.state.questions[i].question_type === "ICB") {
+
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>);
+                        for (let j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            renderValue.push(<div className="optionsClass">
+                                <input className="form-check-input"
+                                       style={leftFloat} onChange={() => {
+                                    this.handleSave()
+                                }} id={this.state.questions[i].question_id} type="checkbox"
+                                       name={this.state.questions[i].question_id}
+                                       value={this.state.questions[i].options[j].option_description}/>
+                                <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description} style={{height:'200px', width:'300px' }}/><br/>
+                            </div>);
+                        }
+
+
+                    }
                     if (this.state.questions[i].question_type == "DR") {
 
                         renderValue.push(<h5 className="form-control questions"

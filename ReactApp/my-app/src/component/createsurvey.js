@@ -22,11 +22,11 @@ class HP extends Component{
             {value: 'C',label:'Closed'}
             ],
         options:[
-            { value: 'DR', label: 'MCQ-Single Text Dropwdown type' },
-            { value: 'R', label: 'MCQ-Single Text Radio type' },
-            { value: 'I', label: 'MCQ-Single Image Radio type' },
-            { value: 'CB', label: 'MCQ-Multiple Text answers' },
-            { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
+            { value: 'DR', label: 'MCQ-Dropwdown' },
+            { value: 'R', label: 'MCQ-Radio' },
+            { value: 'I', label: 'MCQ-Image Radio' },
+            { value: 'CB', label: 'MCQ-Checkboxes' },
+            { value: 'ICB', label: 'MCQ-Checkbox Images' },
             { value: 'Y', label: 'Yes/no' },
             { value: 'TB', label: 'Short answer' },
             { value: 'DT', label: 'Date/time' },
@@ -79,7 +79,7 @@ class HP extends Component{
         //alert(this.state.question[index].question_type);
         // if(this.state.question.length > 0){
         for (let i = 0; i < this.state.question[index].options.length; i++) {
-            if(this.state.question[index].question_type!=="I") {
+            if(this.state.question[index].question_type!=="I" && this.state.question[index].question_type!=="ICB" ) {
                 options.push(<div key={i}><br/><input style={{width: "300px"}} disabled={this.state.is_published}
                                                       onChange={(e) => this.setOptionName(index, i, e)}
                                                       value={this.state.question[index].options[i].option_description}
@@ -87,7 +87,7 @@ class HP extends Component{
                     <button disabled={this.state.is_published} onClick={() => this.deleteOption(index, i)}>Delete</button>
                     <br/></div>);
             }
-            else{ //for images
+            else if( this.state.question[index].question_type==="ICB" || this.state.question[index].question_type==="I"){ //for images
                 // let reader  = new FileReader();
                 // let temp="";
                 // if(this.state.question[index].options[i].option_description!==""){
@@ -131,7 +131,7 @@ class HP extends Component{
             if(this.state.question[i].question_type==="Y"){ //yes/no
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/></div>);
             }
-            else if(qtype==='R' || qtype==="CB" || qtype==="I" || qtype==="DR"){
+            else if(qtype==='R' || qtype==="CB" || qtype==="I" || qtype==="DR" || qtype==="ICB"){
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/><button disabled={this.state.is_published} onClick={()=>this.addOption(i)}>Add option</button><br/>{this.showOption(i)}</div>);
             }
             else{
@@ -272,7 +272,7 @@ class HP extends Component{
                     
                 });
         }
-        
+
         this.setState({is_published:true});
     }
     unPublish(){
@@ -384,7 +384,7 @@ class HP extends Component{
                                     </nav>
                                     <div class="container-fluid">
                                         <div class="row">
-                                        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                                        <nav class="col-md-2 d-none d-md-block sidebar">
                                         <div class="sidebar-sticky">
                                             <ul class="nav flex-column">
                                                 {this.state.options.map((item, index) => (
