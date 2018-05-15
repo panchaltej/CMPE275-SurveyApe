@@ -78,6 +78,7 @@ public class ResponseResource {
                 }
             }
 
+            if(!type.equals("G"))
             saveResponse(jsonObject, emailId, type, false);
 
             return new ResponseEntity("SUCCESS", HttpStatus.OK);
@@ -95,7 +96,7 @@ public class ResponseResource {
         JSONObject jsonObject = tempState.getJSONObject("tempState");
         System.out.println("json"+jsonObject);
         Integer survey_id = jsonObject.getInt("surveyId");
-        String emailId ="";
+        String emailId =tempState.getString("email");
         String uuid = jsonObject.getString("uuid");
 
         SurveyEntity se = surveyRepository.findOne(survey_id);
@@ -190,7 +191,7 @@ public class ResponseResource {
             SurveyEntity surveyEntity = surveyRepository.findBySurveyId(survey_id);
             JSONArray questions = jsonObject.getJSONArray("questions");
             System.out.println("EMAILID "+emailId);
-            if(!type.equals("G") || !isSubmit)
+            if(!emailId.equals(""))
                 answerRepository.deleteByEmailIdAndSurveyId(emailId, survey_id);
 
             for (int i = 0; i < questions.length(); i++) {

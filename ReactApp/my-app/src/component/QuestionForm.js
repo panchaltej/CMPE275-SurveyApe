@@ -81,17 +81,18 @@ class QuestionForm extends Component {
         "surveyId":0,
         "userId":0,
         "questions":[],
-        "isLinkUsed":0
+        "isLinkUsed":0,
+        "emailId":""
     }
 
     handleSubmit() {
         var answers = [];
         if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
-            // debugger;
+            // //debugger;
             var id = this.state.questions[i].question_id;
-            if (this.state.questions[i].question_type == "R") {
-
+            if (this.state.questions[i].question_type == "R" || this.state.questions[i].question_type == "I") {
+                debugger;
                 var radioVal = document.getElementsByName(id);
 
                 var radio_value;
@@ -114,7 +115,7 @@ class QuestionForm extends Component {
             // for(var temp=1;temp<resultData.questions[i].answers.length;temp++)
             // delete resultData.questions[i].answers[temp]
 
-            if (this.state.questions[i].question_type == "CB") {
+            if (this.state.questions[i].question_type == "CB" || this.state.questions[i].question_type == "ICB" ) {
                 debugger;
                 var checkVal = document.getElementsByName(id);
                 var checkedBoxes = "";
@@ -140,15 +141,18 @@ class QuestionForm extends Component {
                 }
             }
             if (this.state.questions[i].question_type == "DT") {
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //if (document.getElementById(toString(id)) != undefined)
+                if(this.state.questions[i].options.length>0) {
+                    this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                }
                 //alert(document.getElementById(id).value)
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                debugger;
+                //debugger;
                 if(this.state.questions[i].options.length>0)
                 {
-                    debugger;
+                    //debugger;
                     var obj = {};
                     obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
@@ -171,11 +175,16 @@ class QuestionForm extends Component {
                     this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
-            if (this.state.questions[i].question_type == "I") {
-                if(this.state.questions[i].answers.length>0){}
-                    //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+            if (this.state.questions[i].question_type == "Y") {
+                if(this.state.questions[i].answers.length>0)
+                    this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
+            // if (this.state.questions[i].question_type == "I") {
+            //     if(this.state.questions[i].answers.length>0){}
+            //         //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+            //     //alert(document.getElementById(id).value)
+            // }
             if (this.state.questions[i].question_type == "ST") {
 
                 var elements = document.getElementsByName(id);
@@ -204,8 +213,8 @@ class QuestionForm extends Component {
             }
         }
         }
-        debugger
-        alert("submit executed");
+        //debugger
+        alert("survey submitted");
 
         // Payload for saveanswers
 
@@ -213,22 +222,24 @@ class QuestionForm extends Component {
 
         
 
-
-        if (localStorage.getItem("email") == null) {
+        var emailVal = this.state.emailId;
+        if (this.state.emailId == null || this.state.emailId == "") {
             var personEmail = prompt("Please enter your email");
-            localStorage.setItem("email",personEmail)
+            // localStorage.setItem("email",personEmail)
+            emailVal = personEmail;
         }
-        var emailVal=localStorage.getItem("email");
+        // var emailVal=localStorage.getItem("email");
         let surveyId = this.props.match.params.surveyId;
         let uuid = this.props.match.params.uuid;
         let email=emailVal;
         let tempState=this.state;
-        tempState["email"]=email;
+        // tempState["email"]=email;
         //alert(email);
+
        // debugger;
-        API.submitAnswers({tempState}).then
+        API.submitAnswers({tempState, email}).then
         ((output) => {
-            debugger;
+            //debugger;
             console.log(output)
         }) ;
         
@@ -241,10 +252,10 @@ handleSave() {
         var answers = [];
         if(this.state.questions.length > 0){
         for (var i = 0; i <= this.state.questions.length - 1; i++) {
-            // debugger;
+            // //debugger;
             var id = this.state.questions[i].question_id;
-            if (this.state.questions[i].question_type == "R") {
-
+            if (this.state.questions[i].question_type == "R" || this.state.questions[i].question_type == "I") {
+                debugger;
                 var radioVal = document.getElementsByName(id);
 
                 var radio_value;
@@ -266,7 +277,7 @@ handleSave() {
             // for(var temp=1;temp<resultData.questions[i].answers.length;temp++)
             // delete resultData.questions[i].answers[temp]
 
-            if (this.state.questions[i].question_type == "CB") {
+            if (this.state.questions[i].question_type == "CB" || this.state.questions[i].question_type == "ICB") {
                 debugger;
                 var checkVal = document.getElementsByName(id);
                 var checkedBoxes = "";
@@ -290,15 +301,27 @@ handleSave() {
                 }
             }
             if (this.state.questions[i].question_type == "DT") {
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
-                //alert(document.getElementById(id).value)
+                if(this.state.questions[i].options.length>0)
+                {
+                    //debugger;
+                    var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
+                }
 
             }
             if (this.state.questions[i].question_type == "TB") {
-                debugger;
+                //debugger;
                 if(this.state.questions[i].options.length>0)
                 {
-                     debugger;
+                     //debugger;
                      var obj = {};
                     obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
@@ -319,7 +342,7 @@ handleSave() {
             if (this.state.questions[i].question_type == "DR") {
                 if(this.state.questions[i].options.length>0)
                 {
-                    debugger;
+                    //debugger;
                     var obj = {};
                     obj["optionId"] = this.state.questions[i].options[0].option_id;
                     obj["optionDescription"] = document.getElementById(id).value
@@ -335,6 +358,27 @@ handleSave() {
                 //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 //alert(document.getElementById(id).value)
             }
+
+            if (this.state.questions[i].question_type == "Y") {
+                if(this.state.questions[i].options.length>0)
+                {
+                    //debugger;
+                    var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
+                }
+                //if(this.state.questions[i].answers.length>0)
+                //this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //alert(document.getElementById(id).value)
+            }
+
             if (this.state.questions[i].question_type == "ST") {
 
                 var elements = document.getElementsByName(id);
@@ -362,14 +406,14 @@ handleSave() {
             }
         }
         }
-        debugger
+        //debugger
         // alert("save executed");
 
         // Payload for saveanswers
         let surveyId = this.props.match.params.surveyId;
         let uuid = this.props.match.params.uuid;
 
-        debugger;
+        //debugger;
 
         API.saveanswers(this.state).then
                 ((output) => {
@@ -386,7 +430,7 @@ handleSave() {
         //var surveyId=this.props.survey_id;
         //  var str = "localhost:3000/survey/1";
         //var res = str.split("/")[2];
-        debugger;
+        //debugger;
         var self = this;
         var payload ={
             surveyId : this.props.match.params.surveyId,
@@ -395,7 +439,7 @@ handleSave() {
                 API.rendersurveys(payload).then
                 ((output) => {
                     console.log(output)
-                   debugger;
+                   //debugger;
                    console.log(this)
                    if(output){
                     var questions = output.questions;
@@ -404,7 +448,7 @@ handleSave() {
                         var ans = q.answers;
                         var new_ans = [];
                         ans.map((a)=>{
-                            if(a.emailId == output.emailId)
+                            if(a.emailId == output.emailId && a.emailId != "")
                             new_ans.push(a);
                         });
                         q.answers = new_ans;
@@ -415,7 +459,8 @@ handleSave() {
                             "userId": output.userId,
                             "questions": output.questions,
                             "uuid":uuid,
-                            "isLinkUsed":output.isLinkUsed
+                            "isLinkUsed":output.isLinkUsed,
+                            "emailId": localStorage.getItem("email")
                        }, console.log("State:"+this.state.surveyId));
                     }
                     else{
@@ -426,7 +471,7 @@ handleSave() {
                     alert("Survey is closed or not published yet!")
                 }
                     }) ;
-        debugger;
+        //debugger;
 }
   
 
@@ -454,7 +499,7 @@ handleSave() {
                 }.bind(this))
                 .catch(function (response) {
                     //handle error
-                    debugger;
+                    //debugger;
                     this.props.history.push("/failedVerification");
                     console.log(response);
                 }.bind(this));
@@ -478,10 +523,20 @@ handleSave() {
                                 }
                             }
                     }
+                    if (this.state.questions[i].question_type == "I" && this.state.questions[i].answers.length > 0) {
+
+                        var radioVal = document.getElementsByName(id);
+                        if (radioVal)
+                            for (var j = 0; j < radioVal.length; j++) {
+                                if (radioVal[j].value == this.state.questions[i].answers[0].answerDescription) {
+                                    radioVal[j].checked = true;
+                                }
+                            }
+                    }
 
 
                     if (this.state.questions[i].question_type == "CB") {
-                        debugger;
+                        //debugger;
                         var id12 = this.state.questions[i].question_id;
                         var checkVal = document.getElementsByName(id12);
                         var checkedBoxes = "";
@@ -503,6 +558,31 @@ handleSave() {
                         //     resultData.questions[i].answers.push(obj);
                         // }
                     }
+
+                    if (this.state.questions[i].question_type == "ICB") {
+                        //debugger;
+                        var id12 = this.state.questions[i].question_id;
+                        var checkVal = document.getElementsByName(id12);
+                        var checkedBoxes = "";
+                        var checkedArray = []
+                        var checkedIdArray = []
+                        for (var k = 0; k < checkVal.length; k++) {
+                            for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                                if (this.state.questions[i].answers[m].answerDescription == checkVal[k].value) {
+                                    checkVal[k].checked = true;
+                                }
+                            }
+
+                        }
+                        // resultData.questions[i].answers = []
+                        // for (var k = 0; k < checkedArray.length; k++) {
+                        //     var obj = {};
+                        //     obj["option_id"] = checkedIdArray[k];
+                        //     obj["option_description"] = checkedArray[k]
+                        //     resultData.questions[i].answers.push(obj);
+                        // }
+                    }
+
                     if (this.state.questions[i].question_type == "DT") {
                         if (this.state.questions[i].answers.length > 0)
                             document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
@@ -512,7 +592,7 @@ handleSave() {
                     if (this.state.questions[i].question_type == "TB") {
                         if (this.state.questions[i].answers.length > 0) {
                             document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
-                            debugger;
+                            //debugger;
                             // if(this.state.questions[i].question_text.includes("email"))
                             // {
                             //     alert("contains email")
@@ -525,11 +605,19 @@ handleSave() {
                     }
                     if (this.state.questions[i].question_type == "DR") {
                         if (this.state.questions[i].answers.length > 0) {
-                            debugger;
+                            //debugger;
                             document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
                         }
                         //alert(document.getElementById(id).value)
                     }
+                    if (this.state.questions[i].question_type == "Y") {
+                        if (this.state.questions[i].answers.length > 0) {
+                            //debugger;
+                            document.getElementById(id).value = this.state.questions[i].answers[0].answerDescription;
+                        }
+                        //alert(document.getElementById(id).value)
+                    }
+
                     if (this.state.questions[i].question_type == "ST") {
                         var id = this.state.questions[i].question_id;
                         var elements = document.getElementsByName(id);
@@ -630,11 +718,11 @@ handleSave() {
                         renderValue.push(<h5 className="form-control questions"
                                              style={leftFloat}>{this.state.questions[i].question_text}</h5>)
 
-                        renderValue.push(<div className="optionsClass"><input type="date"
+                        renderValue.push(<div className="optionsClass"><input type="datetime-local"
                                                                               className="form-check-input inputStyle"
                                                                               style={leftFloat} onChange={() => {
                             this.handleSave()
-                        }} id={this.state.questions[i].question_id} name="gender"/><br/></div>)
+                        }} id={this.state.questions[i].question_id} name={this.state.questions[i].question_id}/><br/></div>)
 
                     }
                     if (this.state.questions[i].question_type == "TB") {
@@ -662,8 +750,26 @@ handleSave() {
                                            }} style={leftFloat} type="radio"
                                            name={this.state.questions[i].question_id}
                                            value={this.state.questions[i].options[j].option_description}/>
-                                    <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description}/><br/>
+                                    <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description} style={{height:'200px', width:'300px' }}/><br/>
                                 </div>);
+                        }
+
+
+                    }
+                    if (this.state.questions[i].question_type === "ICB") {
+
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>);
+                        for (let j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            renderValue.push(<div className="optionsClass">
+                                <input className="form-check-input"
+                                       style={leftFloat} onChange={() => {
+                                    this.handleSave()
+                                }} id={this.state.questions[i].question_id} type="checkbox"
+                                       name={this.state.questions[i].question_id}
+                                       value={this.state.questions[i].options[j].option_description}/>
+                                <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description} style={{height:'200px', width:'300px' }}/><br/>
+                            </div>);
                         }
 
 
@@ -683,6 +789,22 @@ handleSave() {
 
 
                     }
+                    if (this.state.questions[i].question_type == "Y") {
+
+                        renderValue.push(<h5 className="form-control questions"
+                                             style={leftFloat}>{this.state.questions[i].question_text}</h5>)
+                        var dropdownVal = []
+
+                        for (var j = 0; j <= this.state.questions[i].options.length - 1; j++) {
+                            dropdownVal.push(<option>{this.state.questions[i].options[j].option_description}</option>)
+                        }
+                        renderValue.push(<select className="form-control optionsClass inputStyle" onChange={() => {
+                            this.handleSave()
+                        }} id={this.state.questions[i].question_id}>{dropdownVal}</select>);
+
+
+                    }
+
 
                     if (this.state.questions[i].question_type == "ST") {
 
@@ -719,10 +841,18 @@ handleSave() {
                             }
                         }
                     }
+                    if (this.state.questions[i].question_type == "I" && this.state.questions[i].answers.length > 0) {
 
+                        var radioVal = document.getElementsByName(toString(id));
+                        for (var j = 0; j < radioVal.length; j++) {
+                            if (radioVal[j].value == this.state.questions[i].answers[0].optionDescription) {
+                                radioVal[j].checked = true;
+                            }
+                        }
+                    }
 
                     if (this.state.questions[i].question_type == "CB") {
-                        debugger;
+                        //debugger;
                         var id12 = this.state.questions[i].question_id;
                         var checkVal = document.getElementsByName(toString(id12));
                         var checkedBoxes = "";
@@ -744,17 +874,44 @@ handleSave() {
                         //     resultData.questions[i].answers.push(obj);
                         // }
                     }
+
+                    if (this.state.questions[i].question_type == "ICB") {
+                        //debugger;
+                        var id12 = this.state.questions[i].question_id;
+                        var checkVal = document.getElementsByName(toString(id12));
+                        var checkedBoxes = "";
+                        var checkedArray = []
+                        var checkedIdArray = []
+                        for (var k = 0; k < checkVal.length; k++) {
+                            for (var m = 0; m < this.state.questions[i].answers.length; m++) {
+                                if (this.state.questions[i].answers[m].optionDescription == checkVal[k].value) {
+                                    checkVal[k].checked = true;
+                                }
+                            }
+
+                        }
+                        // resultData.questions[i].answers = []
+                        // for (var k = 0; k < checkedArray.length; k++) {
+                        //     var obj = {};
+                        //     obj["option_id"] = checkedIdArray[k];
+                        //     obj["option_description"] = checkedArray[k]
+                        //     resultData.questions[i].answers.push(obj);
+                        // }
+                    }
+
                     if (this.state.questions[i].question_type == "DT") {
-                        if (this.state.questions[i].answers.length > 0)
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (document.getElementById(toString(id)) != undefined)
                             document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
-                        //alert(document.getElementById(id).value)
+
+                        }//alert(document.getElementById(id).value)
 
                     }
                     if (this.state.questions[i].question_type == "TB") {
                         if (this.state.questions[i].answers.length > 0) {
                             if (document.getElementById(toString(id)) != undefined)
                                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
-                            debugger;
+                            //debugger;
                             // if(this.state.questions[i].question_text.includes("email"))
                             // {
                             //     if(document.getElementById(toString(id)).value=="")
@@ -770,12 +927,23 @@ handleSave() {
                     if (this.state.questions[i].question_type == "DR") {
                         if (this.state.questions[i].answers.length > 0) {
                             if (document.getElementById(toString(id)) != undefined) {
-                                debugger;
+                                //debugger;
                                 document.getElementById(toString(id)).value = this.state.questions[i].answers[0].answerDescription;
                             }
                         }
                         //alert(document.getElementById(id).value)
                     }
+
+                    if (this.state.questions[i].question_type == "Y") {
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (document.getElementById(toString(id)) != undefined) {
+                                //debugger;
+                                document.getElementById(toString(id)).value = this.state.questions[i].answers[0].answerDescription;
+                            }
+                        }
+                        //alert(document.getElementById(id).value)
+                    }
+
                     if (this.state.questions[i].question_type == "ST") {
                         var id = this.state.questions[i].question_id;
                         var elements = document.getElementsByName(toString(id));
