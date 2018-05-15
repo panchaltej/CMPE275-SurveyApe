@@ -45,7 +45,7 @@ class HP extends Component{
         let options=[];
         if(qType==="Y") {
             for(let i=0;i<2;i++){
-                options.push({"option_description":"","image_description":""});
+                options.push({"option_description":i===0?"Yes":"No"});
             }
         }
         let temp={"question_text":"","question_type":qType,"options":options};
@@ -129,7 +129,7 @@ class HP extends Component{
           let qtype=this.state.question[i].question_type;
           console.log(qtype);
             if(this.state.question[i].question_type==="Y"){ //yes/no
-                answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/>{this.showOption(i)}</div>);
+                answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/></div>);
             }
             else if(qtype==='R' || qtype==="CB" || qtype==="I" || qtype==="DR" || qtype==="ICB"){
                 answers.push(<div key={i}><br/>Q.{i+1}<input style={{width:"300px"}} disabled={this.state.is_published} onChange={(e)=>this.setQuestionName(i,e)} value={this.state.question[i].question_text} placeholder={'Ask question '+(i+1)+' here'} /><button className="btn btn-danger" disabled={this.state.is_published} onClick={()=>this.delete(i)}>Delete</button><br/><button disabled={this.state.is_published} onClick={()=>this.addOption(i)}>Add option</button><br/>{this.showOption(i)}</div>);
