@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import Allsavedsurveys from './allsavedsurveys';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 
+
+
 class HP extends Component{
     state={
         survey_id:0,
@@ -362,8 +364,11 @@ class HP extends Component{
 
 <Route exact path="/createsurvey" render={() => (
     <div>
+        <div style={{"display":"flex", "flexDirection":"row","minwidth": "1000px"}}>
 
-                <div className="container-fluid">
+            <img src={"http://nexusmc.com.au/wp-content/uploads/2016/09/Online-Survey.jpeg"} style={{opacity:"0.15",width:"100%",height:"20%"}}/>
+            <div style={{"position":"absolute","zIndex":"100", "margin":"auto","width": "100%","padding": "10px"}}>
+                <div className="container-fluid" >
                     <h1>{this.state.is_published?"This survey is now "+(this.state.is_closed?"closed!":"live!"):""}</h1>
                     <button onClick={()=>{
                         localStorage.setItem("survey_id", this.state.survey_id);
@@ -428,6 +433,8 @@ class HP extends Component{
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
             </div>
         )}/>
          <Route exact path="/allsavedsurveys" render={() => (
