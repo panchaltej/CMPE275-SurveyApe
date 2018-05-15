@@ -785,7 +785,7 @@ public class SurveyResource {
         try {
             System.out.println("in images upload");
 //            for (int i = 0; i <files.length ; i++) {
-                files.transferTo(new File( "C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources" +File.separator + files.getOriginalFilename()));
+                files.transferTo(new File( System.getProperty("user.dir")+"//src//main//resources" +File.separator + files.getOriginalFilename()));
 
             //}
 
@@ -895,7 +895,9 @@ public class SurveyResource {
         return new ResponseEntity("Survey is closed",HttpStatus.OK);
     }
     public String encoder(String imagename)  {
-        String imagePath="C:\\Repos\\CMPE275-SurveyApe\\src\\main\\resources\\"+imagename;
+        System.out.println("IMAGENAME"+imagename);
+        String imagePath=System.getProperty("user.dir")+"//src//main//resources"+File.separator +imagename;
+        System.out.println("PATH: "+imagePath);
         File f = new File(imagePath);
         String imageString="";//change path of image according to you
         try{

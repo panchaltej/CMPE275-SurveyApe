@@ -256,12 +256,23 @@ class HP extends Component{
 
         };
 
+
+
         console.log("Survey_id:",surveyData)
       API.createSurvey(surveyData).then
           ((output) => {
       console.log(output);
       this.setState({closed_invitees:[]});
    }) ;
+
+        //console.log(this.state.images);
+        for(let i=0;i<this.state.images.length;i++){
+            API.uploadFile(this.state.images[i])
+                .then((res) => {
+                    
+                });
+        }
+        
         this.setState({is_published:true});
     }
     unPublish(){

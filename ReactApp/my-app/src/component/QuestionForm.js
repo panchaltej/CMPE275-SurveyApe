@@ -662,7 +662,7 @@ handleSave() {
                                            }} style={leftFloat} type="radio"
                                            name={this.state.questions[i].question_id}
                                            value={this.state.questions[i].options[j].option_description}/>
-                                    <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description}/><br/>
+                                    <img src={""} className="Images" alt={this.state.questions[i].options[j].option_description} style={{height:'200px', width:'300px' }}/><br/>
                                 </div>);
                         }
 
