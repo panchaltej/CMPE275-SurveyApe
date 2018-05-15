@@ -13,4 +13,5 @@ public interface ClosedSurveyRepository extends JpaRepository<ClosedSurveyEntity
     List<ClosedSurveyEntity> findAllBySurveyId(SurveyEntity surveyId);
     ClosedSurveyEntity findOneByUuid(String uuid);
     ClosedSurveyEntity findOneByEmailIdAndSurveyId(String emailId, SurveyEntity surveyEntity);
+    List<ClosedSurveyEntity> findAllByEmailId(String email);
 }

@@ -3,7 +3,7 @@ export const SELECTED_SAVED_SURVEYS='SELECTED_SAVED_SURVEYS';
 export const OPEN_UNIQUE_EMAIL_ID='OPEN_UNIQUE_EMAIL_ID';
 export const OPEN_UNIQUE_SURVEYS='OPEN_UNIQUE_SURVEYS';
 export const GENERAL_SURVEYS='GENERAL_SURVEYS';
-
+export const GIVEN_SURVEYS='GIVEN_SURVEYS';
 
 
 export function allsavedsurveys(data) {
@@ -38,6 +38,13 @@ export function allopenuniquesurveys(data) {
 export function allgeneralsurveys(data) {
     return {
         type: 'GENERAL_SURVEYS',
+        data,
+    };
+}
+
+export function allgivensurveys(data) {
+    return {
+        type: 'GIVEN_SURVEYS',
         data,
     };
 }

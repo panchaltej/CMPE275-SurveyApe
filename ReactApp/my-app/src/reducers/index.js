@@ -5,6 +5,7 @@ import Selectedsavedsurveys from './selectedsavedsurvey'
 import Openuniqueemailid from './openuniqueemail'
 import Getallopenuniquesurveys from './allopenuniquesurveys'
 import Getgeneralsurveys from './allgeneralsurveys'
+import Getallgivensurveys from './allgivensurveys'
 
 
 
@@ -15,7 +16,8 @@ const allReducers = combineReducers({
     selectedsavedsurveys: Selectedsavedsurveys,
     openuniqueemailid: Openuniqueemailid,
     getallopenuniquesurveys:Getallopenuniquesurveys,
-    getgeneralsurveys:Getgeneralsurveys
+    getgeneralsurveys:Getgeneralsurveys,
+    getallgivensurveys:Getallgivensurveys
 });
 
 export default allReducers;

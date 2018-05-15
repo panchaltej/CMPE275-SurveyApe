@@ -914,6 +914,7 @@ public class SurveyResource {
 
     }
 
+
     @Transactional
     @JsonView({Survey.summary.class})
     @GetMapping(value = "/allgeneralsurveys")
@@ -1123,6 +1124,65 @@ public class SurveyResource {
 
         // sends the e-mail
         Transport.send(msg);
+
+    }
+
+    @Transactional
+    @JsonView({Survey.summary.class})
+    @PostMapping(value = "/allgivensurveys")
+    public ResponseEntity<?> allgivensurveys(@RequestBody Map<String, Object> payload) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(payload);
+        System.out.println("jsonObject:"+jsonObject);
+        System.out.println("jsonObject+userID:"+jsonObject.getString("userid"));
+
+        List<OpenUniqueSurveyEntity> openUniqueSurveyEntities = openUniqueSurveyRepository.findAllByEmailId(jsonObject.getString("userid"));
+        List<ClosedSurveyEntity> closedSurveyEntities = closedSurveyRepository.findAllByEmailId(jsonObject.getString("userid"));
+
+        System.out.println("closedSurveyEntities:"+closedSurveyEntities);
+
+        List<SurveyEntity> open_survey = new ArrayList<>();
+        List<SurveyEntity> close_survey = new ArrayList<>();
+
+        //fetch all open uniques
+        for(OpenUniqueSurveyEntity o:openUniqueSurveyEntities)
+        {
+            open_survey.add(o.getSurveyId());
+        }
+
+        //fetch all open uniques
+        for(ClosedSurveyEntity o:closedSurveyEntities)
+        {
+            int survey_id = o.getSurveyId().getSurveyId();
+            System.out.println("Inside the closde:"+survey_id);
+            System.out.println("answers:"+answerRepository.findAllByEmailIdAndSurveyId(jsonObject.getString("userid"),survey_id));
+
+            if(answerRepository.findAllByEmailIdAndSurveyId(jsonObject.getString("userid"),survey_id) != null)
+            {
+
+                close_survey.add(o.getSurveyId());
+            }
+
+
+
+        }
+
+            System.out.println("close_survey++:"+close_survey);
+
+        List<SurveyEntity> final_survey = new ArrayList<>();
+
+        for(SurveyEntity s:open_survey)
+        {
+            final_survey.add(s);
+        }
+        for(SurveyEntity s:close_survey)
+        {
+            final_survey.add(s);
+        }
+
+        return new ResponseEntity(final_survey,HttpStatus.OK);
+
+        //return new ResponseEntity(surveyRepository.findBySurveytype("O"),HttpStatus.OK);
 
     }
 }

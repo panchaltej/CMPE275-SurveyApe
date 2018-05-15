@@ -12,5 +12,6 @@ public interface OpenUniqueSurveyRepository extends JpaRepository<OpenUniqueSurv
     List<OpenUniqueSurveyEntity> findAllBySurveyId(SurveyEntity surveyId);
     OpenUniqueSurveyEntity findOneByUuid(String uuid);
     OpenUniqueSurveyEntity findOneByEmailIdAndSurveyId(String emailId, SurveyEntity surveyEntity);
+    List<OpenUniqueSurveyEntity> findAllByEmailId(String email);
 
 }

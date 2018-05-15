@@ -10,4 +10,5 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Integer> {
     void deleteByEmailIdAndSurveyId(String EmailId, Integer SurveyId);
     AnswerEntity findBySurveyId(int survey_id);
     List<AnswerEntity> findAllBySurveyId(int survey_id);
+    List<AnswerEntity> findAllByEmailIdAndSurveyId(String EmailId, Integer SurveyId);
 }

@@ -11,6 +11,8 @@ import {BrowserRouter} from 'react-router-dom';
  import Landingpage from './landingpage'
  import Openuniquesurvey from './allopenuniquesurveys'
  import Allopenfromdashboard from './allopenuniquefromdashboard'
+ import Allgivensurveys from './allgivensurveys'
+
 let initialState=true;
 class menu extends Component{
     handleSignOut(){
@@ -76,7 +78,7 @@ class menu extends Component{
 
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-3">
             <h2>Create Survey</h2> 
             <p><button className="btn btn-secondary"
 
@@ -85,7 +87,7 @@ class menu extends Component{
                 this.props.history.push("/createsurvey");
             }}>GO &raquo;</button></p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <h2>Saved Surveys</h2>
             <p><button className="btn btn-secondary"
             onClick={() => {
@@ -93,10 +95,16 @@ class menu extends Component{
                 this.props.history.push("/allsavedsurveys");
             }}> GO &raquo;</button></p>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <h2>Open Surveys</h2>
             <p><button class="btn btn-secondary" role="button"  onClick={() => {
                 this.props.history.push("/allopenfromdashboard");
+            }}>GO &raquo;</button></p>
+          </div>
+          <div className="col-md-3">
+            <h2>Given Surveys</h2>
+            <p><button class="btn btn-secondary" role="button"  onClick={() => {
+                this.props.history.push("/allgivensurveys");
             }}>GO &raquo;</button></p>
           </div>
         </div>
@@ -143,6 +151,11 @@ class menu extends Component{
       <Route exact path="/allopenfromdashboard" render={() => (
                 <div>
                     <Allopenfromdashboard/>
+                </div>
+            )}/>
+      <Route exact path="/allgivensurveys" render={() => (
+                <div>
+                    <Allgivensurveys/>
                 </div>
             )}/>
     </div>
