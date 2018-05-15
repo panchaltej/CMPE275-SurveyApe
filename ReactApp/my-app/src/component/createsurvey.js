@@ -22,11 +22,11 @@ class HP extends Component{
             {value: 'C',label:'Closed'}
             ],
         options:[
-            { value: 'DR', label: 'MCQ-Single Text Dropwdown type' },
-            { value: 'R', label: 'MCQ-Single Text Radio type' },
-            { value: 'I', label: 'MCQ-Single Image Radio type' },
-            { value: 'CB', label: 'MCQ-Multiple Text answers' },
-            { value: 'MCQ-Multiple Image answers', label: 'MCQ-Multiple Image answers' },
+            { value: 'DR', label: 'MCQ-Dropwdown' },
+            { value: 'R', label: 'MCQ-Radio' },
+            { value: 'I', label: 'MCQ-Image Radio' },
+            { value: 'CB', label: 'MCQ-Checkboxes' },
+            { value: 'ICB', label: 'MCQ-Checkbox Images' },
             { value: 'Y', label: 'Yes/no' },
             { value: 'TB', label: 'Short answer' },
             { value: 'DT', label: 'Date/time' },
@@ -272,7 +272,7 @@ class HP extends Component{
                     
                 });
         }
-        
+
         this.setState({is_published:true});
     }
     unPublish(){
