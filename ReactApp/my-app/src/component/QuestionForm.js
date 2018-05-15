@@ -140,7 +140,10 @@ class QuestionForm extends Component {
                 }
             }
             if (this.state.questions[i].question_type == "DT") {
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                //if (document.getElementById(toString(id)) != undefined)
+                if(this.state.questions[i].options.length>0) {
+                    this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
+                }
                 //alert(document.getElementById(id).value)
 
             }
@@ -295,8 +298,20 @@ handleSave() {
                 }
             }
             if (this.state.questions[i].question_type == "DT") {
-                this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
-                //alert(document.getElementById(id).value)
+                if(this.state.questions[i].options.length>0)
+                {
+                    debugger;
+                    var obj = {};
+                    obj["optionId"] = this.state.questions[i].options[0].option_id;
+                    obj["optionDescription"] = document.getElementById(id).value
+                    if(this.state.questions[i].answers.length >0){
+                        this.state.questions[i].answers=[];
+                        this.state.questions[i].answers.push(obj);
+                    }
+                    else{
+                        this.state.questions[i].answers.push(obj);
+                    }
+                }
 
             }
             if (this.state.questions[i].question_type == "TB") {
@@ -813,9 +828,11 @@ handleSave() {
                         // }
                     }
                     if (this.state.questions[i].question_type == "DT") {
-                        if (this.state.questions[i].answers.length > 0)
+                        if (this.state.questions[i].answers.length > 0) {
+                            if (document.getElementById(toString(id)) != undefined)
                             document.getElementById(toString(id)).value = this.state.questions[i].answers[0].optionDescription;
-                        //alert(document.getElementById(id).value)
+
+                        }//alert(document.getElementById(id).value)
 
                     }
                     if (this.state.questions[i].question_type == "TB") {
