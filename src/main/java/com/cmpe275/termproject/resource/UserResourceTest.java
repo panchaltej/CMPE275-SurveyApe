@@ -48,4 +48,24 @@ public class UserResourceTest {
             e.printStackTrace();
         }
     }
+
+    @org.junit.Test
+    public void Signup() {
+
+        try {
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/signup")
+                    .header("accept", "application/json")
+                    .field("email", "divyank68@mailinator.com")
+                    .field("password", "random")
+                    .field("firstName","check")
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            System.out.println(res);
+            Assert.assertEquals(200, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
