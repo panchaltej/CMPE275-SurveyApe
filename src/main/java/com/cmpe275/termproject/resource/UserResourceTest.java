@@ -84,4 +84,18 @@ public class UserResourceTest {
             e.printStackTrace();
         }
     }
+    @org.junit.Test
+    public void allopenuniquesurveys() {
+        try {
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:8080/survey/allopenuniquesurveys")
+                    .header("accept", "application/json")
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            Assert.assertEquals(200, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
