@@ -27,6 +27,8 @@ public class UserResourceTest {
         }
     }
 
+
+
     @org.junit.Test
     public void FailedLogin() {
 
@@ -90,6 +92,44 @@ public class UserResourceTest {
 
             JSONObject res = jsonResponse.getBody().getObject();
             Assert.assertEquals(200, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @org.junit.Test
+    public void allInvalidSurveys() {
+        try {
+            //enter invalid uuid
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:8080/survey/1/d718f162bc204381-9029-2749b014c3a5")
+
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            Assert.assertEquals(500, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @org.junit.Test
+    public void failedVerificationCheck() {
+
+        try {
+
+
+            HttpResponse<JsonNode> jsonResponse2 = Unirest.post("http://localhost:8080/verificationCheck")
+                    .header("accept", "application/json")
+                    .field("email", "divyank.shukla@sjsu.edu")
+                    .field("verificationCode", "23243q4234")
+                    .asJson();
+
+            JSONObject res = jsonResponse2.getBody().getObject();
+
+            Assert.assertEquals("dsrtrtszfs", res.get("verificationCode"));
 
         } catch (Exception e) {
             e.printStackTrace();
