@@ -142,7 +142,7 @@ class QuestionForm extends Component {
             }
             if (this.state.questions[i].question_type == "DT") {
                 //if (document.getElementById(toString(id)) != undefined)
-                if(this.state.questions[i].options.length>0) {
+                if(this.state.questions[i].options.length>0 && this.state.questions[i].answers.length > 0) {
                     this.state.questions[i].answers[0].optionDescription = document.getElementById(id).value;
                 }
                 //alert(document.getElementById(id).value)
@@ -223,7 +223,7 @@ class QuestionForm extends Component {
         
 
         var emailVal = this.state.emailId;
-        if (this.state.emailId == null || this.state.emailId == "") {
+        if (this.props.match.params.uuid == "general" && (this.state.emailId == null || this.state.emailId == "")) {
             var personEmail = prompt("Please enter your email to receive confirmation");
             // localStorage.setItem("email",personEmail)
             emailVal = personEmail;
