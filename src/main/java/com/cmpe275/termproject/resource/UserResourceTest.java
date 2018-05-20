@@ -115,6 +115,24 @@ public class UserResourceTest {
         }
     }
 
+
+    @org.junit.Test
+    public void surveysCheck() {
+        try {
+            //enter invalid userid
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:8080/survey/dsa1/d718f162bc204381-9029-2749b014c3a5")
+
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            Assert.assertEquals(400, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @org.junit.Test
     public void failedVerificationCheck() {
 
