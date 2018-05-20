@@ -224,7 +224,7 @@ class HP extends Component{
     }
 
     handleFileUpload = (index,i,event) => {
-        alert("in images");
+        // alert("in images");
         const payload = new FormData();
         //var f = event.target.files[0];
         let temp = this.state.images;

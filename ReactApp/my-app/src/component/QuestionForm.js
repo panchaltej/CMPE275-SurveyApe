@@ -224,7 +224,7 @@ class QuestionForm extends Component {
 
         var emailVal = this.state.emailId;
         if (this.state.emailId == null || this.state.emailId == "") {
-            var personEmail = prompt("Please enter your email");
+            var personEmail = prompt("Please enter your email to receive confirmation");
             // localStorage.setItem("email",personEmail)
             emailVal = personEmail;
         }
@@ -663,7 +663,7 @@ handleSave() {
         return(
             <button id="btn-signup" style={saveBtnStyle} onClick={ () =>{this.handleSubmit()}} type="button" className="btn btn-success">  Submit</button>)
         else
-        alert("You had already submitted the survey")
+        alert("You have already submitted the survey")
         //window.location.reload();
         return(
 

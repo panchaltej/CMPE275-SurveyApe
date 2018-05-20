@@ -67,8 +67,24 @@ public class StatsResource {
         float numOfRegistered = 0;
         boolean submitted = false;
         if(type.equals("G")){
-            List<OpenSurveyEntity> openSurveyEntities = openSurveyRepository.findAllBySurveyId(surveyEntity);
-            numberOfPart = (float)openSurveyEntities.size();
+//            List<OpenSurveyEntity> openSurveyEntities = openSurveyRepository.findAllBySurveyId(surveyEntity);
+//            numberOfPart = (float)openSurveyEntities.size();
+            int count = 0;
+            List<AnswerEntity> answerEntities = answerRepository.findAllBySurveyId(surveyId);
+            Map<Integer,Integer> questions = new HashMap<>();
+            for(AnswerEntity answer: answerEntities){
+                if(questions.get(answer.getQuestionId().getQuestion_id()) != null){
+                    questions.put(answer.getQuestionId().getQuestion_id(), questions.get(answer.getQuestionId().getQuestion_id())+1);
+                }
+                else{
+                    questions.put(answer.getQuestionId().getQuestion_id(), 1);
+                }
+            }
+            if(questions != null && questions.size()>0) {
+                System.out.println(questions);
+                System.out.println(answerEntities);
+                numberOfPart = questions.get(answerEntities.get(0).getQuestionId().getQuestion_id());
+            }
             numOfRegistered = numberOfPart;
         }
         else if(type.equals("C")){

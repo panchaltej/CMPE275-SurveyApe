@@ -33,7 +33,7 @@ class Stats extends Component {
     renderQuestions(){
         if(this.state.stats.questions){
             return this.state.stats.questions.map((que) => {
-                if(que.question_type == "TB"){
+                if(que.question_type == "TB" || que.question_type == "DT"){
                     return(
                     <div class="table-responsive">
                         <h5>{que.question_text}</h5>

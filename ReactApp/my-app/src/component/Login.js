@@ -41,7 +41,7 @@ class Login extends Component {
     handleLogin = () => {
         {
             var bodyFormData = new FormData();
-            localStorage.setItem("email", document.getElementById("loginUsername").value);
+            // localStorage.setItem("email", document.getElementById("loginUsername").value);
             bodyFormData.set('email', document.getElementById("loginUsername").value);
             bodyFormData.set('password', document.getElementById("loginPassword").value);
             var isValidEmail=true;
@@ -67,6 +67,7 @@ class Login extends Component {
                             //handle success
                             debugger;
                             if (response.status == 200) {
+                                localStorage.setItem("email", document.getElementById("loginUsername").value);
                                 if (response.data.isVerified == "N") {
                                     currentComponet.props.history.push("/verificationpage");
                                 }
