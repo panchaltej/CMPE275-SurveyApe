@@ -68,4 +68,20 @@ public class UserResourceTest {
             e.printStackTrace();
         }
     }
+
+    @org.junit.Test
+    public void closeSurvey() {
+        try {
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/survey/closesurvey")
+                    .header("accept", "application/json")
+                    .body("{'survey_id':'7'}") //invalid close survey
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            Assert.assertEquals(415, jsonResponse.getStatus());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
