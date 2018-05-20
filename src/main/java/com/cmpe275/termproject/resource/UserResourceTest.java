@@ -12,5 +12,25 @@ import org.junit.Assert.*;
 
 public class UserResourceTest {
 
-    
+    @org.junit.Test
+    public void checkLogin() {
+
+        try {
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/login")
+                    .header("accept", "application/json")
+                    .field("email", "divyank.shukla@sjsu.edu")
+                    .field("password", "temp")
+                    .asJson();
+
+            JSONObject res = jsonResponse.getBody().getObject();
+            Assert.assertEquals("divyank.shukla@sjsu.edu", res.get("email_id"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @org.junit.Test
+    public void signUp() {
+    }
 }
