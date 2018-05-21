@@ -13,7 +13,7 @@ public class UserResourceTest {
     public void checkLogin() {
 
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/login")
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://surveyape.us-west-1.elasticbeanstalk.com/login")
                     .header("accept", "application/json")
                     .field("email", "divyank.shukla@sjsu.edu")
                     .field("password", "temp")
@@ -33,7 +33,7 @@ public class UserResourceTest {
     public void FailedLogin() {
 
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/login")
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://surveyape.us-west-1.elasticbeanstalk.com/login")
                     .header("accept", "application/json")
                     .field("email", "divyank.shukla@sjsu.edu")
                     .field("password", "random")
@@ -52,7 +52,7 @@ public class UserResourceTest {
     public void Signup() {
 
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/signup")
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://surveyape.us-west-1.elasticbeanstalk.com/signup")
                     .header("accept", "application/json")
                     .field("email", "divyank68@mailinator.com")
                     .field("password", "random")
@@ -71,7 +71,7 @@ public class UserResourceTest {
     @org.junit.Test
     public void closeSurvey() {
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://localhost:8080/survey/closesurvey")
+            HttpResponse<JsonNode> jsonResponse = Unirest.post("http://surveyape.us-west-1.elasticbeanstalk.com/survey/closesurvey")
                     .header("accept", "application/json")
                     .body("{'survey_id':'7'}") //invalid close survey
                     .asJson();
@@ -86,7 +86,7 @@ public class UserResourceTest {
     @org.junit.Test
     public void allopenuniquesurveys() {
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://localhost:8080/survey/allopenuniquesurveys")
+            HttpResponse<JsonNode> jsonResponse = Unirest.get("http://surveyape.us-west-1.elasticbeanstalk.com/survey/allopenuniquesurveys")
                     .header("accept", "application/json")
                     .asJson();
 
