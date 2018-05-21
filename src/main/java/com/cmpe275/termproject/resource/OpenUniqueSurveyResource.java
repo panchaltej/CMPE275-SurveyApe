@@ -233,7 +233,7 @@ public class OpenUniqueSurveyResource {
     }
     else if(checking.getSurvey_type().equals("C"))
         {
-            ClosedSurveyEntity op = closedSurveyRepository.findOneBySurveyId(checking);
+            ClosedSurveyEntity op = closedSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("userid"),checking);
             return new ResponseEntity("http://janhudesai-ape.herokuapp.com/survey/" + current_survey.getInt("surveyId") + "/" + op.getUuid(), HttpStatus.OK);
         }
 
