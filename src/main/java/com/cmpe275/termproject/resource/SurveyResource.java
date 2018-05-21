@@ -38,7 +38,7 @@ import java.util.*;
 //import org.apache.commons.codec.binary.Base64;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/survey")
 public class SurveyResource {
 
@@ -236,7 +236,7 @@ public class SurveyResource {
             UUID uuid = UUID.randomUUID();
             closedSurveyEntity.setUudi(String.valueOf(uuid));
             closedSurveyEntity.setEmailId(s);
-            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+            closedSurveyEntity.setInvitee_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
             closedSurveyRepository.save(closedSurveyEntity);
 
             final String username = "infosurveyape275@gmail.com";
@@ -262,7 +262,7 @@ public class SurveyResource {
                 message.setRecipients(Message.RecipientType.TO,
                         InternetAddress.parse(s));
                 message.setSubject("Link for the survey");
-                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
 
                 Transport.send(message);
 
@@ -387,7 +387,7 @@ public class SurveyResource {
                     openSurveyEntity.setSurvey_id(surveyEntity);
                     UUID uuid = UUID.randomUUID();
                     openSurveyEntity.setUuid(String.valueOf(uuid));
-                    openSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                    openSurveyEntity.setInvitation_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                     openSurveyEntity.setIslinkused(0);
                     openSurveyRepository.save(openSurveyEntity);
 
@@ -411,16 +411,17 @@ public class SurveyResource {
                             closedSurveyEntity.setInviteeUserId(userEntity);
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
-                            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyEntity.setInvitee_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                             closedSurveyEntity.setEmailId(user);
                             closedSurveyRepository.save(closedSurveyEntity);
 
 
 
                             try {
-                                String qrCodeData = "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid);
+                                String qrCodeData = "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid);
                                 //String filePath = "C:\\Users\\sriha\\Desktop\\SurveyApp\\google.png";
-                                String filePath = "src/main/resources/InvitationCode.png";
+//                                String filePath = "src/main/resources/InvitationCode.png";
+                                String filePath = System.getProperty("user.dir")+File.separator +"InvitationCode.png";
                                 String charset = "UTF-8"; // or "ISO-8859-1"
                                 Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
                                 hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -444,11 +445,12 @@ public class SurveyResource {
                                 // message info
                                 String mailTo = (user);
                                 String subject = "You are invited to the survey";
-                                String message="Hi "+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid);
+                                String message="Hi "+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid);
 
                                 // attachments
                                 String[] attachFiles = new String[1];
-                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
+//                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
+                                attachFiles[0] =     System.getProperty("user.dir")+File.separator +"InvitationCode.png";
 
                                 sendEmailWithAttachments(host, port, mailFrom, password, mailTo,
                                         subject, message, attachFiles);
@@ -485,7 +487,7 @@ public class SurveyResource {
 //                                message.setRecipients(Message.RecipientType.TO,
 //                                        InternetAddress.parse(user));
 //                                message.setSubject("Please verify your email address");
-//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
 //
 //                                Transport.send(message);
 //
@@ -503,9 +505,10 @@ public class SurveyResource {
                     for(ClosedSurveyEntity c:closed_email) {
                         if (c.getEmailId() != null) {
                             try {
-                                String qrCodeData = "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid();
+                                String qrCodeData = "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid();
                                 //String filePath = "C:\\Users\\sriha\\Desktop\\SurveyApp\\google.png";
-                                String filePath = "src/main/resources/InvitationCode.png";
+//                                String filePath = "src/main/resources/InvitationCode.png";
+                                String filePath = System.getProperty("user.dir")+File.separator +"InvitationCode.png";
                                 String charset = "UTF-8"; // or "ISO-8859-1"
                                 Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
                                 hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -529,12 +532,12 @@ public class SurveyResource {
                                 // message info
                                 String mailTo = (c.getEmailId());
                                 String subject = "You are invited to the survey";
-                                String message="Hi "+","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid();
+                                String message="Hi "+","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid();
 
                                 // attachments
                                 String[] attachFiles = new String[1];
-                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
-
+//                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
+                                attachFiles[0] =     System.getProperty("user.dir")+File.separator +"InvitationCode.png";
                                 sendEmailWithAttachments(host, port, mailFrom, password, mailTo,
                                         subject, message, attachFiles);
                                 System.out.println("Email sent.");
@@ -570,7 +573,7 @@ public class SurveyResource {
 //                                message.setRecipients(Message.RecipientType.TO,
 //                                        InternetAddress.parse(c.getEmailId()));
 //                                message.setSubject("Please verify your email address");
-//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid());
+//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://janhudesai-ape.herokuapp.com/survey/" + surveyEntity.getSurveyId() + "/" + c.getUuid());
 //
 //                                Transport.send(message);
 //
@@ -614,7 +617,7 @@ public class SurveyResource {
                             closedSurveyEntity.setInviteeUserId(userEntity);
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
-                            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyEntity.setInvitee_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
                             closedSurveyEntity.setEmailId(user);
                             closedSurveyRepository.save(closedSurveyEntity);
                         }
@@ -706,7 +709,7 @@ public class SurveyResource {
                     openSurveyEntity.setSurvey_id(surveyEntity);
                     UUID uuid = UUID.randomUUID();
                     openSurveyEntity.setUuid(String.valueOf(uuid));
-                    openSurveyEntity.setInvitation_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+                    openSurveyEntity.setInvitation_link("http://janhudesai-ape.herokuapp.com/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                     openSurveyEntity.setIslinkused(0);
                     openSurveyRepository.save(openSurveyEntity);
 
@@ -725,16 +728,17 @@ public class SurveyResource {
                             closedSurveyEntity.setInviteeUserId(userEntity);
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
-                            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyEntity.setInvitee_link("http://janhudesai-ape.herokuapp.com/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                             closedSurveyEntity.setEmailId(user);
                             closedSurveyRepository.save(closedSurveyEntity);
 
                             // mail the survey link to the invitees
 
                             try {
-                                String qrCodeData = "http://localhost:3000/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid);
+                                String qrCodeData = "http://janhudesai-ape.herokuapp.com/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid);
                                 //String filePath = "C:\\Users\\sriha\\Desktop\\SurveyApp\\google.png";
-                                String filePath = "src/main/resources/InvitationCode.png";
+//                                String filePath = "src/main/resources/InvitationCode.png";
+                                String filePath = System.getProperty("user.dir")+File.separator +"InvitationCode.png";
                                 String charset = "UTF-8"; // or "ISO-8859-1"
                                 Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
                                 hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -758,11 +762,12 @@ public class SurveyResource {
                                 // message info
                                 String mailTo = (user);
                                 String subject = "You are invited to the survey";
-                                String message="Hi "+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid);
+                                String message="Hi "+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid);
 
                                 // attachments
                                 String[] attachFiles = new String[1];
-                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
+//                                attachFiles[0] =     "src/main/resources/InvitationCode.png";
+                                attachFiles[0] =     System.getProperty("user.dir")+File.separator +"InvitationCode.png";
 
                                 sendEmailWithAttachments(host, port, mailFrom, password, mailTo,
                                         subject, message, attachFiles);
@@ -798,7 +803,7 @@ public class SurveyResource {
 //                                message.setRecipients(Message.RecipientType.TO,
 //                                        InternetAddress.parse(user));
 //                                message.setSubject("Please verify your email address");
-//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://localhost:3000/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+//                                message.setText("You have been invited to take the survey !" + System.lineSeparator() + "Follow this Link to take the survey : " + System.lineSeparator() + "http://janhudesai-ape.herokuapp.com/survey/" + se.getSurveyId() + "/" + String.valueOf(uuid));
 //
 //                                Transport.send(message);
 //
@@ -831,7 +836,7 @@ public class SurveyResource {
                             closedSurveyEntity.setInviteeUserId(userEntity);
                             UUID uuid = UUID.randomUUID();
                             closedSurveyEntity.setUudi(String.valueOf(uuid));
-                            closedSurveyEntity.setInvitee_link("http://localhost:8080/" + se.getSurveyId() + "/" + String.valueOf(uuid));
+                            closedSurveyEntity.setInvitee_link("http://janhudesai-ape.herokuapp.com/" + se.getSurveyId() + "/" + String.valueOf(uuid));
                             closedSurveyEntity.setEmailId(user);
                             closedSurveyRepository.save(closedSurveyEntity);
                         }
@@ -927,7 +932,8 @@ public class SurveyResource {
         try {
             System.out.println("in images upload");
 //            for (int i = 0; i <files.length ; i++) {
-                files.transferTo(new File( System.getProperty("user.dir")+"//src//main//resources" +File.separator + files.getOriginalFilename()));
+//                files.transferTo(new File( System.getProperty("user.dir")+"//src//main//resources" +File.separator + files.getOriginalFilename()));
+            files.transferTo(new File( System.getProperty("user.dir")+File.separator + files.getOriginalFilename()));
 
             //}
 
@@ -1038,7 +1044,8 @@ public class SurveyResource {
     }
     public String encoder(String imagename)  {
         System.out.println("IMAGENAME"+imagename);
-        String imagePath=System.getProperty("user.dir")+"//src//main//resources"+File.separator +imagename;
+//        String imagePath=System.getProperty("user.dir")+"//src//main//resources"+File.separator +imagename;
+        String imagePath=System.getProperty("user.dir")+File.separator +imagename;
         System.out.println("PATH: "+imagePath);
         File f = new File(imagePath);
         String imageString="";//change path of image according to you

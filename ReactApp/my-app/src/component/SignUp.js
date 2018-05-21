@@ -34,7 +34,7 @@ class SignUp extends Component {
     handleSignUp = () => {
         {
             var bodyFormData = new FormData();
-            localStorage.setItem("email", document.getElementById("signUpEmail").value);
+            // localStorage.setItem("email", document.getElementById("signUpEmail").value);
             bodyFormData.set('email', document.getElementById("signUpEmail").value);
             bodyFormData.set('firstName', document.getElementById("signUpFirstName").value);
             bodyFormData.set('password', document.getElementById("signUpPassword").value);
@@ -52,7 +52,7 @@ class SignUp extends Component {
             if(isValidEmail==true) {
                 axios({
                     method: 'post',
-                    url: 'http://localhost:8080/signup',
+                    url: 'http://surveyape.us-west-1.elasticbeanstalk.com/signup',
                     data: bodyFormData,
                     config: {headers: {'Content-Type': 'application/json'}}
                 })
@@ -63,6 +63,7 @@ class SignUp extends Component {
                             alert("The email is already registered")
                         }
                         else {
+                            localStorage.setItem("email", document.getElementById("signUpEmail").value);
                             this.setState({
                                 currentPage: "verificationpage"
                             });

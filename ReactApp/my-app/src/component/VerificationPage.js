@@ -72,7 +72,7 @@ class VerificationPage extends Component {
             var currentComponet=this;
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/verificationCheck',
+                url: 'http://surveyape.us-west-1.elasticbeanstalk.com/verificationCheck',
                 data: bodyFormData,
                 config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
@@ -126,7 +126,7 @@ class VerificationPage extends Component {
                 <Route exact path="/failedVerification" render={() => (<BrowserRouter>
                     <div>
                         <h6 className="welcomeTxt">verification failed</h6>
-                        <a href={"http://localhost:3000"}>Click here to navigate back</a>
+                        <a href={"http://janhudesai-ape.herokuapp.com"}>Click here to navigate back</a>
                     </div>
                 </BrowserRouter>
             )}/>

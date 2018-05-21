@@ -39,7 +39,7 @@ class openunique extends Component{
                                         current_survey: surveys
                                            
                                        });
-                                       window.open("http://localhost:3000/survey/"+surveys.surveyId+"/general");
+                                       window.open("http://janhudesai-ape.herokuapp.com/survey/"+surveys.surveyId+"/general");
                                    }}>Take the survey</a>
             </div>
             <span class="d-block" align="left">{surveys.survey_name}</span>

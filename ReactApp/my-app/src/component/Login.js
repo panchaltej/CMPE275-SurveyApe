@@ -59,7 +59,7 @@ class Login extends Component {
                 if(isValidEmail==true) {
                     axios({
                         method: 'post',
-                        url: 'http://localhost:8080/login',
+                        url: 'http://surveyape.us-west-1.elasticbeanstalk.com/login',
                         data: bodyFormData,
                         config: {headers: {'Content-Type': 'application/json'}}
                     })

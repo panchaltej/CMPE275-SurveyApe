@@ -56,7 +56,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/survey/openUniqueSurvey/emailRegister")
 public class OpenUniqueSurveyResource {
 
@@ -108,16 +108,16 @@ public class OpenUniqueSurveyResource {
             if(openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(userEntity.getEmail_id(),surveyEntity) != null )
                 {
                     OpenUniqueSurveyEntity op = openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(userEntity.getEmail_id(),surveyEntity);
-                    return new ResponseEntity("http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+op.getUuid(), HttpStatus.OK);
+                    return new ResponseEntity("http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+op.getUuid(), HttpStatus.OK);
             }
             openUniqueSurveyEntity.setEmailId(userEntity.getEmail_id());
-            openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+            openUniqueSurveyEntity.setInvitation_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
             openUniqueSurveyEntity.setIslinkused(0);
             openUniqueSurveyRepository.save(openUniqueSurveyEntity);
 
             JSONObject responsejsonObject = new JSONObject(payload);
-            //responsejsonObject.put("url","http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid));
-            return new ResponseEntity("http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid), HttpStatus.OK);
+            //responsejsonObject.put("url","http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid));
+            return new ResponseEntity("http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid), HttpStatus.OK);
         }
 
         else {
@@ -128,12 +128,12 @@ public class OpenUniqueSurveyResource {
             openUniqueSurveyEntity.setSurveyId(surveyEntity);
             openUniqueSurveyEntity.setUuid(String.valueOf(uuid));
             openUniqueSurveyEntity.setEmailId(jsonObject.getString("usreid"));
-            openUniqueSurveyEntity.setInvitation_link("http://localhost:8080/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
+            openUniqueSurveyEntity.setInvitation_link("http://janhudesai-ape.herokuapp.com/" + surveyEntity.getSurveyId() + "/" + String.valueOf(uuid));
             openUniqueSurveyEntity.setIslinkused(0);
 
             if (openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"), surveyEntity) != null) {
                 OpenUniqueSurveyEntity op = openUniqueSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"), surveyEntity);
-                return new ResponseEntity("http://localhost:3000/survey/" + current_survey.getInt("surveyId") + "/" + op.getUuid(), HttpStatus.OK);
+                return new ResponseEntity("http://janhudesai-ape.herokuapp.com/survey/" + current_survey.getInt("surveyId") + "/" + op.getUuid(), HttpStatus.OK);
             }
 
             openUniqueSurveyRepository.save(openUniqueSurveyEntity);
@@ -142,9 +142,10 @@ public class OpenUniqueSurveyResource {
 
 
             try {
-                String qrCodeData = "http://localhost:3000/survey/" + current_survey.getInt("surveyId") + "/" + String.valueOf(uuid);
+                String qrCodeData = "http://janhudesai-ape.herokuapp.com/survey/" + current_survey.getInt("surveyId") + "/" + String.valueOf(uuid);
                 //String filePath = "C:\\Users\\sriha\\Desktop\\SurveyApp\\google.png";
-                String filePath = "src/main/resources/InvitationCode.png";
+//                String filePath = "src/main/resources/InvitationCode.png";
+                String filePath = System.getProperty("user.dir")+File.separator + "InvitationCode.png";
                 String charset = "UTF-8"; // or "ISO-8859-1"
                 Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
                 hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
@@ -168,11 +169,12 @@ public class OpenUniqueSurveyResource {
                 // message info
                 String mailTo = (jsonObject.getString("usreid"));
                 String subject = "You are invited to the survey";
-                String message="Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid);
+                String message="Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid);
 
                 // attachments
                 String[] attachFiles = new String[1];
-                attachFiles[0] = "src/main/resources/InvitationCode.png";
+//                attachFiles[0] = "src/main/resources/InvitationCode.png";
+                attachFiles[0] = System.getProperty("user.dir")+File.separator + "InvitationCode.png";
 
                 sendEmailWithAttachments(host, port, mailFrom, password, mailTo,
                         subject, message, attachFiles);
@@ -197,7 +199,7 @@ public class OpenUniqueSurveyResource {
 //            message.setRecipients(Message.RecipientType.TO,
 //                    InternetAddress.parse(jsonObject.getString("usreid")));
 //            message.setSubject("Access your survey here");
-//            String MessageContentCustom="Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid);
+//            String MessageContentCustom="Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid);
 //            message.setText(MessageContentCustom );
 
 //            MimeBodyPart messageBodyPart = new MimeBodyPart();
@@ -215,7 +217,7 @@ public class OpenUniqueSurveyResource {
 //                multipart.addBodyPart(messageBodyPart);
 //
 //                message.setContent(multipart);
-//           // message.setText( "Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://localhost:3000/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid));
+//           // message.setText( "Hi "+jsonObject.getString("usreid")+ ","+  System.lineSeparator() +"Thank you for registering for the survey!"+ System.lineSeparator() +"Follow this Link to take the survey : "+System.lineSeparator()+ "http://janhudesai-ape.herokuapp.com/survey/"+current_survey.getInt("surveyId")+"/"+String.valueOf(uuid));
 //
 //            Transport.send(message);
 

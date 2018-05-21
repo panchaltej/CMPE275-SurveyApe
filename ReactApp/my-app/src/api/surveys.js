@@ -1,6 +1,6 @@
 
 import axios from "axios"
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://surveyape.us-west-1.elasticbeanstalk.com'
 
 
 

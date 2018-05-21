@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/survey/response")
 public class ResponseResource {
 

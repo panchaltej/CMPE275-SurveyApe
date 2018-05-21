@@ -42,7 +42,7 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import java.util.*;
 import javax.mail.Multipart;
-/*@CrossOrigin(origins = "http://localhost:3000")*/
+/*@CrossOrigin(origins = "*")*/
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/")

@@ -372,7 +372,7 @@ class HP extends Component{
                     <h1>{this.state.is_published?"This survey is now "+(this.state.is_closed?"closed!":"live!"):""}</h1>
                     <button onClick={()=>{
                         localStorage.setItem("survey_id", this.state.survey_id);
-                        window.open("http://localhost:3000/stats")}}>View Stats</button>
+                        window.open("http://janhudesai-ape.herokuapp.com/stats")}}>View Stats</button>
                     <h2>Enter survey type:</h2><select disabled={this.state.is_published} onChange={(e)=>this.setState({surveytype:e.target.value})} value={this.state.surveytype}>
                     {this.state.surveytypes.map((e, index) => {
                         return <option key={index} value={e.value}>{e.label}</option>;
