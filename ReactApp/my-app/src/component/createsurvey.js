@@ -37,9 +37,7 @@ class HP extends Component{
         images:[]
     };
 
-    fileChangedHandler = (event) => {
-        this.setState({selectedFile: event.target.files[0]})
-    };
+    
 
 
     addQuestion(qType){
@@ -299,11 +297,6 @@ class HP extends Component{
 
     showInvitees(){
         let temp=[];
-        let length=0;
-        // if(typeof this.props.selectedsavedsurveys.closed_invitees !== 'undefined'){
-        //     length=this.props.selectedsavedsurveys.closed_invitees.split(",").length;
-        // }
-        //alert(this.state.closed_invitees);
         for(let i=0;i<this.state.closed_invitees.length;i++){
             temp.push(<div key={i}><input disabled={false} onChange={(e)=> {
                 let invitee=this.state.closed_invitees;
@@ -314,13 +307,7 @@ class HP extends Component{
         return temp;
     }
 
-    createSurveyButton(){
-        if(this.state.survey_name==='' || this.state.surveytype===''){
-            alert("Cannot be blank");
-            return;
-        }
-        this.props.route('/createSurvey')
-    }
+
 
     closeSurvey(){
         this.setState({is_closed:true});
