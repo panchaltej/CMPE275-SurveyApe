@@ -1,5 +1,6 @@
 package com.cmpe275.termproject.resource;
 
+import com.cmpe275.termproject.model.ClosedSurveyEntity;
 import com.cmpe275.termproject.model.OpenUniqueSurveyEntity;
 import com.cmpe275.termproject.model.SurveyEntity;
 import com.cmpe275.termproject.model.UserEntity;
@@ -95,7 +96,12 @@ public class OpenUniqueSurveyResource {
         UUID uuid = UUID.randomUUID();
         System.out.println("jsonObject:"+jsonObject);
 
-        // Logic added for open survey coming from dashboard
+        //
+        SurveyEntity checking = surveyRepository.findOne(current_survey.getInt("surveyId"));
+        if(checking.getSurvey_type().equals("O"))
+        {
+
+            // Logic added for open survey coming from dashboard
         if(jsonObject.getBoolean("dashboard"))
         {   System.out.println("WERQQE@$#$"+jsonObject.getString("userid"));
             SurveyEntity surveyEntity = surveyRepository.findOne(current_survey.getInt("surveyId"));
@@ -224,6 +230,12 @@ public class OpenUniqueSurveyResource {
             System.out.println("Done");
         }
 
+    }
+    else if(checking.getSurvey_type().equals("C"))
+        {
+            ClosedSurveyEntity op = closedSurveyRepository.findOneByEmailIdAndSurveyId(jsonObject.getString("usreid"),checking);
+            return new ResponseEntity("http://janhudesai-ape.herokuapp.com/survey/" + current_survey.getInt("surveyId") + "/" + op.getUuid(), HttpStatus.OK);
+        }
 
         return new ResponseEntity("OK", HttpStatus.OK);
     }
